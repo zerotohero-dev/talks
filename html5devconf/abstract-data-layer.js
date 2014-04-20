@@ -1,4 +1,3 @@
-
 // Dummy definitions to make the IDE happy.
 function render() {}
 function defer() { return {resolve: function() {}, promise: {then: function(){}}};}
@@ -10,6 +9,10 @@ var $ = {get: function(){}};
 // instead of this...
 
 $.get('/api/v5/users/42/profile.json', function(res) {render(res);});
+
+// ------------------------------------------------------------------
+
+// Do this:
 
 // Makes a network request, and caches the eventual result for later use.
 app.data.getUserProfile = function(userId) {
@@ -31,8 +34,6 @@ app.data.getUserProfile = function(userId) {
 
     return deferred.promise;
 };
-
-// Do this:
 
 // Abstract your data access layer.
 app.data.getUserProfile(42).then(function(result) {
