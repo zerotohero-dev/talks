@@ -1,6 +1,7 @@
+
 var user = {
     id: 1,
-    name: 'Volkan Ozcelik',
+    name: 'Volkan Özçelik',
     location: 'Proxima Centauri'
 };
 
@@ -17,3 +18,6 @@ var items = [1,2,3,4];
 
 // warning: A holey array is slower.
 items[1] = undefined;
+
+
+

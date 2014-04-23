@@ -1,9 +1,11 @@
-function ListView() {}
+function ListView() {
+    this.childViews = [];
+}
+function template(){}
 
 ListView.prototype.render = function() {
-    var frag = document.createDocmentFragment(),
+    var frag = document.createDocumentFragment(),
         views = this.childViews;
-
 
     views.forEach(function(view) {
 
@@ -16,21 +18,19 @@ ListView.prototype.render = function() {
     this.$el.replace(frag);
 };
 
+ListView.prototype.getStaleChanges = function() {};
+ListView.prototype.resetStaleChanges = function() {};
+
+
 // Better:
 
 ListView.prototype.render = function() {
-    var frag = document.createDocmentFragment(),
+    var frag = document.createDocumentFragment(),
         views = this.childViews,
         buffer = [];
 
     this.data.forEach(function(dataItem) {
         buffer.push('<li>' + template(dataItem) + '</li>' );
-    });
-
-    views.forEach(function(view) {
-
-        // DO NOT nest views!
-        frag.appendChild(view.render());
     });
 
     this.$el.replace(frag);
@@ -39,7 +39,7 @@ ListView.prototype.render = function() {
 // Even Better:
 
 ListView.prototype.render = function() {
-    var frag = document.createDocmentFragment(),
+    var frag = document.createDocumentFragment(),
         views = this.childViews,
 
         // returns [{id: id, html: html}]
@@ -49,7 +49,7 @@ ListView.prototype.render = function() {
         document.getElementById(
             item.id
         ).innerHTML = item.html;
-    })
+    });
 
     this.resetStaleChanges();
 };
