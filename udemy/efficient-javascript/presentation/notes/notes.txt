@@ -1,0 +1,813 @@
+JavaScript is a very flexible language. This flexibility can prove
+itself to be powerful. However, it requires great care and attention to
+keep a fat-client JavaScript-heavy web applicaton in good shape.
+
+This talk will be about increasing the overall code quality of our
+JavaScript application. And when it comes to quality, there's only
+a single objective measure that you can rely on.
+
+If you forget everything you hear in this presentation remember this:
+Anything that you do to decrease WTF per minute review rate of your
+code; you're doing the right thing. And this is a non-trivial task
+as we'll see.
+
+<bio>
+I've been in the industry since 2003; which means I know the dark
+ages where there was something called Netscape Navigator 4; CSS
+was almost non-existent, table-based designs were the best practice
+there was no AJAX, and JavaScript was only good for form validation.
+
+# Outline
+-
+
+# Best Practices
+
+Web performance affects your users and that means it's everyone’s job to
+understand it, measure it and improve it.
+
+Wit one Caveat though:
+""Performance Advice Considered Addictive""
+
+We all want our stuff to go faster.
+"Fast" is context sensitive: games != web apps.
+And you need to take diagonally different approaches
+to optimize web apps, versus mobile apps, versus games.
+Because each of them have their own constraints, benefits, and liabilities.
+
+Bottom line is there are no silver bullet available to improve performance.
+It’s only when you combine a number of optimizations in
+a (real-world) testing environment that you can realize the
+largest performance gains.
+
+While understanding and improving your application performance
+is useful, it can also be difficult.
+
+And you "have to" measure. Because optimization without measurement
+is just an illusion.
+
+We'll be dealing more of these in the "Profiling JavaScript Applications"
+part of this talk, and for the time being just keep these three
+rules of thumb in mind:
+
+Measure It. Understand it. Fix it. Rinse and repeat.
+
+Measure it: Find the slow spots in your application (~45%)
+Understand it: Find out what the actual problem is (~45%)
+Fix it! (~10%)
+
+<more memory consumption != better performance>
+
+## Best Practices -> Micro
+
+The First Rule of Program Optimization: Don't do it. The Second
+Rule of Program Optimization (for experts only!): Don't do it yet.
+
+The try/catch clause creates a new scope in javascript, so every
+variable that has to come from the parent scope will be slightly slower.
+The overhead isn't that great but too large to completely ignore
+for your inner loops.
+
+Avoid using eval or the Function constructor
+Pass functions, not strings, to setTimeout() and setInterval()
+Avoid using with
+Don't use try-catch-finally inside performance-critical functions
+Isolate uses of eval and with
+Avoid using global variables
+Avoid for-in in performance-critical functions
+Use strings accumulator-style
+Primitive operations can be faster than function calls.
+
+The important thing is, these are micro optimizations;
+and they might almost zero impact if you're optimizing the
+wrong parts of the code. That's why we need to measure before
+optimizing.
+
+## Best Practices -> Speed and Memory
+
+Most of the JavaScript execution is spent dealing with DOM. Therefore
+in a typical web application optimizing a for loop that loops
+over a collection of JSON objects with n^2 algorithmic complexity
+down to n*log(n) complexity, will have minimal performance gain.
+
+In the case of web applications, the majority of the time is
+spent in the DOM. -- The DOM API is horribly inefficient; constantly
+doing marshalling; doing layout, doing rendering, doing repaint, reflows.
+That stuff is really expensive, and the amount of time running
+non-dom-mnipulating-JavaScript generally  to be a really small
+percentage of the overall process.
+
+"Optimize your Optimizing"
+
+optimizing everywhere and hoping for an overall performance
+increase, is a waste of time.
+
+optimize the code that's taking a lot of time or memory (innermost loops)
+
+Limit overall DOM manipulation, do things in batches
+Modifying an invisible element
+Making several style changes at once
+Avoid inspecting large numbers of nodes
+Avoid modifications while traversing the DOM
+Cache DOM values in script variables
+
+- Minimizing Repaints and Reflows
+
+When a browser has to recalculate the positions and geometrics of
+elements in a document for the purpose of re-rendering it, we call this
+reflow. Reflow is a user-blocking operation in the browser, so it’s
+helpful to understand how to improve reflow time.
+
+You should batch methods that trigger reflow or repaint, and
+use them sparingly. It’s important to process off DOM where possible.
+This is possible using DocumentFragment, a lightweight document object.
+Rather than constantly adding to the DOM
+using nodes, we can use document fragments to build up all we need and only
+perform a single insert into the DOM to avoid excessive reflow.
+
+The browser UI thread is responsible for both UI updates and javascript
+execution, and only one can happen at a atime.
+
+long running javascript => unresponsive UI
+
+rule of thumb
+no single javascript job should execute for more than 50-100ms to ensure a
+responsive ui
+
+repaint = a visual change does not require a recalculation of a layout
+backcolor visibility etc changes
+
+reflows are queud and executed after javascript returns
+
+limit repaints and relows as much as you can
+
+1- do complex DOM manipulations offline
+2. group style changes into classes (might be counter-productive
+if you're doing frame-based animation and need to change
+classes often -- since the Browser must re-evaluate CSS rules
+related to this class and child DOM elements of the targeted
+element, and other CSS rules which may apply)
+3. avoid accidental reflow ( width  = element.offsetWidth )
+
+Slow DOM performance can be traced back into the following three main causes:
+
+- Extensive DOM manipulation	Extensive use of DOM API is a well-known
+cause of slowness. Script triggers too many reflows or repaints	As a consequence
+of DOM manipulation, reflowing the layout and repainting are very expensive.
+Slow approach to locating nodes in the DOM	Locating a desired node(s) in the
+DOM is potential bottleneck if the DOM is sizable and/or complex.
+
+- Minimize the size of the DOM
+
+The size of DOM slows down all the operation related to it such as reflowing,
+traversal and DOM manipulation.
+
+The most effective way to make programs faster is to make n smaller means that
+the DOM should be as small as possible at all times.
+
+- Use document fragment templates for re-usability
+
+Dynamically inserting and updating elements into the DOM is expensive.
+An efficient way to tackle this is to use HTML templates which can be cloned
+and re-used for re-usable parts of the DOM such as dialogs and other UI widgets.
+
+- Avoid traversing large number of nodes
+
+Always try to use builtin methods and collections of the DOM to narrow down the
+search to smallest number of nodes possible.
+Try to avoid manually recursively stepping through the DOM as much as possible.
+
+smoothness/speed
+
+What we need to realize is that smoothness
+can't really be created by simply increasing the
+frames per second.
+Our brain is, unfortunately, smarter than that.
+What you will learn is that true 30 frames of
+animation per second (fps) is much better
+than 60 fps with just a few frames dropped in
+the middle. People hate jaggedness.
+
+To trade smoothness for speed means that while you may
+want to move an animation 1 pixel at a time, the animation
+and subsequent reflows may in that case use 100% of the
+CPU and the animation will seem jumpy as the browser
+is forced to drop frames to update the flow. Moving
+the animated element by e.g. 5 pixels at a time may
+seem slightly less smooth on faster machines, but
+won’t cause CPU thrashing that easily on mobile devices.
+
+# Best Practices -> Perceived Speed
+
+-
+
+# Best Practices -> Transfer Speed
+
+Optimizing caching — keeping your application's data and logic off the network altogether
+Minimizing round-trip times — reducing the number of serial request-response cycles
+Minimizing request overhead — reducing upload size
+Minimizing payload size — reducing the size of responses, downloads, and cached pages
+
+
+# Best Practices -> Development
+
+Task Runners
+Script Loaders
+Automated Testing
+CSS Preprocessors
+Application Frameworks
+Linting
+
+# Best Practices -> Macro
+
+Cacheable Ajax:
+- either cache responses to the local storage by request signature.
+- or simply send cacheable responses.
+- or a combination of both.
+
+Favicon.ico:
+The favicon.ico is an image that stays in the root of your server.
+It's a necessary evil because even if you don't care about it
+the browser will still request it, so it's better not
+to respond with a 404 Not Found. Also since it's on the
+same server, cookies are sent every time it's requested.
+
+# Best Practices -> Development
+
+- With a single click you should minimize, obfuscate, compile,
+test, lint, and publish.
+
+- To write efficient JavaScript, knowing JavaScript is by definition
+a necessary evil. And it's not sufficient. You'll also have to know
+every little detail about the frameworks you use. Each framework
+has its own layers of abstractions, and has its own semantics, each
+framework has its own ways of doing things right. You have to know
+the framework; otherwise you might often find yourself figthing against
+it. Frameworks are there to support you; and one true way to benefit
+from them most, is to know how they work inside out.
+
+You might find my following advice too radical; and it is not:
+Read the source code of the thing you use line by line, before using it.
+In other words, if you've never read Backbone's source code, don't use it.
+If you don't know how a jQuery selector works, then you're better off
+using `document.getElementById` instead.
+
+Framework code is not uncharted territory.
+Read the source Luke.
+
+# Common Patterns and Practices
+
+Believe it or not, within all of JavaScript's ugliness it
+is entirely possibly to write clean, trust-worthy, maintainable and
+elegant JavaScript code.
+
+And Patterns help you actualize this.
+
+However, each Pattern is another level of abstraction.
+
+Yes, a certain amount of abstraction is beneficial. But overuse of patterns
+may result in a hard to understand, hard to debug, and hard to
+maintain code base -- that is to say, abusing patterns is an "antipattern".
+
+Another thing to keep in mind is you won't be quite efficient
+if you're trying to force patterns and practices you're used to in other
+languages like C# or Java, into JavaScript.
+
+Let me explain with an analogy:
+
+English is my second language; and all of my English instructors
+so far, and I had "many" of them; mentored me one thing in common:
+"learn to Think in English;
+don't try to translate words, phrases, idioms and colocations
+from Turkish into English -- because you'll be misunderstood
+due to differences in cultural context and values."
+
+This learning experience is not so different in
+programming languages either:
+You have to write in the language you're working in.
+there are patterns coding styles that are really smart that you
+do in Java, might not be so smart in JavaScript.
+
+You just have to find the patterns and designs
+that make you the most productive. Learning the language design and its
+capabilities will allow you to create new workflows and patterns that
+you might end up liking!
+
+# Building Blocks
+
+And there are certain patterns that we see repeatedly, over and over
+again in large-scale fat-client, single-page JavaScript applications.
+I'd like to start by mentioning them first.
+
+Prototypal inheritance: actually it's not a pattern. It's how
+interitance works in JavaScript. There have been many attempts
+with varying success, to convert the prototypal inheritance model
+of JavaScript look like classical object oriented inheritance.
+
+And the fact that something looks like a duck, does not mean that
+it's a duck. Learn prototypal inheritance in depth, and you'll
+save a lot of trouble.
+
+Actually that's true for everything about JavaScript. Know
+your frameworks. Don't blindly use a $.then or a $.done
+function, know what it does in the background.
+Don't blindly use a selector, know how to optimize it.
+
+# ... more
+
+These patterns are also used in applications at a varying degree.
+But they are less frequent in the JavaScript domain than in other
+stricter strong-typed applications like Java, C++, or C#.
+
+And although I mentioned singleton as a pattern, it's not. Because
+it's hard-coded in the language already. When you
+define a namespace, you have a singleton. It's as simple as that.
+If you're doing anything more than that to create a singleton,
+then you're still thinking in the realm of another strong-typed
+Object oriented language; ""think in the language you write"".
+
+I might get opionated here, and these are my beliefs from experience.
+Your mileage may vary of course.
+
+Javascript was designed for prototypal inheritance. And adding sugar
+for classical inheritance can require additional overhead, it's
+often just not necessary.
+
+Don't get me wrong. There will be times that you'd want to
+use classical design patterns for good reasons. Just don't
+shoot yourself in the foot, by trying to be strictly
+object oriented.
+
+Don't try to isolate that private variable so that nobody can
+access it; Don't write getters and setters for every single
+member of your structure.
+Don't try to create an interface and force objects to
+implement every method of that interface.
+
+Don't think in objects. Think in messages.
+
+Besides, there are computations that are hands down faster
+when you don't represent everything as an object.
+
+Consider a game of chess for instance. Representing the board state
+in 64 bits and using binary computations to determine a series of
+moves cost much less memory, and much less CPU clock cycles than
+representing each chess piece, each square on the board, and the
+board itself as distinct objects.
+
+Bottom line is:
+Don't think in objects. Think in messages.
+Learn about monads, generators, partial functions, higher
+order functions and all that jazz. Then you'll gain a completely
+different vision; and then you'll enjoy the power
+of JavaScript more.
+
+One day everybody will be using JavaScript,
+so you'd better start enjoying the language.
+
+# Using Patterns Because You Can
+
+-
+
+# Using Patterns Without Knowing the Liabilities
+
+-
+
+# Think Simple
+
+-
+
+# Memory Leaks
+
+Memory profiling, and performance optimization is not one something
+that we enjoy to do. And there's a reason for that.
+
+"It's a pain in the ass."
+
+And yet memory management is quite important when writing
+single-page applications as they almost never get refreshed.
+This means that memory leaks can
+become apparent quite quickly.
+
+This especially is a huge trap on mobile
+single-page applications, because of limited memory, and on
+long-running applications like email clients or social
+networking applications.
+
+On the flip side, it's not as hard as it seems to prevent
+memory leaks from happening.
+
+The thing is, it's better to be defensive and never let
+the leaks happen than trying to find out the leaks after
+publishing your application.
+
+Because it's really painful to look at a
+heap snapshot and try to figure out why there's an increase in the
+number of arrays used, or why there are hundreds of detached DOM
+nodes out there.
+
+There are a bunch of things you need to pay attention to make sure
+that you don't have memory leaks in your JavaScript application,
+and we'll see them today, one by one.
+
+## Mark and Sweep
+
+This algorithm assumes the knowledge of a set of objects called roots (In
+JavaScript, the root is the global object). Periodically, the garbage-collector
+will start from these roots, find all objects that are referenced from these
+roots, then all objects referenced from these, etc. Starting from the roots,
+the garbage collector will thus find all reachable objects and collect all
+non-reachable objects.
+
+Cycles are not a problem anymore.
+
+<after sawtooth>
+
+# Older Browsers
+
+-
+
+# Structural Leaks
+
+<li>They Are the Most Common Leaks <!-- You Will Deal With (<em>Cuz
+Frameworks Handle the Rest, sometimes at an additional performance cost
+</em>)--></li>
+<!--They Are Mostly Because of Using Long-Lived "Manager"s
+That Store Stale Objects-->
+
+Are Leaker Candidates <!-- are good candidates to start with--><
+<!--li><strong>Unregister When You're Done</strong></li-->
+
+<li><strong>Closures</strong> and <strong>Modules</strong> Are
+<!--Nothing But--> Controlled Memory Leaks</li>
+
+// what allocates memory:
+// event binding does not magically happens.
+// the framework has to do the bookkeeping of objects.
+
+# Console Leaks
+
+-
+
+# Garbage Collector Friendly Code
+
+Again how to write a gc-friendly code highly depends on what you
+want to accomplish. If you're programming a game, you might want
+to create as little objects as possible, by using techniques like
+reusing the objects that go outside the canvas, using object pools
+and such.
+
+In other web applications you can be a little less agressive.
+
+To give the garbage collector a chance to collect as many objects as
+possible as early as possible, don’t hold on to objects you no longer
+need. This mostly happens automatically;
+here are a few things to keep in mind, to help it:
+
+- Avoid creating objects
+Of course, the easiest way to minimize garbage collection is to not
+create objects at all.
+You can also use object pooling and re-use objects.
+
+- use variables with an appropriate scope (i.e.
+instead of a global variable that’s
+nulled out, just use a function-local variable that goes out of scope when
+it’s no longer needed. This means cleaner code with less to worry about.
+And it's better than manual dereferencing with `delete` keyword.
+- Ensure that you’re unbinding event listeners where
+they are no longer required (we'll be seeing why this might be an issue later).
+
+- If you’re using a data cache locally, make sure to clean that cache or use
+an aging mechanism to avoid large chunks of data being stored.
+
+It's good practice to have a standard method that is responsible for
+making an object eligible for garbage collection. The primary purpose of a
+destruct function is to centralize the responsibility for cleaning up anything
+that the object has done that will:
+
+- Prevent its reference count from dropping to 0 (for example, removing
+problematic event listeners and callbacks and unregistering from any services).
+- Consume unnecessary CPU cycles, such as intervals or animations.
+- Cascade this to all the child objects that this object owns.
+
+The destruct method is often a necessary step toward cleaning up an object, but
+it is rarely sufficient. Other objects that retain a reference to the destructed
+object could, in theory, call methods on it after the instance has been removed.
+Because this situation can lead to very unpredictable results, it's critical
+that a destroy method be called only when the object really is about to go away;
+or to put a flag on the destructed object so that none of its' public method
+will function any more.
+
+Generally, destruct methods are best when there is one clear owner for an
+object responsible for its lifecycle. This situation occurs frequently
+in hierarchical systems, such as views and controllers in MVC frameworks.
+
+And construction is kinda mirror reflection of destruction.
+And it also needs special care. That's why most of the frameworks
+come with objects with predefined initialize methods where you
+can override them to do your own initialization logic.
+
+* There is No Magic
+
+Other than being aware of how events work in terms of references,
+just follow the standard rules for manage memory in JavaScript
+and you’ll be fine.
+
+If you are loading data in to a
+collection full of User objects you want that collection to be
+cleaned up so it’s not using anymore memory, you must remove all
+references to the collection and the individual objects in it.
+Once you remove all references, things will be cleaned up.
+This is just the standard JavaScript garbage collection rule.
+
+# Profiling JavaScript Applications
+
+1)
+Profiling is not only about JavaScript, it's more about like how
+JavaScript runtime interacting with the user agent.
+Initially focusing on speeding up JavaScript algorithms
+may prove itself to be useful; however
+DOM depth, dom node count, CSS complexity, frequency of
+repaint/reflow generating operations, and the impact of these
+reflows (whether a region of a page, or an entire page)
+prove much more speed gain than purely optimizing JavaScript.
+
+2)
+The situation is much more complicated. For starters, improving the
+performance of JavaScript has the potential to drastically improve
+the overall performance of a site. However the bottlenecks generally
+remain at the DOM, CSS, and rendering layers.
+
+Now what’s also interesting is that the analysis of
+JavaScript performance can, also, be affected by any of these layers.
+
+Parsing
+This is the process of reading, analyzing, and converting HTML,
+CSS, XML, etc.
+into their native object models. Improvements in speed can
+affect the load time
+of a page (with the initial creation of the page’s contents).
+
+Rendering – The final painting of the page (or any subsequent
+updates). This is the final bottleneck for the performance of
+interactive applications.
+
+Currently, the only browser to implement a memory management tool as a part
+of its developer tools is Google Chrome, which offers the Heap Profiler. I'll
+use the Heap Profiler in the demo to test and illustrate how the JavaScript
+runtime handles memory.
+
+I want to repeat myself:
+Optimized code tends to be crufty -- a lot of the
+generality gets removed from the code, more special cases gets
+hardcoded into the code; which makes the code likely to be buggy;
+which in turn makes it less "agile".
+
+optimization makes the code harder to modify, and harder to reuse
+for other purposes.
+
+:: DON'T OPTIMIZE UNTIL YOU KNOW YOU HAVE TO ::
+
+most of the code has a negligible impact on performance, so if you're
+optimizing the wrong parts, you're increasing the cost of maintenance
+without actually providing any benefit.
+
+Do not begin optimizing until you know specifically where the
+optimizations need to occur.
+
+# Demo
+
+# Folder Structure
+
+-
+
+# Configuring JSHint
+
+Why JSHint?
+
+It is way better than JSLint.
+It forces to use well-formed code, without falling into common traps and
+pitfalls.
+
+A well-known JavaScript Guru claims that JSHint is a "tool for the stupid
+people" Although I respect that person's credibility, after reading his quote,
+I feel like he has not learned to act like a grown-up, yet.
+
+* Why AMD?
+
+- It will help you see intra-modular dependencies, so it will
+be easier to see which modules are more tightly coupled than
+they need to be, and you can decouple them.
+
+One technique at the build-stage that is ideal for performance,
+is building minimal packages based on likely use. At page load, you’ll want
+to load, parse, and execute as little JavaScript as possible. Require.js
+allows you to “exclude” modules from your builds and create separate
+secondary modules. Rather than shaving bytes in your app files, you can avoid
+loading entire sections of code. Most sections of an app have predictable
+entry points that you can listen for before injecting more functionality.
+
+# Use the Publish-Subscribe System to Simplify Communication
+
+equiring as much code to maintain the coupling. There are lots of
+implementations of the publish-subscribe system available on the web that are
+thrift with memory that you can use.
+
+# Use event delegation
+
+Assigning event handlers to individual objects can add up quickly and is
+expensive if you create a lots of new elements dynamically to which event
+handlers need to be bound.
+
+This becomes especially interesting if you assign multiple event listeners
+(e.g. click and blur to a one element. In case of 100 elements that would mean
+200 event handlers.
+
+Using DOM Level 2 event model all events propagate toward the document object
+which is highest up in the hierarchy. This means that one can bind event
+listeners to document which invokes a controller and passes the event object
+to it. The controller is responsible for inspecting the internals of the
+event and dispatching to appropriate logic.
+
+Use One Event Listener Over Multiple Event Listeners
+
+With this, you only need to listen to one parent node for the onclick event and
+saved 99 other nodes from getting fat, at the cost of a negligible amount of
+execution time.
+
+Throttle event handlers which fire excessively
+
+If a handler is called many times, the responsiveness of the UI degrade and tops
+the CPU. This is especially an issue if the event handler triggers reflow as is
+the case with resize.
+
+# Use Simpler Templates Over View Object Creation
+
+If you are creating anything other than a few nodes, it takes less code to
+generate a DOM tree by assigning a string of HTML to the innerHTML property,
+than it does to create the nodes one by one with document.createElement().
+And, you don’t have to worry about your HTML content being confined within
+your JavaScript code, because you can hide it safely within your website.
+
+1. The browser must render the view. This takes time and effort, even if only a
+small amount
+
+2. The view will "blink" while the application empties the element and fills it
+in with new content
+
+3. Scrolling can be interrupted if the view is long and the user has scrolled
+down into it
+
+Keep it Simple; Re-Use as Much as You Can
+
+One big performance issue we found in HTML5 apps was that moving lots of DOM
+elements around makes everything sluggish – especially when they feature lots of
+gradients and drop shadows. Simplyfying your look and feel and moving a proxy
+element around when you drag and drop helps a lot.
+
+When you have for example a long list of elements (let’s say Tweets) don’t move
+them all but only keep the ones visible in the current screen and a few before
+and after live and hide or remove the others. Keeping the data in a JavaScript
+object instead of reading/writing to the DOM showed massive improvements.
+Think of the display as a presentation of your data rather than the data
+itself. That doesn’t mean you can not use straight HTML as the source. Just
+read it once and then scroll 10 elements changing the content of the first
+and last accordingly to your position in the results list instead of moving
+100 elements that aren’t visible. The same trick applies in games to sprites
+– if they aren’t in the current screen there is no need to poll them.
+Instead re-use elements that scroll off screen as new ones coming in.
+
+# Unit Testing Basics
+
+1. interactions are hard to simulate in an headless environment,
+2. views and templates change a lot (if you are testing how something should appear,
+you'll have to rewrite your tests soon,
+states and state relationships and state diagrams do not change that much.
+
+In principle, a unit test is a small piece of code that does 3 things:
+Assemble – sets up an environment similar to what the code would run in during
+production, but without being dependent on any other components in your code
+
+Act – executes the piece of code to be proven
+Assert – verifies that the outcome of the execution is what was expected given
+the circumstances
+
+One caveat though; If there is a bug caused by assumptions in the code,
+introduced by the same developer writing the unit test, then the bug
+won’t be found since the test will be written with the same assumptions.
+However typos will be found by running the tests, similar to as they would
+be found if the code was executed in a staging environment. So unit
+testing is a bit of a misleading name: it’s more unit-proving than
+unit-testing.
+
+* Assemble
+
+The important part of the assemble stage is that the environment mimics
+production but does not use any components/units not under the test. If you
+need to prove a method that modifies a value that comes from the database,
+simplify that to just modifying a value. You can mock the database component
+that would provide the value in production if your code is tightly coupled.
+
+With this approach, two things have been achieved:
+The test component does not rely on any other component
+The assembled environment in which we run the test is predictable; it will
+behave exactly the same every time we run the test
+
+* Act and Assert
+
+With a suitable environment in place, the test component can be executed.
+Given that the input is known, as well as what problem the code is supposed to
+solve and how it is solved, the outcome can easily be derived. And that is
+exactly what the assertion stage is for. This is the part that actually proves
+the code.
+
+The assertion is simply stating: “given known input x, processed by known
+function f, the output is f(x)”. The developer who wrote function f and the
+accompanying unit test wrote this function to solve the particular problem at
+hand. The test removes the need to know or even comprehend the problem, or why
+it was solved in a particular manner.
+
+The code’s functionality was accepted
+(and hopefully is continuously being accepted by acceptance tests), so as long
+as the unit test passes; the code is proven correct.
+
+This means that the code can now be refactored as much as needed with the unit
+test serving as proof that functionality remained unchanged. This counteracts
+the biggest cause of code rot as the code is now safe to be modified. It can’t
+be broken as long as it’s being covered by unit tests which pass.
+
+If a test fails, the developer is quickly notified and can adjust or revert
+the applied change, even before the code is executed in a staging environment.
+
+CAVEAT:
+Unit tests are not integration tests, acceptance tests, or any other form of
+implementation tests.
+Don’t forget to write integration/acceptance tests as well.
+
+Unit tests should only prove that the solution of the original developer is
+still being applied despite any changes to the code under test.
+
+There are many definitions for acceptance testing. I call acceptance testing as
+a term used in agile software development methodologies,
+particularly Extreme Programming, referring to the functional testing of
+a user story by the software development team during the implementation phase.
+
+A unit test proves a tiny piece of code in isolation, but it does not prove that
+the system works. This is covered by integration and acceptance tests; a test
+suite which is slow running, combining all components, and proves that the
+pieces work together as they should. A unit test is concise and fast, allowing
+it to be ran before and after every change without costing you much time.
+
+Integration tests, on the other hand are something you run at the end of a
+development cycle, during the QA phase.
+
+- Keep your unit tests simple and concise.
+
+Keep in mind that unit tests will be marked as failed when at least one
+assertion fails, so a general rule of thumb worth following is the fewer
+assertions in a test, the better.
+
+- Name your unit tests verbosely.
+
+The test method name will never be called manually, so there’s no need to use
+clever or concise naming conventions. Verbosity in the name serves as an extra
+form of documentation for what is being tested.
+
+- Only write unit tests for code you own.
+
+While unit testing frameworks give you so many tools that it becomes tempting
+to write tests for everything in sight, only code that you’ve written personally
+can be properly unit tested. Good code is a solution for a problem; it’s the
+result of thoroughly understanding the problem, an understanding of the
+possible solutions, and finally the actual implementation of a solution. If
+only the implementation is visible, the test would be written without the
+same assumptions and understanding of the original problem solver. The unit
+test is then very likely to miss specific design choices, making the test
+unreliable.
+
+# Complexity
+    define what these are in the slides.
+        cyclomatic      : 3, # of linearly independent code paths.
+        halstead        : 8, (total operations/distinct operands.)
+        maintainability : 100
+
+# Store local references to out-of-scope variables
+
+When a function is executed an execution context is created and an activation
+object containing all local variables is pushed to the front of the context's
+scope chain.
+
+Further in the chain, the slower the identifier resolution is, which means
+local variables are fastest. By storing local references to frequently used
+out-of-scope variables reading and writing to variables is significantly
+faster. This is visible especially with global variables and other deep
+searches for identifier resolution.
+
+Also in-scope variables (var myVar) are faster than object
+property access (this.myVar).
+
+# Avoid context binding if you can.
+
+context binding is one thing we should avoid for objects that will be created
+and destroyed a lot (singletons are okay, event handlers are okay,
+the rest is not okay generally speaking)
+(ref: http://jsperf.com/to-bind-or-not-to-bind-part-1 ) ----

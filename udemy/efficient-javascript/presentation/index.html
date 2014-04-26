@@ -1,0 +1,590 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1024" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>Efficient JavaScript</title>
+
+    <meta name="description" content="impress.js is a presentation tool based on the power of CSS3 transforms and transitions in modern browsers and inspired by the idea behind prezi.com." />
+    <meta name="author" content="Bartek Szopka" />
+
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:regular,semibold,italic,italicsemibold|PT+Sans:400,700,400italic,700italic|PT+Serif:400,700,400italic,700italic" rel="stylesheet" />
+
+    <link href="css/impress-demo.css" rel="stylesheet" />
+
+    <link rel="shortcut icon" href="favicon.png" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+</head>
+
+<body class="impress-not-supported">
+    <img src="" id="Beacon" style="left:-999999px;position:absolute" />
+
+<div class="fallback-message">
+</div>
+
+<div id="impress">
+    <div id="intro" class="step vslide"
+        data-x="0" data-y="0" data-z="0" data-scale="1"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="0"
+    >
+        <h2><span class="efficient">Efficient</span> <strong>JavaScript</strong></h2>
+        <div class="authorInfo">
+            <p><b>Volkan Özçelik</b></p>
+            <p style="font-size:0.6em;font-style:italic"><em>2013-03-30</em></p>
+            <p style="font-size:1em;font-style:normal;text-align:left"><i>read the source:</i><br><a href="https://github.com/v0lkan/efficient-javascript">https://github.com/v0lkan/efficient-javascript</a></p>
+        </div>
+    </div>
+
+    <div id="teaser" class="step vslide"
+        data-x="700" data-y="700" data-z="700" data-scale="1"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="60"
+    >
+        <p style="text-align:center"><img src="code-review.png"></p>
+    </div>
+
+    <div id="me" class="step vslide"
+        data-x="1600" data-y="1600" data-z="1600" data-scale="1"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="120"
+    >
+        <p>Who Am I?</p>
+        <ul>
+        <li><span class="date">2007</span> <b class="rotating">CTO</b> <b>cember.net</b>
+            <em>got acquired by Xing, yay!</em></li>
+        <li><span class="date">2008</span> <b class="rotating1">Project Director</b> <b>livego.com</b>
+            <em>gone to deadpool, R.I.P. :(</em></li>
+        <li><span class="date">2011</span> <b class="rotating2">VP of Technology</b> <b>grou.ps</b>
+            <em>still alive ;)</em></li>
+        <li><span class="date">2012</span> <b class="rotating3">Mobile Engineer</b> <b>Jive Software</b>
+            <em>that's what I do right now.</em></li>
+        <li><span class="date">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> <b class="rotating4">J4V45cR1p7 h4x0R</b> <b>o2js.com</b>
+            <em>that's my blog!</em></li>
+        </ul>
+
+    </div>
+
+    <div id="outline" class="step vslide"
+        data-x="2100" data-y="2100" data-z="2100" data-scale="1"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="180"
+    >
+        <p>Outline</p>
+        <ul>
+        <li><b>Overview</b>: Front-End Development <strong>Best Practices</strong></li>
+        <li>Useful <b>JavaScript</b> Patterns &amp; Practices</li>
+        <li>A <b>Re</b>Introduction to <b>JavaScript</b> <strong>Memory Leaks</strong></li>
+        <li><strong>Profiling</strong> <b>JavaScript</b> Applications</li>
+        <li><strong>Practice Time</strong>: Step by Step Optimizing a Sample Application</li>
+        <li>Q&amp;A</li>
+        </ul>
+    </div>
+
+    <div id="bpheader" class="step vslide"
+        data-x="4200" data-y="4200" data-z="4200" data-scale="4"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="240"
+
+        <p>Best Practices</p>
+    </div>
+
+    <div id="practices-part-0" class="step vslide"
+        data-x="6600" data-y="6600" data-z="6600" data-scale="4"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="300"
+
+        <p>Best Practices <em style="font-size:0.6em">(Micro)</em></p>
+        <ul class="slideu">
+        <li><strong>eval</strong> is <strong>evil</strong></li>
+        <li>Avoid <b>try/catch</b></li>
+        <li>Avoid <b>with</b></li>
+        <li>Avoid <b>$.each</b> and <b>for/in</b> loops</li>
+        <li>Use String Builders</li>
+        <li>Primitive operations are faster than function calls</li>
+        </ul>
+    </div>
+
+    <div id="practices-part-1" class="step vslide"
+        data-x="8800" data-y="8800" data-z="8800" data-scale="4"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="360"
+
+        <p>Best Practices <em style="font-size:0.6em">(Speed &amp; Memory)</em></p>
+        <ul class="slideu">
+        <li><strong>Minimize DOM Size and Depth</strong></li>
+        <li><strong>Minimize</strong> DOM <strong>Repaints</strong> and <strong>Reflows</strong> (<em>cache DOM calculations</em>)</li>
+        <li>Keep Your Markup Clean (<em>avoid inline &amp; embedded code</em>)</li>
+        <li><strong>Purge Anything that is not Visible</strong> (<em>from DOM <strong>AND</strong> from Memory</em>)</li>
+        <li>Async Load Third-Party Widgets</li>
+        <li>Smoothness/Speed Tradeoff</li>
+        </ul>
+    </div>
+
+    <div id="practices-part-2" class="step vslide"
+        data-x="11400" data-y="11400" data-z="11400" data-scale="4"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="420"
+
+        <p>Best Practices <em style="font-size:0.6em">(Perceived Speed)</em></p>
+        <ul class="slideu">
+        <li>Load Lazily; Execute Lazily</li>
+        <li>Do Not Wait for Server Feedback</li>
+        <li>Styles to the Top, Scripts to the Bottom</li>
+        </ul>
+    </div>
+
+    <div id="practices-part-3" class="step vslide"
+        data-x="13500" data-y="13500" data-z="13500" data-scale="4"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="480"
+
+        <p>Best Practices <em style="font-size:0.6em">(Transfer Speed)</em></p>
+        <ul class="slideu">
+        <li>Far Future Expires Header</li>
+        <li><strong>Minify</strong> Your Assets</li>
+        <li><strong>Combine</strong> Multiple Assets</li>
+        <li>CSS Sprites, Image Data URIs, Image Optimization</li>
+        <li><strong>Cache</strong> (<em>client-side and server-side</em>) &amp; Gzip</li>
+        </ul>
+    </div>
+
+    <div id="practices-part-4" class="step vslide"
+        data-x="15400" data-y="15400" data-z="15400" data-scale="4"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="540">
+
+        <p>Best Practices <em style="font-size:0.6em">(Macro)</em></p>
+        <ul class="slideu">
+        <li>Make JavaScript and CSS <strong>External</strong></li>
+        <li>Make AJAX Cacheable</li>
+        <li>Use a Strict <strong>REST Architecture</strong></li>
+        <li>Reduce Cookie Size</li>
+        <li>Use <strong>Cookie-Free Domains</strong> for Components</li>
+        <li>Make favicon.ico Small and Cacheable</li>
+        </ul>
+    </div>
+
+    <div id="practices-part-5" class="step vslide"
+        data-x="18200" data-y="18200" data-z="18200" data-scale="4"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="600">
+        <img src="jasmine.png" style="position:absolute;left:-220px;top:500px">
+        <img src="grunt.png" style="position:absolute;left:-200px;">
+        <img src="requirejs.png" style="position:absolute;left:-120px;top:-205px">
+        <img src="jshint.png" style="position:absolute;left:80px;top:-155px">
+        <img src="less.png" style="position:absolute;left:270px;top:-155px">
+        <img src="backbone.png" style="position:absolute;left:-170px;top:345px;width:400px">
+        <img src="handlebars.png" style="position:absolute;left:120px;top:450px;width:200px">
+        <img src="jquery.png" style="position:absolute;left:420px;top:450px;width:200px">
+        <img src="modernizr.png" style="position:absolute;left:320px;top:350px;width:200px">
+
+
+        <p>Best Practices <em style="font-size:0.6em">(Development)</em></p>
+        <ul class="slideu">
+        <li>Utilize Diagnostic Tools (<em>YSlow, Chrome Dev Tools</em>)</li>
+        <li><strong>Know Thy Frameworks</strong></li>
+        <li><strong>Live in TDD</strong> (<em>jasmine, jshint, istanbul</em>)</li>
+        <li><strong>One Click Publish</strong>, Automation, and CI<br>
+        (<em>git pre-commit hooks, grunt, jenkins</em>)</li>
+        </ul>
+    </div>
+
+    <div id="practices-part-5-1" class="step vslide"
+        data-x="18200" data-y="18200" data-z="18200" data-scale="0.01"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="600">
+
+        <p style="text-align:center">
+            <img src="read_the_source.jpg">
+        </p>
+    </div>
+
+
+    <div id="patterns-and-practices" class="step vslide"
+        data-x="21000" data-y="21000" data-z="21000" data-scale="8"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="660">
+        <p>Common Patterns &amp; Practices</p>
+    </div>
+
+    <div id="patterns-and-practices-1" class="step vslide"
+        data-x="30100" data-y="30100" data-z="30100" data-scale="8"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="720">
+        <p>Patterns &amp; Practices (<em>Building Blocks</em>)</p>
+        <ul class="slideu">
+        <li><strong>Prototypal</strong> Inheritance</li>
+        <li>Model-View-Whatever (<em>MVC, MVP, MVVM&hellip;</em>)</li>
+        <li><strong>Module</strong> ♥ / AMD</li>
+        <li>Continuation Passing Style</li>
+        <li>Mixin / Decorator / Dependency Injection</li>
+        <li>Façade / <strong>PubSub</strong> ♥ / Mediator</li>
+        <li>Flow Control / Deferreds / <strong>Promises</strong> ♥</li>
+        </ul>
+    </div>
+
+    <div id="patterns-and-practices-2" class="step vslide"
+        data-x="35700" data-y="35700" data-z="35700" data-scale="8"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="780">
+        <p>Patterns &amp; Practices (<em>More</em>)</p>
+        <ul class="slideu">
+        <li>Chaining</li>
+        <li>Factory</li>
+        <li>Composite</li>
+        <li>Strategy</li>
+        <li>Command / Chain of Responsibility</li>
+        <li>Bridge</li>
+        <li>Flyweight</li>
+        <li>Iterator</li>
+        <li>Null Object</li>
+        <li>Singleton</li>
+        <li>and the list goes on&hellip;</li>
+        </ul>
+    </div>
+
+    <div id="patterns-and-practices-3" class="step vslide"
+        data-x="41300" data-y="41300" data-z="41300" data-scale="8"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="840">
+        <p style="text-align:center;">Using Patterns&hellip; Because You Can</p>
+
+        <p style="text-align:center"><img src="patterns-001.jpg"></p>
+
+    </div>
+
+    <div id="patterns-and-practices-4" class="step vslide"
+        data-x="46900" data-y="46900" data-z="46900" data-scale="8"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="900">
+        <p style="text-align:center;">Using Patterns&hellip;<br> Without Knowing the Liabilities</p>
+
+        <p style="text-align:center"><img src="patterns-002.jpg" style="width:50%"></p>
+    </div>
+
+    <div id="think-simple" class="step vslide"
+        data-x="53200" data-y="53200" data-z="53200" data-scale="8"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="960">
+
+        <p>Think Simple</p>
+
+        <ul class="slideu">
+        <li>E = MC<sup style="position:relative;top:-10px">2</sup></li>
+        <li>Simplicity is the Ultimate Sophistication</li>
+        <li>When in doubt, <strong>KISS</strong>.</li>
+        </ul>
+    </div>
+
+    <div id="memory-leaks" class="step vslide"
+        data-x="64400" data-y="64400" data-z="64400" data-scale="12"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="1020">
+
+        <p>JavaScript <strong>Memory Leaks</strong></p>
+    </div>
+
+    <div id="memory-leaks-overview" class="step vslide"
+        data-x="75600" data-y="75600" data-z="75600" data-scale="12"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="1080">
+
+        <p>Memory Leaks (<em>OverView</em>)</p>
+
+        <ul class="slideu">
+        <li>How JavaScript <strong>Garbage Collector</strong> Works</li>
+        <li>Memory Leaks in Older Browsers (<em>read: <strong>Internet Explorer</strong></em>)</li>
+        <li>Memory Leaks Related to <strong>Timers</strong></li>
+        <li>Memory Leaks Related to Debug <strong>Console</strong></li>
+        <li>Size Does Matter</li>
+        <li>Structural Leaks</li>
+        </ul>
+    </div>
+
+    <div id="garbage-collector" class="step vslide"
+        data-x="83800" data-y="83800" data-z="83800" data-scale="12"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="1140">
+        <p>Garbage Collection <em style="font-size:0.2em;color:#cc0000">*</em></p>
+
+        <img src="sawtooth.png" style="width:100%">
+    </div>
+
+
+    <div id="sweep-001" class="step vslide"
+        data-x="92000" data-y="92000" data-z="92000" data-scale="12"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="1200">
+        <p style="text-align:center"><img src="objects-001.png"></p>
+    </div>
+
+    <div id="sweep-002" class="step vslide"
+        data-x="100200" data-y="100200" data-z="100200" data-scale="12"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="1260">
+        <p style="text-align:center"><img src="objects-002.png"></p>
+    </div>
+
+    <div id="sweep-003" class="step vslide"
+        data-x="108400" data-y="108400" data-z="108400" data-scale="12"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="1320">
+        <p style="text-align:center"><img src="objects-003.png"></p>
+    </div>
+
+    <div id="older-leak-1" class="step vslide"
+        data-x="116800" data-y="116800" data-z="116800" data-scale="12"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="1380">
+        <p>Older Browsers &ndash; <em style="font-size:0.7em">Event Handler Leak (IE &lt; 8)</em></p>
+
+        <p style="text-align:center"><img src="bind-leak.png"></p>
+    </div>
+
+    <div id="older-leak-2" class="step vslide"
+        data-x="123800" data-y="123800" data-z="123800" data-scale="12"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="1440">
+        <p>Older Browsers &ndash; <em style="font-size:0.7em">XHR Leak (IE &lt; 9)</em> <em style="font-size:0.2em;color:#cc0000">*</em></p>
+
+        <p style="text-align:center"><img src="ajax-leak.png"></p>
+    </div>
+
+    <div id="leaks-structural" class="step vslide"
+        data-x="132200" data-y="132200" data-z="132200" data-scale="12"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="1500">
+        <p>Structural Leaks <em style="font-size:0.2em;color:#cc0000">*</em></p>
+
+        <ul class="slideu">
+        <li>These Are <strong>NOT</strong> Because of the Browser Bugs</li>
+        <li>They Are the Most Common Leaks <!-- You Will Deal Withbr>(<em>Cuz Frameworks Handle the Rest</em>)--></li>
+        <!--They Are Mostly Because of Using Long-Lived "Manager"s That Store Stale Objects-->
+
+        <li><strong>Handlers</strong>, <strong>Registries</strong>, <strong>Controllers</strong>, <strong>Managers</strong>, <strong>Mediators</strong>, <strong>Observables</strong> Are Leaker Candidates <!-- are good candidates to start with--></li>
+        <!--li><strong>Unregister When You're Done</strong></li-->
+        <li>Leaks are in the Nature of Event-Based Architectures</li>
+        <li><strong>Closures</strong> and <strong>Modules</strong> Are <!--Nothing But--> Controlled Memory Leaks</li>
+        </ul>
+
+        <p style="text-align:center;font-size:0.6em">&nbsp;</p>
+        <p style="text-align:center;font-size:0.6em"><strong>Good kids clean their mess!</strong></p>
+    </div>
+    <!--
+        // what allocates memory:
+        // event binding does not magically happens.
+        // the framework has to do the bookkeeping of objects.
+    -->
+
+    <div id="leaks-structural_jquery" class="step vslide"
+        data-x="139900" data-y="139900" data-z="139900" data-scale="12"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="1560">
+        <p>Structural Leaks (<em>jQuery</em>)<em style="font-size:0.2em;color:#cc0000">*</em></p>
+
+        <p style="font-size:0.5em">&nbsp;</p>
+<pre>
+    //(1)
+    elem[jQuery.expando] = ++jQuery.uuid;
+
+    //(2)
+    jQuery.cache[elem[jQuery.expando]]['property'] = 'value';
+</pre>
+
+<hr>
+        <p style="font-size:0.5em">✓  DOM never references jQuery objects directly.</p>
+        <p style="font-size:0.5em">∴ Removing <strong>jQuery</strong> elements using native methods <strong>can leak</strong>.</p>
+    </div>
+
+    <div id="leaks-console" class="step vslide"
+        data-x="146200" data-y="146200" data-z="146200" data-scale="12"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="1620">
+        <p>Beware of the Console Leaks <em style="font-size:0.2em;color:#cc0000">*</em></p>
+    </div>
+
+    <div id="leaks-timer" class="step vslide"
+        data-x="153200" data-y="153200" data-z="153200" data-scale="12"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="1680">
+        <p>Garbage-Collector-Friendly Code <em style="font-size:0.2em;color:#cc0000">*</em></p>
+
+        <ul class="slideu">
+        <li>Use Variables With a Proper Scope</li>
+        <li>Unbind Events</li>
+        <li>Clear Timers</li>
+        <li>Invalidate Cache
+        </ul>
+    </div>
+
+    <div id="profiling" class="step vslide"
+        data-x="164400" data-y="164400" data-z="164400" data-scale="16"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="1740">
+        <p>Profiling JavaScript Applications</p>
+
+        <p><img src="profiler.png"></p>
+    </div>
+
+    <div id="profiling-2" class="step vslide"
+        data-x="164400" data-y="164400" data-z="164400" data-scale="16"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="1820">
+        <p>Profiling JavaScript Applications</p>
+
+        <p style="text-align:center"><img src="performance-mix.png"></p>
+    </div>
+
+
+
+    <div id="demo" class="step vslide"
+        data-x="181200" data-y="181200" data-z="181200" data-scale="20"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="1800">
+        <p>Demo</p>
+    </div>
+
+    <div id="demo-agenda" class="step vslide"
+        data-x="198000" data-y="198000" data-z="198000" data-scale="20"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="1860">
+
+        <p>Agenda</p>
+
+        <ul class="slideu">
+        <li>Creating a Logical Folder Structure</li>
+        <li>Configuring the Builder, Linter, and Tests<br>(<em>grunt, jshint, jasmine, istanbul</em>)</li>
+        <li>Profiling the Application &amp; Fixing Leaks</li>
+        <li>Localizing the Application</li>
+        <li>Decoupling Modules Using Custom Events (<em>PubSubHub</em>)</li>
+        <li>Adding a Mediator (<strong>PubSub</strong> and <strong>Hub</strong>)
+        <li>Implementing DOM <strong>Event Delegation</strong></li>
+        <li>Improving <strong>Render Performance</strong></li>
+        <li><strong>Code Coverage</strong> Analysis</li>
+        <li>You Need Testing</li>
+        </ul>
+    </div>
+
+    <div id="demo-folders" class="step vslide"
+        data-x="214800" data-y="214800" data-z="214800" data-scale="20"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="1920">
+            <p>Folder Structure <em style="font-size:0.2em;color:#cc0000">*</em></p>
+
+            <p style="text-align:center;">
+                <img src="initial.png" style="vertical-align:middle;"> ⇨
+                <img src="finale.png" style="vertical-align:middle;">
+            </p>
+    </div>
+
+    <div id="demo-grunt" class="step vslide"
+        data-x="231600" data-y="231600" data-z="231600" data-scale="20"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="1980">
+            <p>Configuring Grunt <em style="font-size:0.2em;color:#cc0000">*</em></p>
+
+            <p style="text-align:center"><img src="grunt-initial.png"></p>
+    </div>
+
+    <div id="demo-jshint" class="step vslide"
+        data-x="248400" data-y="248400" data-z="248400" data-scale="20"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="2040">
+            <p>Configuring JS Hint</p>
+
+            <p style="text-align:center"><img src="jshint.png"></p>
+    </div>
+
+    <div id="demo-jasminex" class="step vslide"
+        data-x="265200" data-y="265200" data-z="265200" data-scale="20"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="2100">
+            <p>Configuring Jasmine</p>
+
+            <p style="text-align:center"><img src="jasmine.png"></p>
+    </div>
+
+    <div id="demo-coveragex" class="step vslide"
+        data-x="282000" data-y="282000" data-z="282000" data-scale="20"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="2160">
+            <p>Configuring Istanbul</p>
+
+            <p style="text-align:center"><img src="coverage-001.png" style="width:400px"></p>
+    </div>
+
+    <div id="demo-profilingx" class="step vslide"
+        data-x="298800" data-y="298800" data-z="298800" data-scale="20"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="2220">
+            <p>Profiling</p>
+
+            <p style="text-align:center">
+            <img style="position:xabsolute;top:-180px;left:-100px" src="performance-004.png">
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <img style="position:xabsolute;top:330px;left:320px" src="performance-008.png">
+            </p>
+    </div>
+
+    <div id="demo-leaks" class="step vslide"
+        data-x="315600" data-y="315600" data-z="315600" data-scale="20"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="2280">
+            <p>Fixing Memory Leaks</p>
+
+            <p style="text-align:center"><img src="performance-fixed.png"></p>
+    </div>
+
+    <div id="demo-i18n" class="step vslide"
+        data-x="332400" data-y="332400" data-z="332400" data-scale="20"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="2340">
+            <p>Localization</p>
+    </div>
+
+    <div id="demo-pubsub" class="step vslide"
+        data-x="349200" data-y="349200" data-z="349200" data-scale="20"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="2400">
+            <p>PubSubHub</p>
+
+            <p style="text-align:center"><img src="pubsub.png"></p>
+    </div>
+
+    <div id="demo-hub" class="step vslide"
+        data-x="366000" data-y="366000" data-z="366000" data-scale="20"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="2460">
+            <p>Adding a <em>Mediator</em></p>
+
+            <p style="font-size:0.8em;text-align:center;">&nbsp;</p>
+            <p style="font-size:0.8em;text-align:center;"><strong>PubSub</strong></p>
+            <p style="font-size:0.8em;text-align:center;">+</p>
+            <p style="font-size:0.8em;text-align:center;"><strong>Hub</strong></p>
+    </div>
+
+    <div id="demo-delegate" class="step vslide"
+        data-x="382800" data-y="382800" data-z="382800" data-scale="20"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="2520">
+            <p>DOM Event Delegation</p>
+
+            <p style="text-align:center"><img src="delegation.png"></p>
+    </div>
+
+
+    <div id="demo-render" class="step vslide"
+        data-x="404400" data-y="404400" data-z="404400" data-scale="20"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="2580">
+            <p>Improving Render Performance</p>
+
+            <p style="text-align:center"><img src="template_vs_object.png"></p>
+    </div>
+
+    <div id="" class="step vslide"
+        data-x="416000" data-y="416000" data-z="416000" data-scale="20"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="2640">
+            <p>Code Coverage Analysis</p>
+            <p style="text-align:center"><img src="coverage-003.png" style="width:400px;margin:20px;pxosition:absolute;left:-100px;top:-400px"></p>
+    </div>
+
+    <div id="" class="step vslide"
+        data-x="427600" data-y="427600" data-z="427600" data-scale="20"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="2700">
+            <p>Unit Testing</p>
+
+            <p style="font-size:0.5em">&nbsp;</p>
+            <p style="font-size:0.6em">Test <strong>State</strong> (<em><b>NOT</b> User Interface, <b>NOT</b> Interactions</em>)</p>
+            <p style="font-size:0.5em">&nbsp;</p>
+            <p style="font-size:0.6em;text-align:center;"><strong>Assemble</strong> <br><strong>Act</strong> <br><strong>Assert</strong></p>
+    </div>
+
+<!-- focus on testing states, not interactions
+http://googletesting.blogspot.co.uk/2013/03/testing-on-toilet-testing-state-vs.html
+-->
+
+    <div id="demo-publish" class="step vslide"
+        data-x="469500" data-y="469500" data-z="469500" data-scale="20"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="2820">
+        <p>Deployment</p>
+
+        <p style="text-align:center"><img src="publish-001.png"></p>
+
+    </div>
+
+
+    <div id="thanks" class="step vslide"
+        data-x="469500" data-y="469500" data-z="469500" data-scale="1"
+        data-rotate-x="0" data-rotate-y="0" data-rotate-z="2940">
+<center>
+        <p><b>Thank You</b></p>
+
+        <p> ¯\_(ツ)_/¯ </p>
+
+        <p><strong>Questions?</strong></p>
+</center>
+    </div>
+
+
+
+<script src="js/impress.js"></script>
+<script>impress().init();</script>
+</body>
+
