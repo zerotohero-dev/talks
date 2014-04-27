@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+    <style>
+        #Test {
+        }
+
+        #Test a {
+        }
+    </style>
+</head>
+<body>
+    <div id="Test"><h1><a href="http://html5devconf.com">#html5devconf</a></h1></div>
+    <script>
+        function benchmark() {
+            var test = document.getElementById('Test');
+
+            // Hide the element
+            test.style.display = "none";
+
+            // To flush all the style changes:
+            var flush = document.body.offsetTop;
+
+            var time1 = window.performance.now();
+
+            // Reapply style.
+            test.style.display = "";
+
+            // Flush all the style changes again.
+            flush = document.body.offsetTop;
+
+            var time2 = window.performance.now();
+
+            return time2 - time1;
+        }
+
+        var counter = 0, data = [];
+
+        var id = setInterval(function() {
+            data.push(benchmark());
+
+            if ( counter > 20) {
+                clearInterval(id);
+
+                console.log(
+                    data.reduce(function(a,b) {return a + b;}) / data.length
+                );
+            }
+
+            counter++;
+        }, 100);
+    </script>
+</body>
+</html>
