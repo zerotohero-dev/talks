@@ -50,4 +50,3 @@ BELOW IS DRAFT
 
 
 # In code
-http.globalAgents.maxSockets (default is Infinity)

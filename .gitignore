@@ -1,4 +1,4 @@
 .idea
 node_modules
-*.js.map
-*.js
+fluentconf/**/opt/**/*.js.map
+fluentconf/**/opt/**/*.js
