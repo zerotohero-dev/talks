@@ -30,6 +30,10 @@ That said. for an actual production setup, it would make more sense to conduct a
 
 ## **Step 001**: Benchmarking a Simple Restify App
 
+TODO: before that, commit the current state of the containers to their corresponding images.
+TODO: repeat the test: limit bastion to 2 cores, and use a separate core for the service.
+TODO: make sure that you are not running anything else on your system while you're running your benchmarks.
+
 Here's what I ran:
 
 ```bash
@@ -41,10 +45,10 @@ And here are the results:
 ```bash
 Results:
     Concurrency    Throughput      Latency
-        1          1201.15         0.833
+        1          1201.15         0.833          967
         2          1904.75         1.050
         3          1998.10         1.501
-        4          2129.52         1.878
+        4          2129.52         1.878          1662
         5          2077.49         2.407
         6          2032.66         2.952
         7          2188.85         3.198
@@ -59,7 +63,7 @@ Results:
        52          2166.44        24.003
       102          2183.61        46.712
       202          2218.48        91.053
-      402          2182.78       184.169
+      402          2182.78       184.169       1890
       802          2144.95       373.901
      1602          2129.14       752.418
      2602          2078.87      1251.643
