@@ -2,4 +2,4 @@
 
 DIR="$( cd "$( dirname "../${BASH_SOURCE[0]}" )" && pwd )"
 
-docker run -i -t -v "${DIR}/containers/bastion/opt/fluent":/opt/fluent fluent:bastion /bin/bash
+docker run --privileged -i -t -v "${DIR}/containers/bastion/opt/fluent":/opt/fluent fluent:bastion /bin/bash

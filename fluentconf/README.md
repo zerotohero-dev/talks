@@ -63,3 +63,21 @@ root@container:/#
 # Increasing the range a bit won't hurt though:
 sysctl -w net.ipv4.ip_local_port_range="10000 65000"
 ```
+
+### Additional Notes
+
+// TODO: add sample configurations for actual production use.
+
+### Show Me The Results
+
+[The **Worklog**](WORKLOG.MD) contains a log of setups that I've created with progressively increasing complexity, and benchmark tests related to them.
+
+### Show Me The Deck
+
+// TODO: link to slide deck.
+
+### License
+
+MIT
+
+// TODO: link to the license file.

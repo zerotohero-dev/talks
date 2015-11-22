@@ -1,3 +1,8 @@
+## Docker Link
+
+ docker run -d -name webserver1 -link mongodb:mongo docker-network-demo/webserver:latest
+
+
 ## Some Tools
 
 https://flood.io
@@ -42,3 +47,22 @@ function, where all the necessary checks would be performed.
 > http.globalAgents.maxSockets (default is Infinity)
 
 This used to be limitation in older versions of the node. It looks like it's defaulted to `Infinity` right now, which is good.
+
+##
+
+function checkDelay() {
+    var ts=Date.now();
+    setImmediate(function()
+    {
+      var delay=Date.now()-ts;
+
+      // log if not logged in the last second.
+      console.log(delay);
+
+      checkDelay();
+    });
+}
+
+##
+
+But docker0 is no ordinary interface. It is a virtual Ethernet bridge that automatically forwards packets between any other network interfaces that are attached to it. This lets containers communicate both with the host machine and with each other.
