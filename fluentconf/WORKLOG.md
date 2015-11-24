@@ -40,45 +40,39 @@ Here's what I ran:
 ab -n 100000 -c "${CONCURRENCY}" http://${HOST}:8080/hello
 ```
 
+// TODO: repeat the tests with wifi turned off. + disconnected from other
+monitors + on battery power.
+
 And here are the results:
 
 ```bash
 Results:
-    Concurrency    Throughput      Latency
-        1          1201.15         0.833          967
-        2          1904.75         1.050
-        3          1998.10         1.501
-        4          2129.52         1.878          1662
-        5          2077.49         2.407
-        6          2032.66         2.952
-        7          2188.85         3.198
-        8          2150.26         3.720
-        9          2122.07         4.241
-       10          2176.24         4.595
-       11          2152.25         5.111
-       12          2134.06         5.623
-       13          2153.59         6.036
-       14          2166.22         6.463
-       15          2145.68         6.991
-       52          2166.44        24.003
-      102          2183.61        46.712
-      202          2218.48        91.053
-      402          2182.78       184.169       1890
-      802          2144.95       373.901
-     1602          2129.14       752.418
-     2602          2078.87      1251.643
-     4602          2046.52      1912.302
-     8602          1977.86      4349.153
-    10602          1890.20      5608.919
-    12000          1895.76      6329.908
-    15000          1760.36      8520.974
-    17000           951.01     17875.695
+    Concurrency    Throughput       Latency
+        1           1835.83           0.545
+        2           3360.43           0.595
+        4           3565.52           1.122
+        8           3719.80           2.151
+       10           3737.10           2.676
+       40           3932.26          10.172
+      100           3778.13          26.468
+      200           3763.73          53.139
+      400           3754.15         106.549
+      800           3638.04         219.898
+     1000           3617.27         276.452
+     2000           3637.83         549.779
+     4000           3487.68        1146.895
+     8000           2849.90        3508.900
+    10000           2672.45        3741.887
+    16000           2690.55        5946.746
+    20000           2078.49        9622.386
 ```
 
 And here are some charts for visual people:
 
+// TODO: insert images.
+
 // TODO: Discuss findings
-Understanding your api's response time requires an understanding of the relationship between concurrency, throughput, and latency. Your service does not possess infinite throughput potential: It achieves its maximum throughput at a certain concurrency level. Beyond this point (*a.k.a., the throughput saturation point*) throughput remains constant in **well-architected** applications. — The response time, however, begins to increase.
+Understanding your api's response time requires an understanding of the relationship between concurrency, throughput, and latency. Your service does not possess infinite throughput potential: It achieves its maximum throughput at a certain concurrency level (*or **user load**, depending on how you look at it*). Beyond this point (*a.k.a., the throughput saturation point*) throughput remains constant in **well-architected** applications. — The response time, however, begins to increase.
 
 At higher concurrency levels, even a slight decrease in throughput will cause a super-linear increase in latency.
 
@@ -87,5 +81,9 @@ At higher concurrency levels, even a slight decrease in throughput will cause a 
 // TODO: explain what's happenning.
 
 ## **Step 002**: Benchmarking a Plain Node.JS HTTP Server
+
+I'll take a level of concurrency that I know that I've saturated throughput
+and do two other measurements, one for a plain Node.js HTTP server, and one for
+a plain node.js socket app.
 
 // TODO: implement. make sure you do the benchmark on a reliable network.

@@ -2,6 +2,8 @@ Source code for my FluenConf talk.
 
 I'll update this README.
 
+// TODO: create a init script for the containers to run when they initially boot (adjust somaxconn and other limits)
+
 ## Environment Setup
 
 ### Host Machine
@@ -25,8 +27,16 @@ The containers have `128` maximum socket connections by default. This is not eno
 
 ```bash
 root@container:/#
-sysctl -w net.core.somaxconn=4096
+# The default is 128.
+# You typically pick something around 1024-2048 for this for production.
+# We are choosing a little higher, to produce smoother results.
+sysctl -w net.core.somaxconn=32768
 ```
+
+ab -r -n 40000 -c 4000 http://172.17.0.3:8080/hello
+
+note: for some reason after testing the app on port 8080 extensively, port 8081 did not work; I suspect something ephemeral (pun intended); when I waited for
+a while and retried, everything was normal; which suggest for a healthier test it makes sense to rebooot servers or use two different instances.
 
 Also verify that you have proper limits.
 
@@ -61,7 +71,7 @@ You may also want to modify the local ephemeral port ranges on the containers:
 root@container:/#
 # The default is "32768 61000" and it's "suficcent" for our purposes.
 # Increasing the range a bit won't hurt though:
-sysctl -w net.ipv4.ip_local_port_range="10000 65000"
+sysctl -w net.ipv4.ip_local_port_range="1024 65000"
 ```
 
 ### Additional Notes
