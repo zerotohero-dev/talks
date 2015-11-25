@@ -1,4 +1,9 @@
-
+/*
+ * This program is distributed under the terms of the MIT license:
+ * <https://github.com/v0lkan/talks/blob/master/LICENSE.md>
+ * Send your comments and suggestions to <me@volkan.io>.
+ */
+ 
 var user = {
     id: 1,
     name: 'Volkan Özçelik',
@@ -18,6 +23,3 @@ var items = [1,2,3,4];
 
 // warning: A holey array is slower.
 items[1] = undefined;
-
-
-

@@ -1,19 +1,25 @@
+/*
+ * This program is distributed under the terms of the MIT license:
+ * <https://github.com/v0lkan/talks/blob/master/LICENSE.md>
+ * Send your comments and suggestions to <me@volkan.io>.
+ */
+
 function Container(title, root) {
     this.title = title;
     this.el    = root;
 }
 
-window.container = new Container('Hello World', 
+window.container = new Container('Hello World',
     document.getElementById('MasterContainer'));                 // ( {OBJ-1} )
 
-document.body.innerHTML = ''; 
+document.body.innerHTML = '';
 
 console.log( window.container.el );                              // <DOMNode>
-console.log( window.container.el.parentNode );                   // null      
+console.log( window.container.el.parentNode );                   // null
 
 // window.container -> {OBJ-1} -> el -> <DOMNode(detached)>      // ( {NODE-1} )
 
-window.container = new Container('Hello Stars', 
+window.container = new Container('Hello Stars',
     document.getElementById('MasterContainer'));                 // ( {OBJ-2} )
 
 // window.container -> {OBJ-2}

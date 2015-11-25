@@ -1,3 +1,9 @@
+/*
+ * This program is distributed under the terms of the MIT license:
+ * <https://github.com/v0lkan/talks/blob/master/LICENSE.md>
+ * Send your comments and suggestions to <me@volkan.io>.
+ */
+
 define([], function() {
 var cache = [
 {'id':'todo-001','startDate':'2013-03-30','title':'Create an initial project with 200 TODO items.', 'description':'todo-001'},

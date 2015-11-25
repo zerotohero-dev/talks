@@ -1,4 +1,3 @@
 .idea
 node_modules
-fluentconf/**/opt/**/*.js.map
-fluentconf/**/opt/**/*.js
+fluentconf/containers/common/**/*.dat

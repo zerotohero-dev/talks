@@ -1,3 +1,9 @@
+/*
+ * This program is distributed under the terms of the MIT license:
+ * <https://github.com/v0lkan/talks/blob/master/LICENSE.md>
+ * Send your comments and suggestions to <me@volkan.io>.
+ */
+
 // ------------------- Hot Objects ---------------------------------------------
 
 var packed_array = {'a':0, 'b':1, 'c':2, 'd':3, 'e':4, 'f':5, 'g':6, 'h':7,

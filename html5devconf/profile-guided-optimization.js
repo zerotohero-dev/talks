@@ -1,3 +1,9 @@
+/*
+ * This program is distributed under the terms of the MIT license:
+ * <https://github.com/v0lkan/talks/blob/master/LICENSE.md>
+ * Send your comments and suggestions to <me@volkan.io>.
+ */
+ 
 function isDigit(ch) {
     return (ch !== ' ') && '0123456789'.indexOf(ch) >= 0;
 }
@@ -25,5 +31,3 @@ function isFullOptimized(node) {
         node.hasAttribute('data-active') &&
         node.querySelectorAll('li.actionable').length > MAX_ITEMS;
 }
-
-

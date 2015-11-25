@@ -1,4 +1,10 @@
 /*
+ * This program is distributed under the terms of the MIT license:
+ * <https://github.com/v0lkan/talks/blob/master/LICENSE.md>
+ * Send your comments and suggestions to <me@volkan.io>.
+ */
+
+/*
     Below will leak in IE version < 8
     (IE8+ with compatibility mode set to lower IE versions will leak too)
  */

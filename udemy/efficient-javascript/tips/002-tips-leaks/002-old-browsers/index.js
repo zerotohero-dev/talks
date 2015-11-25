@@ -1,10 +1,16 @@
+/*
+ * This program is distributed under the terms of the MIT license:
+ * <https://github.com/v0lkan/talks/blob/master/LICENSE.md>
+ * Send your comments and suggestions to <me@volkan.io>.
+ */
+
 function bindEvents() {
     var el = document.getElementById('SomeNode');
     el.onclick = function() {};
 }
 
 bindEvents();
-      
+
 document.getElementById('SomeNode').parentNode.removeChild(
     document.getElementById('SomeNode')
 );
@@ -14,7 +20,7 @@ document.getElementById('SomeNode').parentNode.removeChild(
 function bindEventsNoLeak1() {
     var el = document.getElementById('SomeNode');
 
-    el.onclick = function() {        
+    el.onclick = function() {
     };
 
     el = null;
@@ -22,8 +28,8 @@ function bindEventsNoLeak1() {
 
 function bindEventsNoLeak2() {
     // Look ma, no reference to `el`!
-    
-    document.getElementById('SomeNode').onclick = function() {        
+
+    document.getElementById('SomeNode').onclick = function() {
     };
 }
 
@@ -35,7 +41,7 @@ function XHRLeak() { // IE < 9
     ajax.open('GET', '/service/endpoint', true);
 
     ajax.onreadystatechange = function() {
-        if(ajax.readyState == 4 && ajax.status == 200) {            
+        if(ajax.readyState == 4 && ajax.status == 200) {
             doMagic(ajax.responseText);
 
             // ajax.onreadystatechange = function(){};
@@ -95,4 +101,3 @@ function closureLeakParentCleanup() {
     el.onclick = function () {};
     el.parentNode.innerHTML = '';
 }
-

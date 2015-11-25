@@ -1,3 +1,8 @@
+/*
+ * This program is distributed under the terms of the MIT license:
+ * <https://github.com/v0lkan/talks/blob/master/LICENSE.md>
+ * Send your comments and suggestions to <me@volkan.io>.
+ */
 
 Object.create(proto, attrs);
 
@@ -32,5 +37,3 @@ var s2 = s.substr(0, 3); // s2 is a new string
 var a = ["ouais ouais", "nan nan"];
 var a2 = ["generation", "nan nan"];
 var a3 = a.concat(a2); // new array with 4 elements being the concatenation of a and a2 elements
-
-

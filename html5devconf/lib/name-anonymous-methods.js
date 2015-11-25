@@ -1,3 +1,8 @@
+/*
+ * This program is distributed under the terms of the MIT license:
+ * <https://github.com/v0lkan/talks/blob/master/LICENSE.md>
+ * Send your comments and suggestions to <me@volkan.io>.
+ */
 
 function createLargeClosure() {
     var largeStr = new Array(1000000).join('x');
@@ -23,4 +28,3 @@ function createLargeClosureNamed() {
 
     return bigBird;
 }
-

@@ -1,6 +1,12 @@
+/*
+ * This program is distributed under the terms of the MIT license:
+ * <https://github.com/v0lkan/talks/blob/master/LICENSE.md>
+ * Send your comments and suggestions to <me@volkan.io>.
+ */
+
 var Leaker = function(){};
 Leaker.prototype = {
-    init:function(){}    
+    init:function(){}
 };
 
 var cache = null;
@@ -36,7 +42,7 @@ var Hub = {
         }
 
         this.privates.observers[id][message].push({
-            observer : observer, 
+            observer : observer,
             delegate : delegate
         });
     },
@@ -67,7 +73,7 @@ subjects.mainModel = new Model();
 
 function bind() {
     Hub.bind(
-        observers.mainView, subjects.mainModel, "data:changed", 
+        observers.mainView, subjects.mainModel, "data:changed",
         function(sender, args) {
             console.log("Hello");
         }
@@ -75,7 +81,7 @@ function bind() {
 }
 
 function trigger() {
-    Hub.trigger(subjects.mainModel, "data:changed");    
+    Hub.trigger(subjects.mainModel, "data:changed");
 }
 
 function unbind() {
@@ -93,42 +99,3 @@ unbind();
 
 // event binding does not magically happens.
 // the framework has to do the bookkeeping of objects.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

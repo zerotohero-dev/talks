@@ -8,13 +8,27 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "tags", "tokenization", "semantics", "analysis", "keywords",
-    "AI", "demo", "performance", "speed", "load testing", "benchmarking",
-    "scalability", "networking", "virtualization", "docker"
+    "tags",
+    "tokenization",
+    "semantics",
+    "analysis",
+    "keywords",
+    "AI",
+    "demo",
+    "performance",
+    "speed",
+    "load testing",
+    "benchmarking",
+    "scalability",
+    "networking",
+    "virtualization",
+    "docker"
   ],
   "author": "Volkan Özçelik",
   "license": "MIT",
   "dependencies": {
+    "babel": "6.1.18",
+    "babel-register": "6.2.0",
     "restify": "4.0.3"
   },
   "devDependencies": {

@@ -1,3 +1,9 @@
+/*
+ * This program is distributed under the terms of the MIT license:
+ * <https://github.com/v0lkan/talks/blob/master/LICENSE.md>
+ * Send your comments and suggestions to <me@volkan.io>.
+ */
+
 function kickAss() {}
 
 function Banana(state, apples, oranges) {
@@ -25,6 +31,3 @@ evaluateThings("hello", "world");
 
 // This is a polymorphic call; avoid it.
 evaluateThings(42, 64);
-
-
-

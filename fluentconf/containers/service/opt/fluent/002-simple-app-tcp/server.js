@@ -1,13 +1,16 @@
 'use strict'
 
-import {
-    createServer
-}
-from 'net';
+/*
+ * This program is distributed under the terms of the MIT license:
+ * <https://github.com/v0lkan/talks/blob/master/LICENSE.md>
+ * Send your comments and suggestions to <me@volkan.io>.
+ */
+
+import { createServer } from 'net';
 
 const PORT = 8082;
 
-let listening = () => console.log( `Listening to '${server.name}' at '${server.url}'.` );
+let listening = () => console.log(  `Simple TCP API is ready at port '$PORT'.` );
 
 let server = createServer( ( socket ) => {
     let handleData = ( data ) => socket.end( 'Hello World!' );
