@@ -10,15 +10,17 @@ import { createServer } from 'net';
 
 const PORT = 8082;
 
-let listening = () => console.log(  `Simple TCP API is ready at port '$PORT'.` );
+let listening = () => console.log(  `Simple TCP API is ready at port '${PORT}'.` );
 
-let server = createServer( ( socket ) => {
+let handleError = ( error ) => void error;
+let handleEnd = () => {};
+
+let serve = ( socket ) => {
     let handleData = ( data ) => socket.end( 'Hello World!' );
-
-    let handleError = ( error ) => void error;
-    let handleEnd = () => {};
 
     socket.on( 'data', handleData );
     socket.on( 'error', handleError );
     socket.on( 'end', handleEnd );
-} ).listen( PORT, listening );
+};
+
+createServer( serve ).listen( PORT, listening );

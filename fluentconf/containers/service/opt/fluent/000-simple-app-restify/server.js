@@ -16,7 +16,7 @@ let respond = ( req, res, next ) => {
     next();
 };
 
-let listening = () => console.log( `Simple restify API is ready at port '$PORT'.` );
+let listening = () => console.log( `Simple restify API is ready at port '${PORT}'.` );
 
 let server = createServer();
 

@@ -1,3 +1,50 @@
+// TODO: process this file and add parts of it to README.md etc.
+
+## Tips
+
+Build an architecture where concerns are separated amongst different classes of servers, where each class is independently scalable. This is particularly important to keep your web servers responsive and not block the event loop on each one.
+Allow your long-running processes to leave breadcrumbs as they run so that progress can be inspected and processing can be resumed by any other worker should a failure occur.
+Wrap all asynchronous code with a solid promise library. Additionally, wrap calls to the promisified functions with retry logic where applicable.
+Explore good, reusable patterns and then reuse them as much as possible.
+
+## MicroServices and All That Jazz
+
+* Configuration Management (CM) — Chef/Puppet/Salt
+* Service Discovery — Consul
+* Use Proxies (don't let microservices talk to each other directly) — NGINX
+* Clustering and Scaling
+* Self Healing Systems
+
+Package your microservices into containers with Docker or, once it’s production ready, rkt.
+Don’t provision environments manually. Employ CM tools like Ansible to do that for you.
+Don’t configure applications manually nor with CM tools. Use service discovery with combinations like Consul, Registrator and Consul Template or etcd, Registrator and confd.
+Use proxy services like nginx or HAProxy as the (almost) only way to make requests (be it from outside or from one of your services to another).
+Avoid downtime produced by deployments by employing blue-green procedure.
+Treat all your servers as one big entity. Use tools like Kubernetes, Mesosphere DCOS and Docker Swarm to deploy services.
+Don’t spend your career watching dashboard of some monitoring tool. Set up a self-healing system that will re-initiate deployments when things go wrong or some threshold is reached.
+
+
+
+## More Tips
+
+* Sync code? Run away like hell!
+* Don't use Node.JS for static assets
+* Go sessionless (even if you use a remote session store, each request will incur an overhead of a remote call to gather its session data; whenever possible aoviding sessions will give better performance)
+* Keep your code, small, light, and modular.
+
+## 1 Million Connections?
+
+It’s not about concurrency, it’s about throughput and latency!
+
+Tests like this http://blog.caustik.com/category/node-js/ just open sockets and do nothing else; that's not practical. — A real-life application is much complex than that, and you'll hit a lot of different bottlenecks before you barely touch the 1.4GB heap limit that's mentioned in the article. — Consider yourself lucky if you can reach 10K concurrent connections per virtual machine. — In reality your concurrency level will set between 5K to 50K even for the most meticulously-optimized service. — And even if you do reach a certain limit (like the heap max) before, horizontal scaling would be a much better strategy than putting all your eggs in a single basket.
+
+## Debugging
+
+Instrument everything. Count connections, callbacks and every kind of object that might create a memory leak if it does not get cleaned up. If you have one registered callback for every connection, instrument the count for both so you can see if there’s some disparity.
+Once you have instrumented everything, graph the data. Looking at graphs lets you see how the data changes over time and helps you notice irregularities. The graphs also tell you what kind of problems you’re facing. Does the metric for X grow in a linear fashion or does it follow the changes in some other metric?
+Throw your debugger out of the window. Alternatively, you could structure your code so that a heap dump shows meaningful information about retained memory content – things like named functions and certain types of objects. But in our experience, compiled code and functions tend to be the most visible content. So either carefully design your architecture to give really neat heap dumps, or rely more on your instrumentation.
+Simulate real world usage with a script and see how your app behaves. Notice any disparities in counters that should measure the same thing, like a disparity between the number of callbacks and active clients if those should match.
+
 ## Docker Link
 
  docker run -d -name webserver1 -link mongodb:mongo docker-network-demo/webserver:latest
