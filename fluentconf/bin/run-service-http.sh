@@ -7,7 +7,9 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 docker run --privileged --cpuset-cpus="2" -i -t \
--v "${DIR}/../containers/service/opt/fluent":/opt/fluent \
+-h service-http \
+-v "${DIR}/../containers/common/opt/shared":/opt/shared \
 -v "${DIR}/../containers/common/data":/data \
--p 8081:8081 \
+-v "${DIR}/../containers/001-simple-app-http/opt/fluent":/opt/fluent \
+-p 8001:8001 \
 fluent:service-http /bin/bash

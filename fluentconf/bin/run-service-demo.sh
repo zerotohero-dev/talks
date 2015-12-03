@@ -6,9 +6,10 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-docker run --privileged -i -t --cpuset-cpus="0" \
--h bastion \
+docker run --privileged --cpuset-cpus="1" -i -t \
+-h service-demo \
 -v "${DIR}/../containers/common/opt/shared":/opt/shared \
 -v "${DIR}/../containers/common/data":/data \
--v "${DIR}/../containers/bastion/opt/fluent":/opt/fluent \
-fluent:bastion /bin/bash
+-v "${DIR}/../containers/003-the-real-deal/opt/fluent":/opt/fluent \
+-p 8003:8003 \
+fluent:service-demo /bin/bash

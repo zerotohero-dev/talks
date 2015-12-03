@@ -7,7 +7,9 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 docker run --privileged --cpuset-cpus="1" -i -t \
--v "${DIR}/../containers/service/opt/fluent":/opt/fluent \
+-h service-restify \
+-v "${DIR}/../containers/common/opt/shared":/opt/shared \
 -v "${DIR}/../containers/common/data":/data \
--p 8080:8080 \
+-v "${DIR}/../containers/000-simple-app-restify/opt/fluent":/opt/fluent \
+-p 8000:8000 \
 fluent:service-restify /bin/bash

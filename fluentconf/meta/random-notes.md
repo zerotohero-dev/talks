@@ -1,5 +1,41 @@
 // TODO: process this file and add parts of it to README.md etc.
 
+/*
+
+endpoint 1:
+    * Get a URL
+    * extract meaningful text-only content
+    * create a set of tags out of that text content
+    * store the url/tag mapping in the memory.
+    * (the results will be computed every time, and will **not** be
+    cached for the sake of the demo.)
+
+endpoint 2:
+    * Given a URL
+    * Query the memory
+    * Get computed tags associated to the url.
+*/
+
+
+## Managing containers
+
+To automatically configure containers, I'm executing a run script at `/etc/bash.bashrc`. That's not the ideal way of doing it. To manage clusters of containers a tool like fleet (link), or kubernetes (link) should be used instead.
+
+## Fix your repo versions
+
+Some people may frown at this, and for production use do not use ~ or ^ versions in your package.json — Use fixed versions as in…
+
+    "babel": "6.1.18",
+    "babel-preset-es2015": "6.1.18",
+    "babel-register": "6.2.0",
+    "bluebird": "3.0.6",
+    "body-parser": "1.14.1",
+    "express": "4.13.3",
+    "graphql": "0.4.14"
+
+also for production use a private npm server (give examples -- also install one maybe)
+
+
 ## Tips
 
 Build an architecture where concerns are separated amongst different classes of servers, where each class is independently scalable. This is particularly important to keep your web servers responsive and not block the event loop on each one.
