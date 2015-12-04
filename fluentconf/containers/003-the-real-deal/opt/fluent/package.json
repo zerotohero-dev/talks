@@ -1,6 +1,6 @@
 {
   "name": "synjalab-demo-app",
-  "private": "true",
+  "private": true,
   "version": "0.1.0",
   "description": "Scaling Your NodeJS API Like A Boss — O’Reilly Fluent Conf 2016 Talk (Source Code)",
   "main": "index.js",
@@ -33,6 +33,9 @@
     "bluebird": "3.0.6",
     "body-parser": "1.14.1",
     "express": "4.13.3",
-    "graphql": "0.4.14"
+    "graphql": "0.4.14",
+    "pos": "^0.3.0",
+    "request": "2.67.0",
+    "unfluff": "0.11.0"
   }
 }

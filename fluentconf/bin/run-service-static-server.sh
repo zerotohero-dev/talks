@@ -7,9 +7,11 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 docker run -i -t \
--h static-server \
--v "${DIR}/../containers/service/opt/fluent":/opt/fluent \
--v "${DIR}/../containers/service/var/www":/var/www \
+-h service-static-server \
+-v "${DIR}/../containers/common/opt/shared":/opt/shared \
 -v "${DIR}/../containers/common/data":/data \
--p 8088:8088 \
-fluent:static-server /bin/bash
+-v "${DIR}/../containers/static-server/opt/fluent":/opt/fluent \
+-v "${DIR}/../containers/static-server/etc/nginx/sites-enabled":/etc/nginx/sites-enabled \
+-v "${DIR}/../containers/static-server/var/www":/var/www \
+-p 8080:8080 \
+fluent:service-static-server /bin/bash
