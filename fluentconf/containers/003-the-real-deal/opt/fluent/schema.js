@@ -24,26 +24,27 @@ let stopwords = [
     'alone', 'along', 'already', 'also', 'although', 'always', 'am', 'among',
     'amongst', 'an', 'and', 'announce', 'another', 'any', 'anybody', 'anyhow',
     'anymore', 'anyone', 'anything', 'anyway', 'anyways', 'anywhere',
-    'apparently', 'approximately', 'are', 'aren', 'are\'n', 'arent', 'aren\'t',
+    'apparently', 'approximately', 'are', 'aren', 'are’n', 'arent', 'aren’t',
     'arise', 'around', 'as', 'aside', 'ask', 'asking', 'at', 'auth',
     'available', 'away', 'awfully',
 
     'b',
     'back', 'be', 'became', 'because', 'become', 'becomes', 'becoming', 'been',
     'before', 'beforehand', 'begin', 'beginning', 'beginnings', 'begins',
-    'behind', 'being', 'believe', 'below', 'beside', 'besides', 'between', 'beyond', 'biol', 'both', 'brief', 'briefly', 'but', 'by',
+    'behind', 'being', 'believe', 'below', 'beside', 'besides', 'between', 'beyond',
+    'biol', 'both', 'brief', 'briefly', 'but', 'by',
 
     'c',
-    'ca', 'came', 'can', 'cannot', 'can\'t', 'cause', '\'cause', 'causes',
+    'ca', 'came', 'can', 'cannot', 'can’t', 'cause', '’cause', 'causes',
     'certain', 'certainly', 'co', 'com', 'come', 'comes', 'contain',
-    'containing', 'contains', 'could', 'couldnt', 'couldn\'t',
+    'containing', 'contains', 'could', 'couldnt', 'couldn’t',
 
     'd',
-    '\'d', 'date', 'did', 'didn\'t', 'different', 'do', 'does', 'doesn\'t',
-    'doing', 'done', 'don\'t', 'down', 'downwards', 'due', 'during',
+    '’d', 'date', 'did', 'didn’t', 'different', 'do', 'does', 'doesn’t',
+    'doing', 'done', 'don’t', 'down', 'downwards', 'due', 'during',
 
     'e',
-    'each', 'ed', '\'ed', 'e\'d', 'edu', 'effect', 'eg', 'eight', 'eighty',
+    'each', 'ed', '’ed', 'e’d', 'edu', 'effect', 'eg', 'eight', 'eighty',
     'either', 'else', 'elsewhere', 'end', 'ending', 'enough', 'especially',
     'et', 'et-al', 'etc', 'etcetera', 'et-cetera', 'even', 'ever', 'every',
     'everybody', 'everyone', 'everything', 'everywhere', 'ex', 'except',
@@ -58,17 +59,17 @@ let stopwords = [
     'go', 'goes', 'gone', 'got', 'gotten',
 
     'h',
-    'had', 'happens', 'hardly', 'has', 'hasn\'t', 'have', 'haven\'t', 'having',
-    'he', 'hed', 'he\'d', 'hence', 'her', 'here', 'hereafter', 'hereby',
-    'herein', 'heres', 'hereupon', 'hers', 'her\'s', 'herself', 'hes',
-    'he\'s', 'hi', 'hid', 'him', 'himself', 'his', 'hither', 'home', 'how',
+    'had', 'happens', 'hardly', 'has', 'hasn’t', 'have', 'haven’t', 'having',
+    'he', 'hed', 'he’d', 'hence', 'her', 'here', 'hereafter', 'hereby',
+    'herein', 'heres', 'hereupon', 'hers', 'her’s', 'herself', 'hes',
+    'he’s', 'hi', 'hid', 'him', 'himself', 'his', 'hither', 'home', 'how',
     'howbeit', 'however', 'hundred',
 
     'i',
-    'id', 'i\'', 'i\'d', 'ie', 'if', 'i\'ll', 'im', 'i\'m', 'immediate',
+    'id', 'i’', 'i’d', 'ie', 'if', 'i’ll', 'im', 'i’m', 'immediate',
     'immediately', 'importance', 'important', 'in', 'inc', 'indeed', 'index',
-    'information', 'instead', 'into', 'invention', 'inward', 'is', 'isn\'t',
-    'it', 'it\'', 'itd', 'it\'d', 'it\'ll', 'its', 'it\'s', 'itself', 'i\'ve',
+    'information', 'instead', 'into', 'invention', 'inward', 'is', 'isn’t',
+    'it', 'it’', 'itd', 'it’d', 'it’ll', 'its', 'it’s', 'itself', 'i’ve',
 
     'j',
     'just',
@@ -78,7 +79,7 @@ let stopwords = [
 
     'l',
     'largely', 'last', 'lately', 'later', 'latter', 'latterly', 'least',
-    'less', 'lest', 'let', 'lets', 'let\'s', 'like', 'liked', 'likely', 'line',
+    'less', 'lest', 'let', 'lets', 'let’s', 'like', 'liked', 'likely', 'line',
     'little', '\'ll', 'look', 'looking', 'looks', 'ltd',
 
     'm',
@@ -97,11 +98,11 @@ let stopwords = [
     'o',
     'obtain', 'obtained', 'obviously', 'of', 'off', 'often', 'oh', 'ok', 'okay',
     'old', 'omitted', 'on', 'once', 'one', 'ones', 'only', 'onto', 'or', 'ord',
-    'other', 'others', 'otherwise', 'ought', 'our', 'ours', 'our\'s',
+    'other', 'others', 'otherwise', 'ought', 'our', 'ours', 'our’s',
     'ourselves', 'out', 'outside', 'over', 'overall', 'owing', 'own',
 
     'p',
-    'page', 'pages', 'page\'s', 'part', 'particular', 'particularly', 'past',
+    'page', 'pages', 'page’s', 'part', 'particular', 'particularly', 'past',
     'per', 'perhaps', 'placed', 'please', 'plus', 'poorly', 'possible',
     'possibly', 'potentially', 'pp', 'predominantly', 'present', 'previously',
     'primarily', 'probably', 'promptly', 'proud', 'provides', 'put',
@@ -110,16 +111,16 @@ let stopwords = [
     'que', 'quickly', 'quite', 'qv',
 
     'r',
-    'ran', 'rather', 'rd', 're', '\'re', 'readily', 'really', 'recent',
+    'ran', 'rather', 'rd', 're', '’re', 'readily', 'really', 'recent',
     'recently', 'ref', 'refs', 'regarding', 'regardless', 'regards', 'related',
     'relatively', 'research', 'respectively', 'resulted', 'resulting',
     'results', 'right', 'run',
 
     's',
     'said', 'same', 'saw', 'say', 'saying', 'says', 'sec', 'section', 'see',
-    'seeing', 'seem', 'seemed', 'seem\'d', 'seeming', 'seems', 'seen', 'self',
-    'selves', 'sent', 'seven', 'several', 'shall', 'shant', 'shan\'t', 'she',
-    'shed', 'she\'d', 'she\'ll', 'shes', 'she\'s', 'should', 'shouldn\'t',
+    'seeing', 'seem', 'seemed', 'seem’d', 'seeming', 'seems', 'seen', 'self',
+    'selves', 'sent', 'seven', 'several', 'shall', 'shant', 'shan’t', 'she',
+    'shed', 'she’d', 'she’ll', 'shes', 'she’s', 'should', 'shouldn’t',
     'show', 'showed', 'shown', 'showns', 'shows', 'significant',
     'significantly', 'similar', 'similarly', 'since', 'six', 'slightly', 'so',
     'some', 'somebody', 'somehow', 'someone', 'somethan', 'something',
@@ -130,15 +131,15 @@ let stopwords = [
 
     't',
     'take', 'taken', 'taking', 'tell', 'tends', 'th', 'than', 'thank', 'thanks',
-    'thanx', 'that', 'that\'ll', 'thats', 'that\'s', 'that\'ve', 'the', 'their',
+    'thanx', 'that', 'that’ll', 'thats', 'that’s', 'that’ve', 'the', 'their',
     'theirs', 'them', 'themselves', 'then', 'thence', 'there', 'thereafter',
-    'thereby', 'thered', 'there\'d', 'therefore', 'therein', 'there\'ll',
-    'thereof', 'therere', 'theres', 'there\'s', 'thereto', 'thereupon',
-    'there\'ve', 'these', 'they', 'theyd', 'they\'d', 'they\'ll', 'theyre',
-    'they\'re', 'they\'ve', 'think', 'this', 'those', 'thou', 'though',
+    'thereby', 'thered', 'there’d', 'therefore', 'therein', 'there’ll',
+    'thereof', 'therere', 'theres', 'there’s', 'thereto', 'thereupon',
+    'there’ve', 'these', 'they', 'theyd', 'they’d', 'they’ll', 'theyre',
+    'they’re', 'they’ve', 'think', 'this', 'those', 'thou', 'though',
     'thoughh', 'thousand', 'throug', 'through', 'throughout', 'thru', 'thus',
     'til', 'tip', 'to', 'together', 'too', 'took', 'toward', 'towards', 'tried',
-    'tries', 'truly', 'try', 'trying', 'ts', '\'ts', 'twice', 'two',
+    'tries', 'truly', 'try', 'trying', 'ts', '’ts', 'twice', 'two',
 
     'u',
     'un', 'under', 'unfortunately', 'unless', 'unlike', 'unlikely', 'until',
@@ -146,25 +147,25 @@ let stopwords = [
     'usefulness', 'uses', 'using', 'usually',
 
     'v',
-    'value', 'various', '\'ve', 'very', 'via', 'viz', 'vol', 'vols', 'vs',
+    'value', 'various', '’ve', 'very', 'via', 'viz', 'vol', 'vols', 'vs',
 
     'w',
-    'want', 'wants', 'was', 'wasnt', 'wasn\'t', 'way', 'we', 'we\'d', 'wed',
-    'welcome', 'we\'ll', 'went', 'were', 'werent', 'weren\'n', 'weren\'t',
-    'we\'ve', 'what', 'whatever', 'what\'ll', 'whats', 'what\'s', 'when',
+    'want', 'wants', 'was', 'wasnt', 'wasn’t', 'way', 'we', 'we’d', 'wed',
+    'welcome', 'we’ll', 'went', 'were', 'werent', 'weren’n', 'weren’t',
+    'we’ve', 'what', 'whatever', 'what’ll', 'whats', 'what’s', 'when',
     'whence', 'whenever', 'where', 'whereafter', 'whereas', 'whereby',
-    'wherein', 'wheres', 'where\'s', 'whereupon', 'wherever', 'whether',
-    'which', 'while', 'whim', 'whither', 'who', 'who\'ve', 'who\'d', 'whod',
-    'whoever', 'whole', 'who\'ll', 'whom', 'whomever', 'whos', 'who\'s',
+    'wherein', 'wheres', 'where’s', 'whereupon', 'wherever', 'whether',
+    'which', 'while', 'whim', 'whither', 'who', 'who’ve', 'who’d', 'whod',
+    'whoever', 'whole', 'who’ll', 'whom', 'whomever', 'whos', 'who’s',
     'whose', 'why', 'widely', 'will', 'willing', 'wish', 'with', 'within',
-    'without', 'wont', 'won\'t', 'words', 'world', 'would', 'wouldnt',
-    'wouldn\'t', 'www',
+    'without', 'wont', 'won’t', 'words', 'world', 'would', 'wouldnt',
+    'wouldn’t', 'www', 'we’re',
 
     'x',
 
     'y',
-    'yes', 'yet', 'you', 'you\'d', 'youd', 'you\'ll', 'your', 'youre',
-    'you\'re', 'yours', 'yourself', 'yourselves', 'you\'ve',
+    'yes', 'yet', 'you', 'you’d', 'youd', 'you’ll', 'your', 'youre',
+    'you’re', 'yours', 'yourself', 'yourselves', 'you’ve',
 
     'z',
     'zero',
@@ -173,29 +174,93 @@ let stopwords = [
     'eight', 'nine', 'ten',
 
     '.', ',', ':', ';', '!', '#', '*',
-    '...', '…', '?',
-    '-', '–', '—', '_', '~',
+    '...', '…', '?', '%', '&', '@',
+    // -—– uni-directional
+    '-', '–', '—', '_', '~', '—',
     '"', "'", '`', '“', '”', '‘', '’',
     '(', ')', '[', ']', '{', '}', '/', '\\',
 
     '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
     '10', '20', '30', '40', '50', '60', '70', '80', '90', '100',
 
-    'list', 'function', 'object', 'data', 'method', 'value', 'program',
+    'function', 'value', 'program',
+    'today', 'tomorrow',
     'day', 'date', 'month', 'year', 'time', 'application', 'll',
+    'doesn', 'didn', 'don', 'isn',
     'thing', 'util', 'utility', 'type', 'element', 'var', 'man', 've',
     'return', 'language', 'code', 'change', 'master', 'feature', 'output',
-    'lot', 'rate', 'state'
+    'lot', 'rate', 'state', 'stuff',
+
+    'people’s', 'there’s', 'that’s', 'who’s', 'here’s',
+
+    'word', 'phrase',
+
+    'hour', 'minute', 'second', 'nanosecond', 'year', 'month', 'day',
+    'hours', 'minutes', 'seconds', 'nanoseconds', 'years', 'months', 'days',
+
+    'click', 'tap', 'person',
+
+    'desk', 'chair', 'guy', 'yada', 'lack',
+
+    'example', 'sample', 'app', 'script', 'clas', 'class',
+    'mode', 'store', 'inline',
+
+    'input', 'field', 'couple', 'lots',
+
+    'error', 'errors', 'foremost',
+
+    'div', 'span', 'ul', 'ol', 'li',
+
+    'exist', 'terms', 'offer', 'today’s',
+
+    'site', 'files', 'file', 'people', 'kb', 'mb', 'gb', 'loads', 'thing', 'things',
+
+    'win', 'fwiw', 'fyi', 'stfw', 'rtfm', 'imo', 'imho',
+
+    'get', 'post', 'put', 'head',
+
+    'point', 'user', 'uni', 'fib', 'str', 'req', 'res', 'asdf', 'int', 'def',
+    'lib', 'stdlib', 'stdio',
+
+    'job', 'jobs',
+
+    'world’s',
+
+    // poor man’s > should be counted as an adjactive instead.
+    'man’s'
 ];
 
-/*
-Before doing this run all the APIs and add additional stop words.
-Also add mappers to tags that are incorrectly singularized.
+//stopwords = [];
 
-Take tags from the unfluff meta;
-then take 3 multi-word tags with >3 occurrences
-then take top 3 single word tags.
-sort them alphabetically.
+/*
+TODO: make this service publicly available.
+
+before adding a word:
+    if a word ends with anything non-character like ’ remove that. (or a number or a diferent type of quote)
+    // Process possessive suffixes `s and `es
+
+// postprocessing
+for {word, singlularword}
+    if singularword != word and there's count singularword then add that count to word
+    delete singularword
+
+
+// Tagging:
+    // Take ALL tags from the unfluff meta;
+    // iterate all the words, any word that's a part of the title gets picked no matter what.
+    // then take 3 multi-word tags with >2 occurrences
+        take one singularize
+        take one more etc.
+        ( if there are missing fill with multi tags with >1 occurences)
+    // then take top 3 single word tags.
+        take One
+        singularize
+        take the next,
+        if singular matches skip
+    // take any >= 3 word tags (for fun)
+    // all tags should be put in a Set and sorted alphabetically
+    // This will give the tags list,
+    // and the links query will be a reverse lookup for that.
 
  */
 
@@ -205,14 +270,16 @@ let singularize = ( word ) => inflector.singularize( word );
 let add = ( url, buffer ) => {
     if ( buffer.length === 0 ) { return; }
 
-    cache[ url ] = cache[ url ] || { words: {}, counts: [] };
+    // cache[ url ] = cache[ url ] || { words: {}, counts: [] };
 
     let urlCache = cache[ url ];
 
     let words = urlCache.words;
     let counts = urlCache.counts;
 
-    let word = singularize( buffer.join( ' ' ).toLowerCase() );
+    // let word = singularize( buffer.join( ' ' ).toLowerCase() );
+
+    let word = buffer.join( ' ' ).toLowerCase();
 
     words[ word ] = words[ word ] || 0;
 
@@ -222,9 +289,18 @@ let add = ( url, buffer ) => {
 
     counts[ count ] = counts[ count ] || [];
 
-    if ( counts[ count ].indexOf( word ) === -1 ) {
-        counts[ count ].push( word );
+    try {
+        if ( counts[ count ].indexOf( word ) === -1 ) {
+            counts[ count ].push( word );
+        }
+    } catch( e ) {
+        console.log( counts[ count ] );
+        console.log( typeof counts[ count ] );
+
+        throw e;
     }
+
+
 };
 
 let getTags = ( url ) => {
@@ -233,20 +309,7 @@ let getTags = ( url ) => {
 	request.get( url, ( error, response, body ) => {
         let start = (new Date()).getTime();
 
-        // store[ url ] = {};
 
-        // TODO:
-        // 1. remove punctuation from words
-        // 2. delete empty array entries.
-        // 3. remove stopwords
-        // 4. also count adjective+word pairs
-        // * also normalize words and phrases while counting (singular and lowercase)
-        // 5. list top N tags that exceed count threshold M
-        // cleanup <script> and CDATA from sample docs
-        // discard numbers as tags.
-        // bug: "thi" is matched as a noun.
-        //
-        // selext max 3 single words plux max 3 phrases give phrases higher prio. a phrase shall repat at least (word count + 1 ) times to count.
 
 		let data = unfluff( body );
 
@@ -254,21 +317,13 @@ let getTags = ( url ) => {
         // console.log( '-------' );
 
 		let corpus = (
-            data.title + ' \n---\n ' +
-            data.description + ' \n---\n ' +
+            data.title + ' \n\n ' +
+            data.description + ' \n\n ' +
             data.text
-        ).replace( /[~'‘’“”…`&><+-=\[\]{}\(\)\\/…]/g, ' ' );
-
-        // Prioritize the tags that unfluff finds.
-        // keywords, tags
-
-
-        // console.log( '----------------------' );
-        // console.log( corpus );
-        // console.log( '----------------------' );
-
-
-//        return;
+        )
+        .replace( /[`“”]/g, ' ' )
+        .replace(/[\[\]><=&@]/g, ' ')
+        .replace (/…/g, ':' );
 
 		let words = new Lexer().lex( corpus );
 
@@ -284,10 +339,13 @@ let getTags = ( url ) => {
 
         let buffer = [];
 
+        // reset cache
+        cache[ url ] = { words: {}, counts: [] };
+
         // TODO: extract this part as a public npm module.
         for ( let i in taggedWords ) {
 		    let taggedWord = taggedWords[ i ];
-		    let word = taggedWord[ 0 ];
+		    let word = taggedWord[ 0 ].trim();
             let tag = taggedWord[ 1 ];
             let isAdjective = tag.indexOf('JJ') === 0;
             let isNoun = tag.indexOf('NN') === 0;
@@ -295,7 +353,7 @@ let getTags = ( url ) => {
 
             // TODO: clearly describe what this algorithm does.
 
-            if ( /[^A-Z]/.test( word[ 0 ] ) && stopwords.indexOf( singularize( word.toLowerCase() ) ) === -1 ) {
+            if ( /[^A-Z]/.test( word[ 0 ] ) && stopwords.indexOf( word.toLowerCase() ) === -1 ) {
                 if ( !isAdjective && !isNoun ) {
                     buffer.length = 0;
                 } else {
