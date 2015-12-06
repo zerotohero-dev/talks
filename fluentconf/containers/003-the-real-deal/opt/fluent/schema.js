@@ -17,33 +17,187 @@ let cache = {};
 
 // TODO: make this a public npm module
 let stopwords = [
-    "a", "about", "above", "after", "again", "against", "all", "am", "an",
-    "and", "any", "are", "aren't", "as", "at", "be", "because", "been",
-    "before", "being", "below", "between", "both", "but", "by", "can't",
-    "cannot", "could", "couldn't", "did", "didn't", "do", "does", "doesn't",
-    "doing", "don't", "down", "during", "each", "few", "for", "from", "further",
-    "had", "hadn't", "has", "hasn't", "have", "haven't", "having", "he", "he'd",
-    "he'll", "he's", "her", "here", "here's", "hers", "herself", "him",
-    "himself", "his", "how", "how's", "i", "i'd", "i'll", "i'm", "i've", "if",
-    "in", "into", "is", "isn't", "it", "it's", "its", "itself", "let's", "me",
-    "more", "most", "mustn't", "my", "myself", "no", "nor", "not", "of", "off",
-    "on", "once", "only", "or", "other", "ought", "our", "ours", "ourselves",
-    "out", "over", "own", "same", "shan't", "she", "she'd", "she'll", "she's",
-    "should", "shouldn't", "so", "some", "such", "than", "that", "that's",
-    "the", "their", "theirs", "them", "themselves", "then", "there", "there's",
-    "these", "they", "they'd", "they'll", "they're", "they've", "this", "those",
-    "through", "to", "too", "under", "until", "up", "very", "was", "wasn't",
-    "we", "we'd", "we'll", "we're", "we've", "were", "weren't", "what",
-    "what's", "when", "when's", "where", "where's", "which", "while", "who",
-    "who's", "whom", "why", "why's", "with", "won't", "would", "wouldn't",
-    "you", "you'd", "you'll", "you're", "you've", "your", "yours", "yourself",
-    'lot', 'lots', 'quite', 'since', 'very'
-    'yourselves',
-    ".", ",", ":", ";", "!", "#", "*", "...", "…", "?", '-', '–', '—', '_', '`',
+    'a',
+    'able', 'about', 'above', 'abst', 'accordance', 'according', 'accordingly',
+    'across', 'act', 'actually', 'added', 'adj', 'affected', 'affecting',
+    'affects', 'after', 'afterwards', 'again', 'against', 'ah', 'all', 'almost',
+    'alone', 'along', 'already', 'also', 'although', 'always', 'am', 'among',
+    'amongst', 'an', 'and', 'announce', 'another', 'any', 'anybody', 'anyhow',
+    'anymore', 'anyone', 'anything', 'anyway', 'anyways', 'anywhere',
+    'apparently', 'approximately', 'are', 'aren', 'are\'n', 'arent', 'aren\'t',
+    'arise', 'around', 'as', 'aside', 'ask', 'asking', 'at', 'auth',
+    'available', 'away', 'awfully',
+
+    'b',
+    'back', 'be', 'became', 'because', 'become', 'becomes', 'becoming', 'been',
+    'before', 'beforehand', 'begin', 'beginning', 'beginnings', 'begins',
+    'behind', 'being', 'believe', 'below', 'beside', 'besides', 'between', 'beyond', 'biol', 'both', 'brief', 'briefly', 'but', 'by',
+
+    'c',
+    'ca', 'came', 'can', 'cannot', 'can\'t', 'cause', '\'cause', 'causes',
+    'certain', 'certainly', 'co', 'com', 'come', 'comes', 'contain',
+    'containing', 'contains', 'could', 'couldnt', 'couldn\'t',
+
+    'd',
+    '\'d', 'date', 'did', 'didn\'t', 'different', 'do', 'does', 'doesn\'t',
+    'doing', 'done', 'don\'t', 'down', 'downwards', 'due', 'during',
+
+    'e',
+    'each', 'ed', '\'ed', 'e\'d', 'edu', 'effect', 'eg', 'eight', 'eighty',
+    'either', 'else', 'elsewhere', 'end', 'ending', 'enough', 'especially',
+    'et', 'et-al', 'etc', 'etcetera', 'et-cetera', 'even', 'ever', 'every',
+    'everybody', 'everyone', 'everything', 'everywhere', 'ex', 'except',
+
+    'f',
+    'far', 'few', 'ff', 'fifth', 'first', 'five', 'fix', 'followed',
+    'following', 'follows', 'for', 'former', 'formerly', 'forth', 'found',
+    'four', 'from', 'further', 'furthermore',
+
+    'g',
+    'gave', 'get', 'gets', 'getting', 'give', 'given', 'gives', 'giving',
+    'go', 'goes', 'gone', 'got', 'gotten',
+
+    'h',
+    'had', 'happens', 'hardly', 'has', 'hasn\'t', 'have', 'haven\'t', 'having',
+    'he', 'hed', 'he\'d', 'hence', 'her', 'here', 'hereafter', 'hereby',
+    'herein', 'heres', 'hereupon', 'hers', 'her\'s', 'herself', 'hes',
+    'he\'s', 'hi', 'hid', 'him', 'himself', 'his', 'hither', 'home', 'how',
+    'howbeit', 'however', 'hundred',
+
+    'i',
+    'id', 'i\'', 'i\'d', 'ie', 'if', 'i\'ll', 'im', 'i\'m', 'immediate',
+    'immediately', 'importance', 'important', 'in', 'inc', 'indeed', 'index',
+    'information', 'instead', 'into', 'invention', 'inward', 'is', 'isn\'t',
+    'it', 'it\'', 'itd', 'it\'d', 'it\'ll', 'its', 'it\'s', 'itself', 'i\'ve',
+
+    'j',
+    'just',
+
+    'k',
+    'keep', 'keeps', 'kept', 'kg', 'km', 'know', 'known', 'knows',
+
+    'l',
+    'largely', 'last', 'lately', 'later', 'latter', 'latterly', 'least',
+    'less', 'lest', 'let', 'lets', 'let\'s', 'like', 'liked', 'likely', 'line',
+    'little', '\'ll', 'look', 'looking', 'looks', 'ltd',
+
+    'm',
+    'made', 'mainly', 'make', 'makes', 'many', 'may', 'maybe', 'me', 'mean',
+    'means', 'meantime', 'meanwhile', 'merely', 'mg', 'might', 'million',
+    'miss', 'ml', 'more', 'moreover', 'most', 'mostly', 'mr', 'mrs', 'much',
+    'mug', 'must', 'my', 'myself',
+
+    'n',
+    'na', 'name', 'namely', 'nay', 'nd', 'near', 'nearly', 'necessarily',
+    'necessary', 'need', 'needs', 'neither', 'never', 'nevertheless', 'new',
+    'next', 'nine', 'ninety', 'no', 'nobody', 'non', 'none', 'nonetheless',
+    'noone', 'nor', 'normally', 'nos', 'not', 'noted', 'nothing', 'now',
+    'nowhere',
+
+    'o',
+    'obtain', 'obtained', 'obviously', 'of', 'off', 'often', 'oh', 'ok', 'okay',
+    'old', 'omitted', 'on', 'once', 'one', 'ones', 'only', 'onto', 'or', 'ord',
+    'other', 'others', 'otherwise', 'ought', 'our', 'ours', 'our\'s',
+    'ourselves', 'out', 'outside', 'over', 'overall', 'owing', 'own',
+
+    'p',
+    'page', 'pages', 'page\'s', 'part', 'particular', 'particularly', 'past',
+    'per', 'perhaps', 'placed', 'please', 'plus', 'poorly', 'possible',
+    'possibly', 'potentially', 'pp', 'predominantly', 'present', 'previously',
+    'primarily', 'probably', 'promptly', 'proud', 'provides', 'put',
+
+    'q',
+    'que', 'quickly', 'quite', 'qv',
+
+    'r',
+    'ran', 'rather', 'rd', 're', '\'re', 'readily', 'really', 'recent',
+    'recently', 'ref', 'refs', 'regarding', 'regardless', 'regards', 'related',
+    'relatively', 'research', 'respectively', 'resulted', 'resulting',
+    'results', 'right', 'run',
+
+    's',
+    'said', 'same', 'saw', 'say', 'saying', 'says', 'sec', 'section', 'see',
+    'seeing', 'seem', 'seemed', 'seem\'d', 'seeming', 'seems', 'seen', 'self',
+    'selves', 'sent', 'seven', 'several', 'shall', 'shant', 'shan\'t', 'she',
+    'shed', 'she\'d', 'she\'ll', 'shes', 'she\'s', 'should', 'shouldn\'t',
+    'show', 'showed', 'shown', 'showns', 'shows', 'significant',
+    'significantly', 'similar', 'similarly', 'since', 'six', 'slightly', 'so',
+    'some', 'somebody', 'somehow', 'someone', 'somethan', 'something',
+    'sometime', 'sometimes', 'somewhat', 'somewhere', 'soon', 'sorry',
+    'specifically', 'specified', 'specify', 'specifying', 'still', 'stop',
+    'strongly', 'sub', 'substantially', 'successfully', 'such', 'sufficiently',
+    'suggest', 'sup', 'sure',
+
+    't',
+    'take', 'taken', 'taking', 'tell', 'tends', 'th', 'than', 'thank', 'thanks',
+    'thanx', 'that', 'that\'ll', 'thats', 'that\'s', 'that\'ve', 'the', 'their',
+    'theirs', 'them', 'themselves', 'then', 'thence', 'there', 'thereafter',
+    'thereby', 'thered', 'there\'d', 'therefore', 'therein', 'there\'ll',
+    'thereof', 'therere', 'theres', 'there\'s', 'thereto', 'thereupon',
+    'there\'ve', 'these', 'they', 'theyd', 'they\'d', 'they\'ll', 'theyre',
+    'they\'re', 'they\'ve', 'think', 'this', 'those', 'thou', 'though',
+    'thoughh', 'thousand', 'throug', 'through', 'throughout', 'thru', 'thus',
+    'til', 'tip', 'to', 'together', 'too', 'took', 'toward', 'towards', 'tried',
+    'tries', 'truly', 'try', 'trying', 'ts', '\'ts', 'twice', 'two',
+
+    'u',
+    'un', 'under', 'unfortunately', 'unless', 'unlike', 'unlikely', 'until',
+    'unto', 'up', 'upon', 'ups', 'us', 'use', 'used', 'useful', 'usefully',
+    'usefulness', 'uses', 'using', 'usually',
+
+    'v',
+    'value', 'various', '\'ve', 'very', 'via', 'viz', 'vol', 'vols', 'vs',
+
+    'w',
+    'want', 'wants', 'was', 'wasnt', 'wasn\'t', 'way', 'we', 'we\'d', 'wed',
+    'welcome', 'we\'ll', 'went', 'were', 'werent', 'weren\'n', 'weren\'t',
+    'we\'ve', 'what', 'whatever', 'what\'ll', 'whats', 'what\'s', 'when',
+    'whence', 'whenever', 'where', 'whereafter', 'whereas', 'whereby',
+    'wherein', 'wheres', 'where\'s', 'whereupon', 'wherever', 'whether',
+    'which', 'while', 'whim', 'whither', 'who', 'who\'ve', 'who\'d', 'whod',
+    'whoever', 'whole', 'who\'ll', 'whom', 'whomever', 'whos', 'who\'s',
+    'whose', 'why', 'widely', 'will', 'willing', 'wish', 'with', 'within',
+    'without', 'wont', 'won\'t', 'words', 'world', 'would', 'wouldnt',
+    'wouldn\'t', 'www',
+
+    'x',
+
+    'y',
+    'yes', 'yet', 'you', 'you\'d', 'youd', 'you\'ll', 'your', 'youre',
+    'you\'re', 'yours', 'yourself', 'yourselves', 'you\'ve',
+
+    'z',
+    'zero',
+
+    'one', 'two', 'three', 'four', 'five', 'six', 'seven',
+    'eight', 'nine', 'ten',
+
+    '.', ',', ':', ';', '!', '#', '*',
+    '...', '…', '?',
+    '-', '–', '—', '_', '~',
+    '"', "'", '`', '“', '”', '‘', '’',
     '(', ')', '[', ']', '{', '}', '/', '\\',
+
     '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
-    '10', '20', '30', '40', '50', '60', '70', '80', '90', '100'
+    '10', '20', '30', '40', '50', '60', '70', '80', '90', '100',
+
+    'list', 'function', 'object', 'data', 'method', 'value', 'program',
+    'day', 'date', 'month', 'year', 'time', 'application', 'll',
+    'thing', 'util', 'utility', 'type', 'element', 'var', 'man', 've',
+    'return', 'language', 'code', 'change', 'master', 'feature', 'output',
+    'lot', 'rate', 'state'
 ];
+
+/*
+Before doing this run all the APIs and add additional stop words.
+Also add mappers to tags that are incorrectly singularized.
+
+Take tags from the unfluff meta;
+then take 3 multi-word tags with >3 occurrences
+then take top 3 single word tags.
+sort them alphabetically.
+
+ */
 
 let inflector = new NounInflector();
 let singularize = ( word ) => inflector.singularize( word );
@@ -58,7 +212,7 @@ let add = ( url, buffer ) => {
     let words = urlCache.words;
     let counts = urlCache.counts;
 
-    let word = buffer.join( ' ' );
+    let word = singularize( buffer.join( ' ' ).toLowerCase() );
 
     words[ word ] = words[ word ] || 0;
 
@@ -88,23 +242,45 @@ let getTags = ( url ) => {
         // 4. also count adjective+word pairs
         // * also normalize words and phrases while counting (singular and lowercase)
         // 5. list top N tags that exceed count threshold M
+        // cleanup <script> and CDATA from sample docs
+        // discard numbers as tags.
+        // bug: "thi" is matched as a noun.
+        //
+        // selext max 3 single words plux max 3 phrases give phrases higher prio. a phrase shall repat at least (word count + 1 ) times to count.
 
 		let data = unfluff( body );
-		let corpus = data.title + ' ' + data.description + ' ' + data.text;
-		let pos = require('pos');
+
+        // console.log( data );
+        // console.log( '-------' );
+
+		let corpus = (
+            data.title + ' \n---\n ' +
+            data.description + ' \n---\n ' +
+            data.text
+        ).replace( /[~'‘’“”…`&><+-=\[\]{}\(\)\\/…]/g, ' ' );
+
+        // Prioritize the tags that unfluff finds.
+        // keywords, tags
+
+
+        // console.log( '----------------------' );
+        // console.log( corpus );
+        // console.log( '----------------------' );
+
+
+//        return;
+
 		let words = new Lexer().lex( corpus );
 
-        words = words.map(
-            ( word ) => singularize( word
-                .replace( /[“”]/, '' )
-                .replace( /[‘’]/, "'" )
-            )
-        ).filter(
-            ( word ) => stopwords.indexOf( word.toLowerCase() ) === -1
-        );
+        // console.log( words );
+        // console.log( '---------' );
 
 		let tagger = new Tagger();
+
 		let taggedWords = tagger.tag( words );
+
+         //console.log( taggedWords );
+        // return;
 
         let buffer = [];
 
@@ -114,17 +290,28 @@ let getTags = ( url ) => {
 		    let word = taggedWord[ 0 ];
             let tag = taggedWord[ 1 ];
             let isAdjective = tag.indexOf('JJ') === 0;
+            let isNoun = tag.indexOf('NN') === 0;
+            let isVerb = tag === 'VB';
 
-            // If not an adjective count at least once.
-            if ( !isAdjective ) {
-                add( url, [ word ] );
-            }
+            // TODO: clearly describe what this algorithm does.
 
-            buffer.push( word );
-
-            if ( !isAdjective ) {
-                add( url, buffer );
-                buffer.length = 0;
+            if ( /[^A-Z]/.test( word[ 0 ] ) && stopwords.indexOf( singularize( word.toLowerCase() ) ) === -1 ) {
+                if ( !isAdjective && !isNoun ) {
+                    buffer.length = 0;
+                } else {
+                    if ( isAdjective ) {
+                        buffer.push( word );
+                    } else {
+                        if ( isNoun ) {
+                            if ( buffer.length > 0 ) {
+                                buffer.push( word );
+                                add( url, buffer );
+                                buffer.length = 0;
+                            }
+                            add( url, [ word ] );
+                        }
+                    }
+                }
             }
         }
 
@@ -142,12 +329,11 @@ let getTags = ( url ) => {
             return a.count < b.count ? 1: -1;
         } );
 
+        // For debugging purposes:
         console.log( JSON.stringify( cache, null, 4) );
 
         // TODO: algorithm cleanup:
-        // there are leaking ... and ' s in the matched words
-        // there are missed stopwords, like "can"
-        // stored words should be lowercase (proper nouns included)
+        // Try will all the link you have.
         // accept first N words and any M tuple that have an occurrence higher than K
 
         let end = (new Date()).getTime();
