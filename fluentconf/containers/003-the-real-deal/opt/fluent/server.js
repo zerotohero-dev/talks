@@ -6,11 +6,9 @@
  * Send your comments and suggestions to <me@volkan.io>.
  */
 
-import { graphql } from 'graphql';
-
 import express from 'express';
 import bodyParser from 'body-parser';
-
+import { graphql } from 'graphql';
 import schema from './schema';
 
 const PORT = 8003;
