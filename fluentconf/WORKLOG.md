@@ -171,3 +171,5 @@ There are a lot of services that does that for you; and in production it makes m
 What those services basically do is to install agents, or probes on your application or on your system, and regularly report aggragated metrics and measurements back to a collection endpoint.
 
 We'll be creating a "much simpler" monitoring system for the sake of this demo. — Again, this is not aimed for production use; it's just for demonstrating concepts behind monitoring and instrumentation. You'd be **much** better off using a "monitoring as a service" solution instead.
+
+For probes I was planning to use `dtrace`, and as it turned out, `dtrace` as its current state does not compile on a debian docker container. So I'll pick the closest alternative: `jstrace`
