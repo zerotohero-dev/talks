@@ -11,5 +11,7 @@ docker run --privileged --cpuset-cpus="1" -i -t \
 -v "${DIR}/../containers/common/opt/shared":/opt/shared \
 -v "${DIR}/../containers/common/data":/data \
 -v "${DIR}/../containers/003-the-real-deal/opt/fluent":/opt/fluent \
+-p 8081:8081 \
 -p 8003:8003 \
+-p 5858:5858 \
 fluent:service-demo /bin/bash

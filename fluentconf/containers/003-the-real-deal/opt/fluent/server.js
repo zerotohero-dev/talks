@@ -22,7 +22,7 @@ app.post( '/api/v1/graph', ( req, res ) => {
 
     graphql( schema, req.body )
         .then( ( result ) => {
-            res.end( JSON.stringify( result, null, 2 ) )
+            res.end( JSON.stringify( result, null, 4 ) )
         } );
 } );
 

@@ -8,6 +8,7 @@
 
 import { prepareTaggedWords } from './transform';
 import { singularize } from './transform';
+import stopWords from './stopwords';
 
 let cache = { tags: {}, urls: {} };
 
@@ -27,7 +28,7 @@ let postProcessWord = ( words, word ) => {
 };
 
 let postProcessWords = ( url ) => {
-    let words = cache[ url ].words;
+    let words = cache.urls[ url ].words;
 
     Object.keys( words )
         .forEach( ( word ) => postProcessWord( words, word ) );
@@ -44,14 +45,6 @@ let add = ( url, buffer ) => {
 
     words[ word ] = words[ word ] || 0;
     words[ word ]++;
-
-    let count = words[ word ];
-
-    counts[ count ] = counts[ count ] || [];
-
-    if ( counts[ count ].indexOf( word ) === -1 ) {
-        counts[ count ].push( word );
-    }
 };
 
 let addWord = ( url, buffer, taggedWord ) => {
@@ -62,7 +55,7 @@ let addWord = ( url, buffer, taggedWord ) => {
     let isAdjective = tag.indexOf('JJ') === 0;
     let isNoun = tag.indexOf('NN') === 0;
 
-    if ( /[A-Z]/.test( word[ 0 ] ) || stopwords.indexOf( word.toLowerCase() ) > -1 ) { return; }
+    if ( /[A-Z]/.test( word[ 0 ] ) || stopWords.indexOf( word.toLowerCase() ) > -1 ) { return; }
 
     if ( !isAdjective && !isNoun ) {
         buffer.length = 0;
@@ -88,7 +81,7 @@ let addWord = ( url, buffer, taggedWord ) => {
 let setWordCounts = ( url, body ) => {
     let buffer = [];
 
-    { tags, taggedWords } = prepareTaggedWords( body );
+    let { tags, taggedWords } = prepareTaggedWords( body );
 
     taggedWords.forEach( ( taggedWord ) => {
         addWord( url, buffer, taggedWord );
@@ -100,11 +93,15 @@ let setWordCounts = ( url, body ) => {
 let computeCounts = ( url ) => {
     let urlCache = cache.urls[ url ];
 
-    Object.keys( urlCache.words ).forEach( (key ) => {
+    // debugger;
+
+    Object.keys( urlCache.words ).forEach( ( key ) => {
         urlCache.counts.push( { word: key, count: urlCache.words[ key ] } );
     } );
 
-    urlCache.counts = unique( urlCache.counts );
+    // debugger;
+
+    // urlCache.counts = unique( urlCache.counts );
 
     urlCache.counts.sort( ( a, b ) => {
         if ( a.count === b.count ) { return 0; }
@@ -118,6 +115,10 @@ let computeTags = ( seed, url ) => {
 
     let singleWordTags = [];
     let multiWordTags = [];
+
+    console.log( '------' );
+    console.log( urlCache.counts );
+    console.log( '------' );
 
     urlCache.counts.forEach( ( { word, count } ) => {
         if ( word.indexOf( ' ' ) !== -1 ) {
@@ -144,7 +145,7 @@ let computeTags = ( seed, url ) => {
         let cacheTag = cache.tags[ tag ];
 
         if ( cacheTag.indexOf( url ) === -1 ) {
-            ccacheTag.push( url );
+            cacheTag.push( url );
             cacheTag.sort();
         }
     } );
@@ -161,12 +162,24 @@ let resetCache = ( url ) => cache.urls[ url ] = { words: {}, counts: [], tags: [
  */
 let prepare = ( url, body ) => {
     resetCache( url );
-    tags = setWordCounts( url, body );
+
+    // debugger;
+
+    let tags = setWordCounts( url, body );
+
+    // debugger;
+
     postProcessWords( url );
+
+    // debugger;
+
     computeCounts( url );
     computeTags( tags, url );
 
     return getTags( url );
 };
 
-export { prepare };
+export {
+    prepare,
+    getUrls
+};
