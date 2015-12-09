@@ -20,21 +20,19 @@ let prepareTaggedWords = ( body ) => {
 
     return {
         tags: data.tags,
-        taggedWords: ( new Tagger() ).tag(
-            new Lexer().lex( (
-                    data.title + ' \n\n ' +
-                    data.description + ' \n\n ' +
-                    data.text )
-                        .replace( /[`“”]/g, ' ' )
-                        .replace(/[\[\]><=&@]/g, ' ')
-                        .replace (/…/g, ':' )
-            )
-        )
+        taggedWords: ( new Tagger() ).tag( new Lexer().lex( (
+            data.title + ' \n\n ' +
+            data.description + ' \n\n ' +
+            data.text )
+                .replace( /[`“”]/g, ' ' )
+                .replace(/[\[\]><=&@]/g, ' ')
+                .replace (/…/g, ':' )
+        ) )
     };
 };
 
 /**
- * 
+ *
  */
 let singularize = ( word ) => inflector.singularize( word );
 

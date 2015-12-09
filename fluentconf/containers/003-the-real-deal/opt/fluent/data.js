@@ -93,15 +93,9 @@ let setWordCounts = ( url, body ) => {
 let computeCounts = ( url ) => {
     let urlCache = cache.urls[ url ];
 
-    // debugger;
-
     Object.keys( urlCache.words ).forEach( ( key ) => {
         urlCache.counts.push( { word: key, count: urlCache.words[ key ] } );
     } );
-
-    // debugger;
-
-    // urlCache.counts = unique( urlCache.counts );
 
     urlCache.counts.sort( ( a, b ) => {
         if ( a.count === b.count ) { return 0; }
@@ -115,10 +109,6 @@ let computeTags = ( seed, url ) => {
 
     let singleWordTags = [];
     let multiWordTags = [];
-
-    console.log( '------' );
-    console.log( urlCache.counts );
-    console.log( '------' );
 
     urlCache.counts.forEach( ( { word, count } ) => {
         if ( word.indexOf( ' ' ) !== -1 ) {
@@ -163,16 +153,9 @@ let resetCache = ( url ) => cache.urls[ url ] = { words: {}, counts: [], tags: [
 let prepare = ( url, body ) => {
     resetCache( url );
 
-    // debugger;
-
     let tags = setWordCounts( url, body );
 
-    // debugger;
-
     postProcessWords( url );
-
-    // debugger;
-
     computeCounts( url );
     computeTags( tags, url );
 
