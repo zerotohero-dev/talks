@@ -159,8 +159,15 @@ There are a bunch of important metrics to watch
 * Event Loop Delay
 * Garbage Collection
 * CPU Utilization (it's unusual for a Node.JS app to be CPU bound)
+* Heap Usage over Time
 * API
     * Response Time
     * Error Rates (error totals, error categories)
 
 // TODO: implement some of these.
+
+There are a lot of services that does that for you; and in production it makes much more sense to use those services than to cook your own
+( TODO:// list those )
+What those services basically do is to install agents, or probes on your application or on your system, and regularly report aggragated metrics and measurements back to a collection endpoint.
+
+We'll be creating a "much simpler" monitoring system for the sake of this demo. — Again, this is not aimed for production use; it's just for demonstrating concepts behind monitoring and instrumentation. You'd be **much** better off using a "monitoring as a service" solution instead.
