@@ -18,9 +18,37 @@ let app = express();
 app.use( bodyParser.text( { type: 'application/graphql' } ) );
 
 app.post( '/api/v1/graph', ( req, res ) => {
+    graphql( schema, req.body )
+        .then( ( result ) => {
+            res.end( JSON.stringify( result, null, 4 ) )
+        } );
+} );
+
+app.get( '/benchmark/get-tags', ( req, res ) => {
     void req;
 
-    graphql( schema, req.body )
+    let query = `
+        {
+            tags(url: "http://192.168.99.100:8080/10-tricks-to-appear-smart-during-meetings-27b489a39d1a.html")
+        }
+    `;
+
+    graphql( schema, query )
+        .then( ( result ) => {
+            res.end( JSON.stringify( result, null, 4 ) )
+        } );
+} );
+
+app.get( '/benchmark/get-urls', ( req, res ) => {
+    void req;
+
+    let query = `
+        {
+            urls(tag: "tech")
+        }
+    `;
+
+    graphql( schema, query )
         .then( ( result ) => {
             res.end( JSON.stringify( result, null, 4 ) )
         } );

@@ -87,3 +87,80 @@ and do two other measurements, one for a plain Node.js HTTP server, and one for
 a plain node.js socket app.
 
 // TODO: implement. make sure you do the benchmark on a reliable network.
+
+## **Step 003**: A Simple Demo API
+
+Our demo API "infers" what a webpage is about by reading the contents of the page, creating a text-only representation, and then doing some natural language analysis on that text only representation.
+
+Here's a sample request:
+
+```
+curl -X "POST" "http://192.168.99.100:8003/api/v1/graph" \
+	-H "Content-Type: application/graphql" \
+	-d $'{
+
+    tags(url: "http://192.168.99.100:8080/10-tricks-to-appear-smart-during-meetings-27b489a39d1a.html")
+}'
+```
+
+Which gets this reponse:
+
+```
+{
+    "data": {
+        "tags": [
+            "business",
+            "deep contemplative sigh",
+            "envious quick math",
+            "favorite tricks",
+            "good catch-all question",
+            "humor",
+            "inaccurate better marker",
+            "matter",
+            "meetings",
+            "notes",
+            "smart afraid step",
+            "smart meetings",
+            "tech"
+        ]
+    }
+}
+```
+
+The demo API has two endpoints
+
+* **tags**: Given a URL, infer what the URL is all about (*i.e., create "tags" about it*).
+* **urls**: Check what URLs a particular tag has been related to so far.
+
+To easily do an `ab` test, I've also created two endpoints `/benchmark/get-urls` and `/benchmark/get-tags`
+
+When I run `ab -n 10 -c 2 http://172.17.0.5:8003/benchmark/get-urls` I get around 800 requests per second; which is *not that bad* when considering we are doing some graphql magic, and the app is running on a development docker box.
+
+When I run `ab -n 10 -c 2 http://172.17.0.5:8003/benchmark/get-tags` however, I get **less than two requests per second**, which clearly indicates something is wrong.
+
+And here's the fun part:
+
+I can run two `ab -n 1000 -c 200 http://172.17.0.5:8003/benchmark/get-urls` benchmarks, side by side, and get around 900 requests per second each; however when I run a `ab -n 10 -c 2 http://172.17.0.5:8003/benchmark/get-urls` and `ab -n 10 -c 2 http://172.17.0.5:8003/benchmark/get-tags` side by side the performance of `get-urls` goes down to 5 requests per second.
+
+Plus the CPU utilization drastically increases when we call `get-tags`, whereas it is almost zero when we call `get-urls`
+
+So we have two issues here:
+
+* get-tags appears to be CPU-bound (*which is a bad thing*)
+* get-tags appears to be really slow
+* get-tags appears to block other API requests.
+
+So we have a hyphothesis; the next thing is to gather further evidence to validate our hyphothesis. Which means we need to **monitor** our demo instance.
+
+And when it comes to monitoring, there's this "observer's effect"; i.e., we affect the system that we monitor by the fact that we are monitoring it. — We'd like to keep this effect to a minimum.
+
+There are a bunch of important metrics to watch
+
+* Event Loop Delay
+* Garbage Collection
+* CPU Utilization (it's unusual for a Node.JS app to be CPU bound)
+* API
+    * Response Time
+    * Error Rates (error totals, error categories)
+
+// TODO: implement some of these.
