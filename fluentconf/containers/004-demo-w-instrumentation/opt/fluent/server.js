@@ -6,10 +6,11 @@
  * Send your comments and suggestions to <me@volkan.io>.
  */
 
-import express from 'express';
-import bodyParser from 'body-parser';
 import { graphql } from 'graphql';
+import bodyParser from 'body-parser';
+import express from 'express';
 import schema from './schema';
+import trace from 'jstrace';
 
 const PORT = 8003;
 
@@ -27,6 +28,10 @@ app.post( '/api/v1/graph', ( req, res ) => {
 app.get( '/benchmark/get-tags', ( req, res ) => {
     void req;
 
+    let token = { action: 'get-tags' };
+
+    trace( 'request:start', token );
+
     let query = `
         {
             tags(url: "http://192.168.99.100:8080/10-tricks-to-appear-smart-during-meetings-27b489a39d1a.html")
@@ -36,11 +41,14 @@ app.get( '/benchmark/get-tags', ( req, res ) => {
     graphql( schema, query )
         .then( ( result ) => {
             res.end( JSON.stringify( result, null, 4 ) )
+            trace( 'request:end', token )
         } );
 } );
 
 app.get( '/benchmark/get-urls', ( req, res ) => {
     void req;
+
+    let token = { action: 'get-urls' };
 
     let query = `
         {
@@ -48,9 +56,12 @@ app.get( '/benchmark/get-urls', ( req, res ) => {
         }
     `;
 
+    trace( 'request:start', token );
+
     graphql( schema, query )
         .then( ( result ) => {
             res.end( JSON.stringify( result, null, 4 ) )
+            trace( 'request:end', token );
         } );
 } );
 

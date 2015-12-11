@@ -52,10 +52,13 @@ let addWord = ( url, buffer, taggedWord ) => {
         .trim()
         .replace( /(’|’s|’es)$/g, '' );
     let tag = taggedWord[ 1 ];
+
     let isAdjective = tag.indexOf('JJ') === 0;
     let isNoun = tag.indexOf('NN') === 0;
 
-    if ( /[A-Z]/.test( word[ 0 ] ) || stopWords.indexOf( word.toLowerCase() ) > -1 ) { return; }
+    let skip = /[A-Z]/.test( word[ 0 ] ) || stopWords.indexOf( word.toLowerCase() ) > -1;
+
+    if ( skip ) { return; }
 
     if ( !isAdjective && !isNoun ) {
         buffer.length = 0;

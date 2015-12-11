@@ -7,8 +7,8 @@
  */
 
 import { get } from 'request';
-import { Promise } from 'bluebird';
 import { prepare } from './data';
+import { Promise } from 'bluebird';
 
 /**
  *

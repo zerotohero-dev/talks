@@ -6,9 +6,9 @@
  * Send your comments and suggestions to <me@volkan.io>.
  */
 
-import unfluff from 'unfluff';
 import { Lexer, Tagger } from 'pos';
 import { NounInflector } from 'natural';
+import unfluff from 'unfluff';
 
 let inflector = new NounInflector();
 
