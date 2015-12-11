@@ -9,6 +9,7 @@
 import { graphql } from 'graphql';
 import bodyParser from 'body-parser';
 import express from 'express';
+import probes from './monitor';
 import schema from './schema';
 import trace from 'jstrace';
 
@@ -28,6 +29,8 @@ app.post( '/api/v1/graph', ( req, res ) => {
 app.get( '/benchmark/get-tags', ( req, res ) => {
     void req;
 
+    var st = (new Date()).getTime();
+
     let token = { action: 'get-tags' };
 
     trace( 'request:start', token );
@@ -41,6 +44,11 @@ app.get( '/benchmark/get-tags', ( req, res ) => {
     graphql( schema, query )
         .then( ( result ) => {
             res.end( JSON.stringify( result, null, 4 ) )
+
+            var et = (new Date()).getTime();
+
+            console.log( et - st );
+
             trace( 'request:end', token )
         } );
 } );
@@ -61,6 +69,7 @@ app.get( '/benchmark/get-urls', ( req, res ) => {
     graphql( schema, query )
         .then( ( result ) => {
             res.end( JSON.stringify( result, null, 4 ) )
+
             trace( 'request:end', token );
         } );
 } );

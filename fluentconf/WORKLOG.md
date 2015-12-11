@@ -4,6 +4,14 @@ I'll write ad-hoc notes here and clean them up later.
 
 I'll be keeping a log of what I did, and the results of the tests and benchmarks I ran in this file. Because, you know, anything can happen during a live coding session, and I want some data to point at and say "If that thing worked, here's how it'd have looked like" in case $#!% happens :)
 
+## How to Debug a Running System
+
+Although this is kind of out of scope of the talk I'd better add some pointers here:
+
+Running node with `--abort-on-uncaught-exception` for instance will generate a core dump when $#!% happens; and then you can analyse the core with tools like mdb, dtrace and the like.
+
+TODO: provide additional links here.
+
 ## Methodology
 
 I'm using [apachebench][ab] for benchmarking the sample setups; and it's a **good enough** tool for our demo purposes.
