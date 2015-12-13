@@ -11,4 +11,5 @@ docker run --privileged -i -t --cpuset-cpus="0" \
 -v "${DIR}/../containers/common/opt/shared":/opt/shared \
 -v "${DIR}/../containers/common/data":/data \
 -v "${DIR}/../containers/bastion/opt/fluent":/opt/fluent \
+-p 4322:4322 \
 fluent:bastion /bin/bash

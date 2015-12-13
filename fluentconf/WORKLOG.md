@@ -181,3 +181,45 @@ What those services basically do is to install agents, or probes on your applica
 We'll be creating a "much simpler" monitoring system for the sake of this demo. — Again, this is not aimed for production use; it's just for demonstrating concepts behind monitoring and instrumentation. You'd be **much** better off using a "monitoring as a service" solution instead.
 
 For probes I was planning to use `dtrace`, and as it turned out, `dtrace` as its current state does not compile on a debian docker container. So I'll pick the closest alternative: `jstrace`
+
+## Adding Monitoring
+
+The first thing I'm going to look at will be the event loop delay.
+
+There are several ways to measure that. For instance you can run a timer, and look at how much the timer is lagging behind:
+
+```javascript
+let start = process.hrtime();
+setInterval( () => {
+    delta = process.hrtime( start );
+
+    trace(
+        'eventloop:delay',
+        ( ( delta[ 0 ] * 10e9 + delta[ 1 ] )  / ( 10e6 ) ) - INTERVAL
+    );
+
+    start = process.hrtime();
+}, INTERVAL );
+```
+
+Another, relatively more accurate way would be to fire an `setImmediate` callback and measure the time it takes to respond.
+
+<aside>Callbacks for immediates are queued in the order in which they were created. The entire callback queue is processed every event loop iteration. (That was not the case in earlier versions; i.e., only one setImmediate callback was being executed per event loop iteration; however, as of Node.js 5.x, at least, all the setImmediate queue is cleared before entering the next event loop)</aside>
+
+`setImmediate` fires at the very beginning of the next event loop, which makes it a proper candidate to measure the event loop lag. Here's the above code, modified to use `setImmediate`:
+
+```javascript
+setInterval( () => {
+    delta = process.hrtime( start );
+
+    let start = process.hrtime();
+    setImmediate( () => {
+        let delta = process.hrtime(start);
+
+        trace(
+            'eventloop:delay',
+            ( ( delta[ 0 ] * 10e9 + delta[ 1 ] )  / ( 10e6 ) )
+        );
+    } );
+}, INTERVAL );
+```

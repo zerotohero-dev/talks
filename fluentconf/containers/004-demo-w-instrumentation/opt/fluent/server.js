@@ -11,7 +11,9 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import probes from './monitor';
 import schema from './schema';
-import trace from 'jstrace';
+import { trace, start } from 'kiraz';
+
+start( {host: '192.168.99.100', port: 4322 } );
 
 const PORT = 8003;
 

@@ -34,7 +34,7 @@
     "body-parser": "1.14.1",
     "express": "4.13.3",
     "graphql": "0.4.14",
-    "jstrace": "0.3.0",
+    "kiraz": "*",
     "natural": "0.2.1",
     "pos": "0.3.0",
     "request": "2.67.0",
