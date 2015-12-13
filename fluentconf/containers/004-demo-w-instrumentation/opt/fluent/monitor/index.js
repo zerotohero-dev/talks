@@ -14,11 +14,11 @@ const INTERVAL = 467;
 setInterval( () => {
     let start = process.hrtime();
     setImmediate( () => {
-        let delta = process.hrtime(start);
+        let delta = process.hrtime( start );
 
         trace(
             'eventloop:delay',
-            ( ( delta[ 0 ] * 10e9 + delta[ 1 ] )  / ( 10e6 ) )
+            { delta: ( ( delta[ 0 ] * 10e9 + delta[ 1 ] )  / ( 10e6 ) ) }
         );
 
         trace(

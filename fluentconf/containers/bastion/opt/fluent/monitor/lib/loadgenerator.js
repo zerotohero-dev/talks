@@ -19,8 +19,6 @@ let getUrl = ( url ) => {
     get( url, () => getUrl( url ) );
 };
 
-getUrl( URLS_URL );
+getUrl( TAGS_URL );
 
 console.log( 'started' );
-
-// 1058,341

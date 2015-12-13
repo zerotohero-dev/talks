@@ -154,8 +154,6 @@ let resetCache = ( url ) => cache.urls[ url ] = { words: {}, counts: [], tags: [
  *
  */
 let prepare = ( url, body ) => {
-    var a = (new Date()).getTime();
-    
     resetCache( url );
 
     let tags = setWordCounts( url, body );
@@ -163,10 +161,6 @@ let prepare = ( url, body ) => {
     postProcessWords( url );
     computeCounts( url );
     computeTags( tags, url );
-
-    var b = (new Date()).getTime();
-
-    console.log( 'prep', (b -a) );
 
     return getTags( url );
 };

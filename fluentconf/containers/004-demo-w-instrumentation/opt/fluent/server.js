@@ -31,25 +31,22 @@ app.post( '/api/v1/graph', ( req, res ) => {
 app.get( '/benchmark/get-tags', ( req, res ) => {
     void req;
 
-    var st = (new Date()).getTime();
-
     let token = { action: 'get-tags' };
 
     trace( 'request:start', token );
 
     let query = `
         {
-            tags(url: "http://192.168.99.100:8080/10-tricks-to-appear-smart-during-meetings-27b489a39d1a.html")
+            tags(
+                url:
+                "http://192.168.99.100:8080/10-tricks-to-appear-smart-during-meetings-27b489a39d1a.html"
+            )
         }
     `;
 
     graphql( schema, query )
         .then( ( result ) => {
             res.end( JSON.stringify( result, null, 4 ) )
-
-            var et = (new Date()).getTime();
-
-            console.log( et - st );
 
             trace( 'request:end', token )
         } );
