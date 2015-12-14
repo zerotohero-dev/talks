@@ -6,6 +6,11 @@
  * Send your comments and suggestions to <me@volkan.io>.
  */
 
+// TODO: also cleanup the readme of the "kiraz" repository, and try the tests with the recent version of kiraz.
+// TODO: test all the traces and make sure that they are working fine.
+// TODO: if they all work, update the "assets" folder, and merge this branch
+// TODO: decide what to do about mitigating the issues, next.
+
 var chart = require( './chart' );
 var clear = require( 'clear' );
 
