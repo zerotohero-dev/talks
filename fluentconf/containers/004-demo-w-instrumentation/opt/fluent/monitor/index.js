@@ -61,7 +61,7 @@ setInterval( () => {
 
         trace(
             'memory:usage',
-            process.memoryUsage()
+            { percent: process.memoryUsage() }
         );
     } );
 }, INTERVAL );

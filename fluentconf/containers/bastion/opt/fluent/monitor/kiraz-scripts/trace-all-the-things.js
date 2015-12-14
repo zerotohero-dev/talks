@@ -9,37 +9,25 @@
 var chart = require( './chart' );
 var clear = require( 'clear' );
 
-var data = [];
-
-// exports.local = function( traces ) {
-//     traces.on( 'cpu:utilization', function( result )  {
-//         data.push( result.usage );
-//     } );
-//
-//     // traces.on( 'eventloop:delay', function( result )  {
-//     //     data.push( result.delta );
-//     // } );
-//
-//     setInterval( function() {
-//         clear();
-//         console.log();
-//         console.log( '                                                                   CPU UTILIZATION' );
-// //        console.log( '                                                                   EVENT LOOP DELAY' );
-//         console.log( '                                                                ——————————————————————' );
-//         console.log( chart( data ) );
-//     }, 1000 );
-//
-//     console.log( 'Started listening to all the things…' );
-// };
-
-var cache = {};
-var maxDelta = 0;
-var delays = [];
-
 exports.local = function( traces ) {
+    var cache = {};
+    var maxDelta = 0;
+    var delays = [];
+    var data = [];
+    var requestCount = 0;
+
     traces.on( 'cpu:utilization', function( result )  {
         cache.cpuUsage = '       CPU usage: ' + result.usage + '%';
     } );
+
+    traces.on( 'request:end', function( result ) {
+        requestCount++;
+    } );
+
+    setInterval( function() {
+        cache.requestsPerSecond = requestCount;
+        requestCount = 0;
+    }, 1000 );
 
     traces.on( 'eventloop:delay', function( result )  {
         delays.push( result.delta );
@@ -60,6 +48,8 @@ exports.local = function( traces ) {
         console.log('\t\t' + cache.cpuUsage);
         console.log();
         console.log('\t\t' + cache.eventLoopDelay);
+        console.log();
+        console.log('\t\t' + cache.requestsPerSecond);
     }, 100 );
 
     console.log( 'Started listening to all the things…' );

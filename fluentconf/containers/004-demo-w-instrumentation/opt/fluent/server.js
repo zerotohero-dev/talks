@@ -13,9 +13,14 @@ import probes from './monitor';
 import schema from './schema';
 import { trace, start } from 'kiraz';
 
-start( {host: '192.168.99.100', port: 4322 } );
-
+const MONITOR_EDPOINT = '192.168.99.100';
+const MONITOR_PORT = 4322;
 const PORT = 8003;
+
+start( {
+    host: MONITOR_EDPOINT,
+    port: MONITOR_PORT
+} );
 
 let app = express();
 
@@ -38,8 +43,8 @@ app.get( '/benchmark/get-tags', ( req, res ) => {
     let query = `
         {
             tags(
-                url:
-                "http://192.168.99.100:8080/10-tricks-to-appear-smart-during-meetings-27b489a39d1a.html"
+                url: "http://192.168.99.100:8080/` +
+                `10-tricks-to-appear-smart-during-meetings-27b489a39d1a.html"
             )
         }
     `;

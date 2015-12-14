@@ -20,5 +20,6 @@ let getUrl = ( url ) => {
 };
 
 getUrl( TAGS_URL );
+// getUrl( URLS_URL );
 
-console.log( 'started' );
+console.log( 'Started.' );
