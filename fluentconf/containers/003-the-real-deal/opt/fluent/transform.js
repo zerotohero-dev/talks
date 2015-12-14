@@ -25,8 +25,8 @@ let prepareTaggedWords = ( body ) => {
             data.description + ' \n\n ' +
             data.text )
                 .replace( /[`“”]/g, ' ' )
-                .replace(/[\[\]><=&@]/g, ' ')
-                .replace (/…/g, ':' )
+                .replace( /[\[\]><=&@]/g, ' ' )
+                .replace ( /…/g, ':' )
         ) )
     };
 };
