@@ -7,6 +7,4 @@
 ifconfig | awk '/inet addr/{print substr($2,6)}' | grep 172 > /data/service-tcp.dat
 
 echo "[${HOSTNAME}] Initialized successfully."
-echo "[${HOSTNAME}] Warming up the engines… Please wait…"
 cd /opt/fluent/
-node .

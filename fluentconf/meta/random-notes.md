@@ -172,3 +172,45 @@ function checkDelay() {
 ##
 
 But docker0 is no ordinary interface. It is a virtual Ethernet bridge that automatically forwards packets between any other network interfaces that are attached to it. This lets containers communicate both with the host machine and with each other.
+
+##
+
+The first thing I'm going to look at will be the event loop delay.
+
+There are several ways to measure that. For instance you can run a timer, and look at how much the timer is lagging behind:
+
+```javascript
+let start = process.hrtime();
+setInterval( () => {
+    delta = process.hrtime( start );
+
+    trace(
+        'eventloop:delay',
+        ( ( delta[ 0 ] * 10e9 + delta[ 1 ] )  / ( 10e6 ) ) - INTERVAL
+    );
+
+    start = process.hrtime();
+}, INTERVAL );
+```
+
+Another, relatively more accurate way would be to fire an `setImmediate` callback and measure the time it takes to respond.
+
+<aside>Callbacks for immediates are queued in the order in which they were created. The entire callback queue is processed every event loop iteration. (That was not the case in earlier versions; i.e., only one setImmediate callback was being executed per event loop iteration; however, as of Node.js 5.x, at least, all the setImmediate queue is cleared before entering the next event loop)</aside>
+
+`setImmediate` fires at the very beginning of the next event loop, which makes it a proper candidate to measure the event loop lag. Here's the above code, modified to use `setImmediate`:
+
+```javascript
+setInterval( () => {
+    delta = process.hrtime( start );
+
+    let start = process.hrtime();
+    setImmediate( () => {
+        let delta = process.hrtime(start);
+
+        trace(
+            'eventloop:delay',
+            ( ( delta[ 0 ] * 10e9 + delta[ 1 ] )  / ( 10e6 ) )
+        );
+    } );
+}, INTERVAL );
+```

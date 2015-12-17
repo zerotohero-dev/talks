@@ -6,9 +6,9 @@
  * Send your comments and suggestions to <me@volkan.io>.
  */
 
-import unfluff from 'unfluff';
 import { Lexer, Tagger } from 'pos';
 import { NounInflector } from 'natural';
+import unfluff from 'unfluff';
 
 let inflector = new NounInflector();
 
@@ -25,8 +25,8 @@ let prepareTaggedWords = ( body ) => {
             data.description + ' \n\n ' +
             data.text )
                 .replace( /[`“”]/g, ' ' )
-                .replace( /[\[\]><=&@]/g, ' ' )
-                .replace ( /…/g, ':' )
+                .replace(/[\[\]><=&@]/g, ' ')
+                .replace (/…/g, ':' )
         ) )
     };
 };

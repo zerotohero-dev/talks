@@ -1,14 +1,22 @@
 Note that this is in draft mode.
 
-I'll write ad-hoc notes here and clean them up later.
+I’ll write ad-hoc notes here and clean them up later.
 
-I'll be keeping a log of what I did, and the results of the tests and benchmarks I ran in this file. Because, you know, anything can happen during a live coding session, and I want some data to point at and say "If that thing worked, here's how it'd have looked like" in case $#!% happens :)
+I’ll be keeping a log of what I did, and the results of the tests and benchmarks I ran in this file. Because, you know, anything can happen during a live coding session, and I want some data to point at and say "If that thing worked, here's how it’d have looked like" in case $#!% happens :)
+
+## How to Debug a Running System
+
+Although this is kind of out of scope of the talk I'd better add some pointers here:
+
+Running node with `--abort-on-uncaught-exception` for instance will generate a core dump when $#!% happens; and then you can analyse the core with tools like mdb, dtrace and the like.
+
+TODO: provide additional links here.
 
 ## Methodology
 
-I'm using [apachebench][ab] for benchmarking the sample setups; and it's a **good enough** tool for our demo purposes.
+I’m using [apachebench][ab] for benchmarking the sample setups; and it’s a **good enough** tool for our demo purposes.
 
-Here's roughly the steps I follow before each `ab` test:
+Here’s roughly the steps I follow before each `ab` test:
 
 * Before each test, I restart the server(s).
 * I run something like ` ab -n 100000 -c 100 http://SERVER_IP:SERVER_PORT/SERVICE`
@@ -26,7 +34,7 @@ Here's roughly the steps I follow before each `ab` test:
 >
 > [apachebench][ab] can only give a general idea, and that's **good enough** for our needs. If you want a more in depth analysis, however, you would want a fully featured load testing tool such as [jmeter][jmeter].
 
-That said. for an actual production setup, it would make more sense to conduct a distributed API load test, using an "as a service" solution [such as flood.io][flood].
+That said, for an actual production setup, it would make more sense to conduct a distributed API load test, using an "as a service" solution [such as flood.io][flood].
 
 ## **Step 001**: Benchmarking a Simple Restify App
 
@@ -158,16 +166,46 @@ There are a bunch of important metrics to watch
 
 * Event Loop Delay
 * Garbage Collection
-* CPU Utilization (it's unusual for a Node.JS app to be CPU bound)
+* CPU Utilization (it’s unusual for a Node.JS app to be CPU-bound)
 * Heap Usage over Time
 * API
     * Response Time
     * Error Rates (error totals, error categories)
-
-// TODO: implement some of these.
 
 There are a lot of services that does that for you; and in production it makes much more sense to use those services than to cook your own
 ( TODO:// list those )
 What those services basically do is to install agents, or probes on your application or on your system, and regularly report aggragated metrics and measurements back to a collection endpoint.
 
 We'll be creating a "much simpler" monitoring system for the sake of this demo. — Again, this is not aimed for production use; it's just for demonstrating concepts behind monitoring and instrumentation. You'd be **much** better off using a "monitoring as a service" solution instead.
+
+For probes I was planning to use `dtrace`, and as it turned out, `dtrace` as its current state does not compile on a debian docker container. So I'll pick the closest alternative: `jstrace`
+
+## Adding Monitoring
+
+// TODO: explain what monitoring tools you used.
+
+## Diagnosing the App
+
+When it comes to trying to see what’s wrong with your app, quality of your data
+triumps quantity.
+
+And there are certain approaches and patterns that can be helful:
+
+* Expose your app’s state globally through a REPL.
+* Have good logging practices.
+* Create machine-consumable logs (with lots of keys to query).
+* Take a heap dump whenever the app crashes. — Every crash is important.
+* Know your app’s inflection points and create alarms and autoscale rules.
+* Create an API that switches your app into a “diagnostic mode”, increasing log levels etc, without restarting it.
+* Use circuit breakers so that when you app/microservice is down, it does not impact the performance of the rest of the system.
+* Utilize post-mortem debugging tools, and keep in mind that post-mortem debugging and live debugging require two different mindsets.
+
+## Extracting the CPU-intensive part
+
+After instrumenting our app live, we’ve figured out that there are CPU-intensive tasks that are blocking the event loop.
+
+At that point, a temporary solution could be to fork a child process and manage the CPU intensive task on a separate core.
+
+That’s just an interim solution though. Becuase, probably your Node.JS virtual machine has been optimized for IO and network utilization. — For CPU-intensive tasks you might consider using a specialized virtual machine for that purpose. Additionally, separating the concerns will help you scale them out individually which will give flexibily and resilience to your architecture.
+
+That’s what we’ll do next.
