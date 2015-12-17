@@ -6,12 +6,6 @@
  * Send your comments and suggestions to <me@volkan.io>.
  */
 
-// TODO: also cleanup the readme of the "kiraz" repository, and try the tests with the recent version of kiraz.
-// TODO: test all the traces and make sure that they are working fine.
-// TODO: if they all work, update the "assets" folder, and merge this branch
-// TODO: decide what to do about mitigating the issues, next.
-
-var chart = require( './chart' );
 var clear = require( 'clear' );
 
 exports.local = function( traces ) {
@@ -22,7 +16,7 @@ exports.local = function( traces ) {
     var requestCount = 0;
 
     traces.on( 'cpu:utilization', function( result )  {
-        cache.cpuUsage = '       CPU usage: ' + result.usage + '%';
+        cache.cpuUsage = '          CPU usage: ' + result.usage + '%';
     } );
 
     traces.on( 'request:end', function( result ) {
@@ -30,7 +24,7 @@ exports.local = function( traces ) {
     } );
 
     setInterval( function() {
-        cache.requestsPerSecond = requestCount;
+        cache.requestsPerSecond = 'Requests per second: ' + requestCount;
         requestCount = 0;
     }, 1000 );
 
@@ -43,18 +37,18 @@ exports.local = function( traces ) {
 
         maxDelta = Math.max.apply( Math, delays );
 
-        cache.eventLoopDelay = 'Event loop delay: ' + maxDelta + 'ms.';
+        cache.eventLoopDelay = '   Event loop delay: ' + maxDelta + 'ms.';
     } );
 
     setInterval( function() {
         clear();
         console.log();
         console.log();
-        console.log('\t\t' + cache.cpuUsage);
+        console.log( '\t\t' + ( cache.cpuUsage || '…' ) );
         console.log();
-        console.log('\t\t' + cache.eventLoopDelay);
+        console.log( '\t\t' + ( cache.eventLoopDelay || '…' ) );
         console.log();
-        console.log('\t\t' + cache.requestsPerSecond);
+        console.log( '\t\t' + ( cache.requestsPerSecond || '…' ) );
     }, 100 );
 
     console.log( 'Started listening to all the things…' );

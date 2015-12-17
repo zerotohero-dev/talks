@@ -1,8 +1,8 @@
 Note that this is in draft mode.
 
-I'll write ad-hoc notes here and clean them up later.
+I’ll write ad-hoc notes here and clean them up later.
 
-I'll be keeping a log of what I did, and the results of the tests and benchmarks I ran in this file. Because, you know, anything can happen during a live coding session, and I want some data to point at and say "If that thing worked, here's how it'd have looked like" in case $#!% happens :)
+I’ll be keeping a log of what I did, and the results of the tests and benchmarks I ran in this file. Because, you know, anything can happen during a live coding session, and I want some data to point at and say "If that thing worked, here's how it’d have looked like" in case $#!% happens :)
 
 ## How to Debug a Running System
 
@@ -14,9 +14,9 @@ TODO: provide additional links here.
 
 ## Methodology
 
-I'm using [apachebench][ab] for benchmarking the sample setups; and it's a **good enough** tool for our demo purposes.
+I’m using [apachebench][ab] for benchmarking the sample setups; and it’s a **good enough** tool for our demo purposes.
 
-Here's roughly the steps I follow before each `ab` test:
+Here’s roughly the steps I follow before each `ab` test:
 
 * Before each test, I restart the server(s).
 * I run something like ` ab -n 100000 -c 100 http://SERVER_IP:SERVER_PORT/SERVICE`
@@ -34,7 +34,7 @@ Here's roughly the steps I follow before each `ab` test:
 >
 > [apachebench][ab] can only give a general idea, and that's **good enough** for our needs. If you want a more in depth analysis, however, you would want a fully featured load testing tool such as [jmeter][jmeter].
 
-That said. for an actual production setup, it would make more sense to conduct a distributed API load test, using an "as a service" solution [such as flood.io][flood].
+That said, for an actual production setup, it would make more sense to conduct a distributed API load test, using an "as a service" solution [such as flood.io][flood].
 
 ## **Step 001**: Benchmarking a Simple Restify App
 
@@ -166,13 +166,11 @@ There are a bunch of important metrics to watch
 
 * Event Loop Delay
 * Garbage Collection
-* CPU Utilization (it's unusual for a Node.JS app to be CPU bound)
+* CPU Utilization (it’s unusual for a Node.JS app to be CPU-bound)
 * Heap Usage over Time
 * API
     * Response Time
     * Error Rates (error totals, error categories)
-
-// TODO: implement some of these.
 
 There are a lot of services that does that for you; and in production it makes much more sense to use those services than to cook your own
 ( TODO:// list those )
@@ -184,42 +182,30 @@ For probes I was planning to use `dtrace`, and as it turned out, `dtrace` as its
 
 ## Adding Monitoring
 
-The first thing I'm going to look at will be the event loop delay.
+// TODO: explain what monitoring tools you used.
 
-There are several ways to measure that. For instance you can run a timer, and look at how much the timer is lagging behind:
+## Diagnosing the App
 
-```javascript
-let start = process.hrtime();
-setInterval( () => {
-    delta = process.hrtime( start );
+When it comes to trying to see what’s wrong with your app, quality of your data
+triumps quantity.
 
-    trace(
-        'eventloop:delay',
-        ( ( delta[ 0 ] * 10e9 + delta[ 1 ] )  / ( 10e6 ) ) - INTERVAL
-    );
+And there are certain approaches and patterns that can be helful:
 
-    start = process.hrtime();
-}, INTERVAL );
-```
+* Expose your app’s state globally through a REPL.
+* Have good logging practices.
+* Create machine-consumable logs (with lots of keys to query).
+* Take a heap dump whenever the app crashes. — Every crash is important.
+* Know your app’s inflection points and create alarms and autoscale rules.
+* Create an API that switches your app into a “diagnostic mode”, increasing log levels etc, without restarting it.
+* Use circuit breakers so that when you app/microservice is down, it does not impact the performance of the rest of the system.
+* Utilize post-mortem debugging tools, and keep in mind that post-mortem debugging and live debugging require two different mindsets.
 
-Another, relatively more accurate way would be to fire an `setImmediate` callback and measure the time it takes to respond.
+## Extracting the CPU-intensive part
 
-<aside>Callbacks for immediates are queued in the order in which they were created. The entire callback queue is processed every event loop iteration. (That was not the case in earlier versions; i.e., only one setImmediate callback was being executed per event loop iteration; however, as of Node.js 5.x, at least, all the setImmediate queue is cleared before entering the next event loop)</aside>
+After instrumenting our app live, we’ve figured out that there are CPU-intensive tasks that are blocking the event loop.
 
-`setImmediate` fires at the very beginning of the next event loop, which makes it a proper candidate to measure the event loop lag. Here's the above code, modified to use `setImmediate`:
+At that point, a temporary solution could be to fork a child process and manage the CPU intensive task on a separate core.
 
-```javascript
-setInterval( () => {
-    delta = process.hrtime( start );
+That’s just an interim solution though. Becuase, probably your Node.JS virtual machine has been optimized for IO and network utilization. — For CPU-intensive tasks you might consider using a specialized virtual machine for that purpose. Additionally, separating the concerns will help you scale them out individually which will give flexibily and resilience to your architecture.
 
-    let start = process.hrtime();
-    setImmediate( () => {
-        let delta = process.hrtime(start);
-
-        trace(
-            'eventloop:delay',
-            ( ( delta[ 0 ] * 10e9 + delta[ 1 ] )  / ( 10e6 ) )
-        );
-    } );
-}, INTERVAL );
-```
+That’s what we’ll do next.

@@ -12,6 +12,10 @@ import stopWords from './stopwords';
 
 let cache = { tags: {}, urls: {} };
 
+// Make the state globally accessible, so that we can remotely inspect it.
+process.fluent = process.fluent || {};
+process.fluent.cache = cache;
+
 let unique = ( collection ) => collection.reduce( ( acc, cur ) => {
     if ( acc.indexOf( cur ) === -1 ) { acc.push( cur ); }
 

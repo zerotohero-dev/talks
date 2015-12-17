@@ -6,12 +6,12 @@
  * Send your comments and suggestions to <me@volkan.io>.
  */
 
+import { listen, inform } from './repl';
 import { graphql } from 'graphql';
+import { trace, start } from 'kiraz';
 import bodyParser from 'body-parser';
 import express from 'express';
-import probes from './monitor';
 import schema from './schema';
-import { trace, start } from 'kiraz';
 
 const MONITOR_EDPOINT = '192.168.99.100';
 const MONITOR_PORT = 4322;
@@ -27,6 +27,8 @@ let app = express();
 app.use( bodyParser.text( { type: 'application/graphql' } ) );
 
 app.post( '/api/v1/graph', ( req, res ) => {
+    inform( 'POST /api/v1/graph' );
+
     graphql( schema, req.body )
         .then( ( result ) => {
             res.end( JSON.stringify( result, null, 4 ) )
@@ -35,6 +37,8 @@ app.post( '/api/v1/graph', ( req, res ) => {
 
 app.get( '/benchmark/get-tags', ( req, res ) => {
     void req;
+
+    inform( 'GET /benchmark/get-tags' );
 
     let token = { action: 'get-tags' };
 
@@ -60,6 +64,8 @@ app.get( '/benchmark/get-tags', ( req, res ) => {
 app.get( '/benchmark/get-urls', ( req, res ) => {
     void req;
 
+    inform( 'GET /benchmark/get-urls' );
+
     let token = { action: 'get-urls' };
 
     let query = `
@@ -78,6 +84,6 @@ app.get( '/benchmark/get-urls', ( req, res ) => {
         } );
 } );
 
-app.listen( PORT );
+listen( app, port );
 
-console.log(  `Demo API is ready at port '${PORT}'.` );
+console.log( `Demo API is ready at port '${PORT}'.` );

@@ -6,7 +6,7 @@
  * Send your comments and suggestions to <me@volkan.io>.
  */
 
- var chart = require( './chart' );
+ var chart = require( 'darth' );
  var clear = require( 'clear' );
 
  exports.local = function( traces ) {
@@ -14,7 +14,7 @@
      var POLL_INTERVAL = 1000;
 
      traces.on( 'memory:usage', function( result )  {
-         data.push( result.percent );
+         data.push( result.percent.heapUsed / ( 1024 * 1024 ) );
      } );
 
      setInterval( function() {

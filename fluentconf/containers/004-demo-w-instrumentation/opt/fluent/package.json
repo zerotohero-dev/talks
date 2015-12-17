@@ -38,6 +38,7 @@
     "natural": "0.2.1",
     "pos": "0.3.0",
     "request": "2.67.0",
-    "unfluff": "0.11.0"
+    "unfluff": "0.11.0",
+    "vantage": "1.5.1"
   }
 }

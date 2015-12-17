@@ -6,7 +6,7 @@
  * Send your comments and suggestions to <me@volkan.io>.
  */
 
-var chart = require( './chart' );
+var chart = require( 'darth' );
 var clear = require( 'clear' );
 
 exports.local = function( traces ) {
