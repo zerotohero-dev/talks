@@ -6,5 +6,5 @@
  * Send your comments and suggestions to <me@volkan.io>.
  */
 
-
-// TODO: listen to the published topics first.
+ require( 'babel-register' );
+ require( './server' );

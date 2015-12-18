@@ -56,21 +56,14 @@ let doGet = ( param, key ) =>
         ( data ) => put( `${key}-${url}`, data, 3 * HOURS )
     );
 
+/**
+ *
+ */
+let getTags = ( url ) => doGet( url, 'getTags' );
 
 /**
  *
  */
-let getTags = ( url ) => {
-    //console.log( 'get tags' );
-    return doGet( url, 'getTags' );
-};
-
-/**
- *
- */
-let getUrls = ( tag ) => {
-    //console.log( 'get urls' );
-    return doGet( tag, 'getUrls' );
-};
+let getUrls = ( tag ) => doGet( tag, 'getUrls' );
 
 export { getTags, getUrls };

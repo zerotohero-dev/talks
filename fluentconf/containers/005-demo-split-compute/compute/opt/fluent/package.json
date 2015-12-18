@@ -18,6 +18,7 @@
   "author": "Volkan Özçelik",
   "license": "MIT",
   "dependencies": {
-    "amqp": "^0.2.4"
+    "amqp": "0.2.4",
+    "babel-register": "6.3.13"
   }
 }

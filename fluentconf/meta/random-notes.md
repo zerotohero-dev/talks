@@ -3,6 +3,14 @@
 note:
 I'll probably have to use redis when I start load balancing and want to persist state/cache between clusters.
 
+----
+
+If you are writing any kind of long living application, detailed logging is paramount to spotting problems and debugging. Without logs you would have few ways of telling how is your application behaving, are there errors, what’s the performance like, is it doing anything at all or is it just falling over every other request when you aren’t looking at it.
+
+---
+
+Since this is getting more and more real-life-like, I’d better create a central logger and also set up log rotation using something like logrotated.
+
 /*
 
 endpoint 1:

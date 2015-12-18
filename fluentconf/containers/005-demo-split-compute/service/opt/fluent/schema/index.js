@@ -12,7 +12,7 @@ import {
 	GraphQLList,
 	GraphQLString
 } from 'graphql/type';
-import { getTags, getUrls } from './bus';
+import { getTags, getUrls } from '../bus';
 
 let query = new GraphQLObjectType( {
     name: 'RootQuery',
