@@ -6,9 +6,9 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-docker run -d --privileged -i -t --cpuset-cpus="0" \
--h bastion \
--v "${DIR}/../containers/common/opt/shared":/opt/shared \
--v "${DIR}/../containers/common/data":/data \
--v "${DIR}/../containers/bastion/opt/fluent":/opt/fluent \
-fluent:bastion /bin/bash
+cd "${DIR}"
+
+./run-service-rabbit.sh
+./run-service-compute.sh
+./run-service-static-server.sh
+./run-service-app.sh

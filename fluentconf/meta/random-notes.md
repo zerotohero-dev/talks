@@ -1,5 +1,8 @@
 // TODO: process this file and add parts of it to README.md etc.
 
+note:
+I'll probably have to use redis when I start load balancing and want to persist state/cache between clusters.
+
 /*
 
 endpoint 1:
@@ -15,6 +18,64 @@ endpoint 2:
     * Query the memory
     * Get computed tags associated to the url.
 */
+
+// var amqp = require('amqp');
+//
+// var connection = amqp.createConnection({ host: '192.168.99.100' });
+//
+// // Wait for connection to become established.
+// connection.on('ready', function () {
+//     console.log( 'connection is ready' );
+//
+//   // Use the default 'amq.topic' exchange
+//   connection.queue('my-queue', function (q) {
+//       // Catch all messages
+//       q.bind('#');
+//
+//       // Receive messages
+//       q.subscribe(function (message) {
+//         // Print messages to stdout
+//         console.log('connection1');
+//         console.log(message.data.toString() );
+//       });
+//   });
+// });
+//
+//
+// var connection2 = amqp.createConnection({ host: '192.168.99.100' });
+//
+// // Wait for connection to become established.
+// connection2.on('ready', function () {
+//     console.log( 'connection2 is ready' );
+//
+//   // Use the default 'amq.topic' exchange
+//   connection2.queue('my-queue-2', function (q) {
+//       // Catch all messages
+//       q.bind('#');
+//
+//       // Receive messages
+//       q.subscribe(function (message) {
+//         // Print messages to stdout
+//         console.log('connection2.');
+//         console.log(message.data.toString() );
+//       });
+//   });
+// ‘’
+//   setInterval(function() {
+//       connection2.publish('my-queue', 'body', {}, function(err) {
+//           console.log('pbulseid');
+//       });
+//
+//       connection2.publish('my-queue-2', 'body', {}, function(err) {
+//           console.log('pbulseid');
+//       });
+//   }, 1000);
+//
+//
+//   // connection2.publish('my-queue-2', 'body', {}, function(err) {
+//   //     console.log('pbulseid');
+//   // });
+// });
 
 
 ## Managing containers
