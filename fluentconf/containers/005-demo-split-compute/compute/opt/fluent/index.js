@@ -6,5 +6,5 @@
  * Send your comments and suggestions to <me@volkan.io>.
  */
 
- require( 'babel-register' );
- require( './server' );
+require( 'babel-register' );
+require( './server' );

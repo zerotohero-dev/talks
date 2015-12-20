@@ -79,6 +79,8 @@ app.get( '/benchmark/get-urls', ( req, res ) => {
     return query( schema, request, res );
 } );
 
-listen( app, PORT );
+app.listen( PORT );
 
-console.log( `[fluent:app] is ready at port '${PORT}'.` );
+//listen( app, PORT );
+
+console.log( `[fluent:app] App is ready at port '${PORT}'.` );

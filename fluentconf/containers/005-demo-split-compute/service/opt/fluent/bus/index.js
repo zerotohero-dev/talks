@@ -56,6 +56,8 @@ let doGet = ( key, param ) =>
 
         rejectDeferred( requestId, param, key, reject );
 
+        console.log( 'Publishing to the queue.' );
+
         connection.publish(
             'fluent-request-queue',
             { param, key, requestId }
