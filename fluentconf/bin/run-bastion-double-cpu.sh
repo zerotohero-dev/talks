@@ -6,7 +6,7 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-docker run --privileged -i -t --cpuset-cpus="0,1" \
+docker run -d --privileged -i -t --cpuset-cpus="0,1" \
 -h bastion-2x \
 -v "${DIR}/../containers/common/opt/shared":/opt/shared \
 -v "${DIR}/../containers/common/data":/data \

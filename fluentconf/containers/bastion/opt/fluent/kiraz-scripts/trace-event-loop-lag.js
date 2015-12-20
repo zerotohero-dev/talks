@@ -9,20 +9,27 @@
 var chart = require( 'darth' );
 var clear = require( 'clear' );
 
-exports.local = function( traces ) {
-    var data = [];
-    var POLL_INTERVAL = 1000;
+var POLL_INTERVAL = 1000;
+var data = [];
+var delays = [];
 
-    traces.on( 'cpu:utilization', function( result )  {
-        data.push( result.usage );
+exports.local = function( traces ) {
+    traces.on( 'eventloop:delay', function( result )  {
+        delays.push( result.delta );
+
+        if ( delays.length >= 10 ) {
+            delays.shift();
+        }
+
+        data.push( Math.max.apply( Math, delays ) );
     } );
 
     setInterval( function() {
         clear();
-        console.log( ' CPU UTILIZATION ' );
-        console.log( '+---------------+' );
+        console.log( ' EVENT LOOP DELAY ' );
+        console.log( '+----------------+' );
         console.log( chart( data ) );
     }, POLL_INTERVAL );
 
-    console.log( 'Started listening to CPU Utilization…' );
+    console.log( 'Started listening…' );
 };

@@ -104,8 +104,8 @@ Here's a sample request:
 
 ```
 curl -X "POST" "http://192.168.99.100:8003/api/v1/graph" \
-	-H "Content-Type: application/graphql" \
-	-d $'{
+    -H "Content-Type: application/graphql" \
+    -d $'{
 
     tags(url: "http://192.168.99.100:8080/10-tricks-to-appear-smart-during-meetings-27b489a39d1a.html")
 }'
@@ -209,3 +209,17 @@ At that point, a temporary solution could be to fork a child process and manage 
 That’s just an interim solution though. Becuase, probably your Node.JS virtual machine has been optimized for IO and network utilization. — For CPU-intensive tasks you might consider using a specialized virtual machine for that purpose. Additionally, separating the concerns will help you scale them out individually which will give flexibily and resilience to your architecture.
 
 That’s what we’ll do next.
+
+## The Compute Service
+
+I don’t want to call it a “micro” service because the term has been abused to death so far **:)**.
+
+Here’s what we did in the `005-demo-split-compute` iteration:
+
+* We’ve split the CPU-heavy “compute” part of the service from the IO-bound API service part.
+* We’ve put a **message bus** between these two services to enable **loose coupling** between the services.
+* We’ve added an **in-memory cache** so that we don’t need to do computations if we don’t have to.
+
+Next is, making logging a bit better.
+
+## … Insert Next Section Here …

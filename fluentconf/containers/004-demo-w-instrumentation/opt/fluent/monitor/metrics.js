@@ -12,6 +12,9 @@ import { assignedCpus } from '../config.json';
 // `lookup` did not play well with a single-cpu container emulation.
 // import { lookup } from 'usage';
 
+/**
+ *
+ */
 let getCpuAverage = () => {
     let totalIdle = 0, totalTick = 0;
 
@@ -36,6 +39,9 @@ let getCpuAverage = () => {
     return { idle: totalIdle,  total: totalTick };
 };
 
+/**
+ *
+ */
 let getMemoryUsage = () => process.memoryUsage();
 
 export { getCpuAverage, getMemoryUsage };

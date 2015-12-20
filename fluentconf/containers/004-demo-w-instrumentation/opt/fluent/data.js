@@ -35,15 +35,14 @@ let postProcessWords = ( url ) => {
     let words = cache.urls[ url ].words;
 
     Object.keys( words )
-        .forEach( ( word ) => postProcessWord( words, word ) );
- };
+    .forEach( ( word ) => postProcessWord( words, word ) );
+};
 
 let add = ( url, buffer ) => {
     if ( buffer.length === 0 ) { return; }
 
     let urlCache = cache.urls[ url ];
     let words = urlCache.words;
-    let counts = urlCache.counts;
 
     let word = buffer.join( ' ' ).toLowerCase();
 
@@ -118,13 +117,13 @@ let computeTags = ( seed, url ) => {
     let multiWordTags = [];
 
     urlCache.counts.forEach( ( { word, count } ) => {
-        if ( word.indexOf( ' ' ) !== -1 ) {
-            if ( count > 1 || word.split( ' ' ).length > 2 ) {
-                multiWordTags.push( word );
+        if ( word.indexOf ( ' ' ) === -1 ) {
+            if ( singleWordTags.length < 3 ) {
+                singleWordTags.push ( word );
             }
         } else {
-            if ( singleWordTags.length < 3 ) {
-                singleWordTags.push( word );
+            if ( count > 1 || word.split ( ' ' ).length > 2 ) {
+                multiWordTags.push ( word );
             }
         }
     } );

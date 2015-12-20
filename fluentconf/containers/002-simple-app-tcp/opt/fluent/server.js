@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 /*
  * This program is distributed under the terms of the MIT license:
@@ -14,7 +14,7 @@ let handleError = ( error ) => void error;
 let handleEnd = () => {};
 
 let serve = ( socket ) => {
-    let handleData = ( data ) => socket.end( 'Hello World!' );
+    let handleData = () => socket.end( 'Hello World!' );
 
     socket.on( 'data', handleData );
     socket.on( 'error', handleError );
@@ -23,4 +23,4 @@ let serve = ( socket ) => {
 
 createServer( serve ).listen( PORT );
 
-console.log(  `Simple TCP API is ready at port '${PORT}'.` );
+console.log( `Simple TCP API is ready at port '${PORT}'.` );

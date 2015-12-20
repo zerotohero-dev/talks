@@ -8,18 +8,17 @@
 
 var clear = require( 'clear' );
 
-exports.local = function( traces ) {
-    var cache = {};
-    var maxDelta = 0;
-    var delays = [];
-    var data = [];
-    var requestCount = 0;
+var requestCount = 0;
+var maxDelta = 0;
+var cache = {};
+var delays = [];
 
+exports.local = function( traces ) {
     traces.on( 'cpu:utilization', function( result )  {
         cache.cpuUsage = '          CPU usage: ' + result.usage + '%';
     } );
 
-    traces.on( 'request:end', function( result ) {
+    traces.on( 'request:end', function() {
         requestCount++;
     } );
 

@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 'use strict';
 
 /*
@@ -8,5 +6,5 @@
  * Send your comments and suggestions to <me@volkan.io>.
  */
 
- require( 'babel-register' );
- require( './lib/loadgenerator' );
+require( 'babel-register' );
+require( './server' );

@@ -6,7 +6,7 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-docker run --privileged --cpuset-cpus="1" -i -t \
+docker run -d --privileged --cpuset-cpus="1" -i -t \
 -h service-demo \
 -v "${DIR}/../containers/common/opt/shared":/opt/shared \
 -v "${DIR}/../containers/common/data":/data \

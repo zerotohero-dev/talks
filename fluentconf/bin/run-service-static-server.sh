@@ -6,7 +6,7 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-docker run -i -t \
+docker run -i -t -d \
 -h service-static-server \
 -v "${DIR}/../containers/common/opt/shared":/opt/shared \
 -v "${DIR}/../containers/common/data":/data \

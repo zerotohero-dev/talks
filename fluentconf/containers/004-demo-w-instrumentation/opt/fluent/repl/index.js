@@ -42,7 +42,7 @@ let listen = ( server, port ) => {
     vantage
         .command( 'shutdown-server' )
         .description( 'Shuts down the server.' )
-        .action( function( args, callback ) {
+        .action( function( /*args, callback*/ ) {
             this.log( 'Forcefully shutting down the server.' );
 
             process.exit( 0 );
@@ -59,7 +59,7 @@ let listen = ( server, port ) => {
             callback();
         } );
 
-    vantage.listen( app, PORT );
+    vantage.listen( server, port );
 };
 
 export { inform, listen };

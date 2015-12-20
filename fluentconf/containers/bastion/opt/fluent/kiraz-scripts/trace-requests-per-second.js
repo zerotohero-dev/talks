@@ -9,25 +9,25 @@
 var chart = require( 'darth' );
 var clear = require( 'clear' );
 
+var requestCount = 0;
+var POLL_INTERVAL = 1000;
+
+function resetRequestCount() {requestCount = 0;}
+function incrementRequestCount() {requestCount++;}
+
 exports.local = function( traces ) {
     var data = [];
-    var delays = [];
-    var POLL_INTERVAL = 1000;
 
-    traces.on( 'eventloop:delay', function( result )  {
-        delays.push( result.delta );
-
-        if ( delays.length >= 10 ) {
-            delays.shift();
-        }
-
-        data.push( Math.max.apply( Math, delays ) );
-    } );
+    traces.on( 'request:end', incrementRequestCount );
 
     setInterval( function() {
+        data.push( requestCount );
+        resetRequestCount();
+
         clear();
-        console.log( ' EVENT LOOP DELAY ' );
-        console.log( '+----------------+' );
+
+        console.log( ' REQUESTS PER SECOND ' );
+        console.log( '+-------------------+' );
         console.log( chart( data ) );
     }, POLL_INTERVAL );
 

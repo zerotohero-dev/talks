@@ -7,10 +7,10 @@
  */
 
 import {
-	GraphQLObjectType,
-	GraphQLSchema,
-	GraphQLList,
-	GraphQLString
+    GraphQLObjectType,
+    GraphQLSchema,
+    GraphQLList,
+    GraphQLString
 } from 'graphql/type';
 import { getTags } from './net';
 import { getUrls } from './data';
