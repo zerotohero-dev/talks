@@ -12,3 +12,4 @@ cd "${DIR}"
 ./run-service-compute.sh
 ./run-service-static-server.sh
 ./run-service-app.sh
+./run-service-compute.sh

@@ -22,7 +22,7 @@ let getTags = ( url ) => new Promise( ( resolve, reject ) => {
         }
 
         resolve( prepare( url, body ) );
-	} );
+    } );
 } );
 
 export { getTags };

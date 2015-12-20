@@ -24,9 +24,9 @@ setInterval( () => {
 
     {
         if ( counter % 23 === 0 ) {
-            startMeasure = cpuAverage();
+            startMeasure = getCpuAverage();
         } else {
-            let endMeasure = cpuAverage();
+            let endMeasure = getCpuAverage();
             let idleDifference = endMeasure.idle - startMeasure.idle;
             let totalDifference = endMeasure.total - startMeasure.total;
             let percentageCPU = 100 - ~~( 100 * idleDifference / totalDifference );
@@ -48,7 +48,11 @@ setInterval( () => {
 
             trace(
                 'eventloop:delay',
-                { delta: ( ( delta[ 0 ] * 10e9 + delta[ 1 ] )  / ( 10e6 ) ) }
+                { delta: (
+                    ( delta[ 0 ] * 10000000000 + delta[ 1 ] )
+                    /
+                    ( 10000000 )
+                ) }
             );
 
             trace(

@@ -51,9 +51,15 @@ let doGet = ( param, key ) =>
         rejectDeferred( sequenceId, param, key, reject );
 
         //console.log( 'publishing…')
-        connection.publish( `${key}-request`, { param, sequenceId } );
+        //connection.publish( `${key}-request`, { param, sequenceId } );
+
+        console.log( connection.publish );
+        console.log( connection.sendToQueue );
+
+        throw 'exception';
+
     } ).then(
-        ( data ) => put( `${key}-${url}`, data, 3 * HOURS )
+        ( data ) => put( `${key}-${param}`, data, 3 * HOURS )
     );
 
 /**

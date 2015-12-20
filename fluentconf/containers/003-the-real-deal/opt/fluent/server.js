@@ -19,9 +19,9 @@ app.use( bodyParser.text( { type: 'application/graphql' } ) );
 
 app.post( '/api/v1/graph', ( req, res ) => {
     graphql( schema, req.body )
-        .then( ( result ) => {
+        .then( ( result ) =>
             res.end( JSON.stringify( result, null, 4 ) )
-        } );
+        );
 } );
 
 app.get( '/benchmark/get-tags', ( req, res ) => {
@@ -34,9 +34,9 @@ app.get( '/benchmark/get-tags', ( req, res ) => {
     `;
 
     graphql( schema, query )
-        .then( ( result ) => {
+        .then( ( result ) =>
             res.end( JSON.stringify( result, null, 4 ) )
-        } );
+        );
 } );
 
 app.get( '/benchmark/get-urls', ( req, res ) => {
@@ -49,9 +49,9 @@ app.get( '/benchmark/get-urls', ( req, res ) => {
     `;
 
     graphql( schema, query )
-        .then( ( result ) => {
+        .then( ( result ) =>
             res.end( JSON.stringify( result, null, 4 ) )
-        } );
+        );
 } );
 
 app.listen( PORT );

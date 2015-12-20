@@ -12,8 +12,14 @@ import { startInstrumenting, stopInstrumenting } from '../monitor';
 let voidInformer = { inform: () => {} };
 let informer = null;
 
+/**
+ *
+ */
 let inform = ( what ) => ( informer || voidInformer ).inform( what );
 
+/**
+ *
+ */
 let listen = ( server, port ) => {
     let vantage = new Vantage();
 
@@ -42,7 +48,7 @@ let listen = ( server, port ) => {
     vantage
         .command( 'shutdown-server' )
         .description( 'Shuts down the server.' )
-        .action( function( args, callback ) {
+        .action( function( /*args, callback*/ ) {
             this.log( 'Forcefully shutting down the server.' );
 
             process.exit( 0 );

@@ -13,12 +13,12 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import schema from './schema';
 
-const MONITOR_EDPOINT = '192.168.99.100';
+const MONITOR_ENDPOINT = '192.168.99.100';
 const MONITOR_PORT = 4322;
 const PORT = 8003;
 
 start( {
-    host: MONITOR_EDPOINT,
+    host: MONITOR_ENDPOINT,
     port: MONITOR_PORT
 } );
 
@@ -30,9 +30,9 @@ app.post( '/api/v1/graph', ( req, res ) => {
     inform( 'POST /api/v1/graph' );
 
     graphql( schema, req.body )
-        .then( ( result ) => {
+        .then( ( result ) =>
             res.end( JSON.stringify( result, null, 4 ) )
-        } );
+        );
 } );
 
 app.get( '/benchmark/get-tags', ( req, res ) => {
@@ -55,9 +55,9 @@ app.get( '/benchmark/get-tags', ( req, res ) => {
 
     graphql( schema, query )
         .then( ( result ) => {
-            res.end( JSON.stringify( result, null, 4 ) )
+            res.end( JSON.stringify( result, null, 4 ) );
 
-            trace( 'request:end', token )
+            trace( 'request:end', token );
         } );
 } );
 
@@ -78,12 +78,12 @@ app.get( '/benchmark/get-urls', ( req, res ) => {
 
     graphql( schema, query )
         .then( ( result ) => {
-            res.end( JSON.stringify( result, null, 4 ) )
+            res.end( JSON.stringify( result, null, 4 ) );
 
             trace( 'request:end', token );
         } );
 } );
 
-listen( app, port );
+listen( app, PORT );
 
 console.log( `Demo API is ready at port '${PORT}'.` );

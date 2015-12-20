@@ -9,24 +9,20 @@
 var chart = require( 'darth' );
 var clear = require( 'clear' );
 
-exports.local = function( traces ) {
-    var data = [];
-    var requestCount = 0;
-    var POLL_INTERVAL = 1000;
+var data = [];
+var POLL_INTERVAL = 1000;
 
-    traces.on( 'request:end', function( result ) {
-        requestCount++;
+exports.local = function( traces ) {
+    traces.on( 'cpu:utilization', function( result )  {
+        data.push( result.usage );
     } );
 
     setInterval( function() {
-        data.push( requestCount );
-        requestCount = 0;
-
         clear();
-        console.log( ' REQUESTS PER SECOND ' );
-        console.log( '+-------------------+' );
+        console.log( ' CPU UTILIZATION ' );
+        console.log( '+---------------+' );
         console.log( chart( data ) );
     }, POLL_INTERVAL );
 
-    console.log( 'Started listening…' );
+    console.log( 'Started listening to CPU Utilization…' );
 };
