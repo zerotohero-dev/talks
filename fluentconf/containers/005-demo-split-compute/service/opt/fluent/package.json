@@ -27,7 +27,7 @@
   "author": "Volkan Özçelik",
   "license": "MIT",
   "dependencies": {
-    "amqp": "^0.2.4",
+    "amqp": "0.2.4",
     "babel": "6.1.18",
     "babel-preset-es2015": "6.1.18",
     "babel-register": "6.2.0",
@@ -38,6 +38,7 @@
     "kiraz": "*",
     "memory-cache": "0.1.4",
     "natural": "0.2.1",
+    "node-uuid": "1.4.7",
     "pos": "0.3.0",
     "request": "2.67.0",
     "unfluff": "0.11.0",
