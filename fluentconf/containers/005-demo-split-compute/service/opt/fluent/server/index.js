@@ -13,12 +13,12 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import schema from '../schema';
 
-const MONITOR_EDPOINT = '192.168.99.100';
+const MONITOR_ENDPOINT = '192.168.99.100';
 const MONITOR_PORT = 4322;
 const PORT = 8003;
 
 start( {
-    host: MONITOR_EDPOINT,
+    host: MONITOR_ENDPOINT,
     port: MONITOR_PORT
 } );
 

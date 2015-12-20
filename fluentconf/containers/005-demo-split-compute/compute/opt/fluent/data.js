@@ -12,7 +12,7 @@ import stopWords from './stopwords';
 
 let cache = { tags: {}, urls: {} };
 
-// Make the state globally accessible, so that we can remotely inspect it.
+// Expose state to the REPL.
 process.fluent = process.fluent || {};
 process.fluent.cache = cache;
 

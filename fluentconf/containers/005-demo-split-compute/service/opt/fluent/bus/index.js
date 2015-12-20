@@ -7,26 +7,29 @@ import uuid from 'node-uuid';
 const HOURS = 1000 * 60 * 60;
 
 let connection = connect( { host: '192.168.99.100' } );
+
 let resolvers = {};
+
+// Expose state to the REPL.
+process.fluent = process.fluent || {};
+process.fluent.resolvers = resolvers;
 
 let generateGuid = () => uuid.v4();
 
 let resolveSubscription = ( message ) => {
-    console.log( 'Will resolve subscription' );
+    if ( !message ) { return; }
+    if ( message.error ) { return; }
 
-    void message;
+    let requestId = message.requestId;
+    let resolver = resolvers[ requestId ];
 
-    throw 'Not Implemented Yet!';
+    if ( !resolver ) { return; }
 
-    //let data = JSON.parse( message.data.toString() );
-    //let response = data.response;
-    //let sequenceId = data.sequenceId;
-    //let resolve = resolvers[ `r${sequenceId}` ];
-    //
-    //if ( !resolve ) { return; }
-    //
-    //delete resolvers[ `r${sequenceId}` ];
-    //resolve( response );
+    let resolve = resolvers[ requestId ];
+
+    delete resolvers[ requestId ];
+
+    resolve( message.data );
 };
 
 let rejectDeferred = ( requestId, param, action, reject ) =>
@@ -47,16 +50,17 @@ connection.on( 'ready', () => {
     } );
 } );
 
-let doGet = ( key, param ) =>
-    get( `${key}-${param}` ) ||
-    new Promise( ( resolve, reject ) => {
+let doGet = ( key, param ) => {
+    let cached = get( `${key}-${param}` );
+
+    if ( cached ) { return cached; }
+
+    return new Promise( ( resolve, reject ) => {
         let requestId = generateGuid();
 
         resolvers[ requestId ] = resolve;
 
         rejectDeferred( requestId, param, key, reject );
-
-        console.log( 'Publishing to the queue.' );
 
         connection.publish(
             'fluent-request-queue',
@@ -65,6 +69,7 @@ let doGet = ( key, param ) =>
     } ).then(
         ( data ) => put( `${key}-${param}`, data, 3 * HOURS )
     );
+};
 
 /**
  *
