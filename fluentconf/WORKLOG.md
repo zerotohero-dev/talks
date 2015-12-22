@@ -231,3 +231,41 @@ Docker, by design, isolates each container from one another. You cannot assign p
 > Any source file that has hard-coded IP addresses in it will eventually become a operational maintenance nightmare. Use DNS and discovery services instead.
 
 In a production setup, I would be using something like [consul][consul] for the discovery service, or use a DNS server. For our demo, though, both of these are overkill. I’ll use `docker link` instead.
+
+The next is configuring log rotation. 
+
+It’s relatively easy in debian-based systems:
+
+```bash
+sudo apt-get install logrotate
+```
+
+/etc/logrotate.d/fluent
+
+```
+/var/log/fluent/service.log {
+    monthly
+    size 100M
+    rotate 12
+    compress
+    delaycompress
+    missingok
+    notifempty
+    create 644 root root
+}
+```
+
+Then create an entry at `/etc/logrotate.d/`. 
+
+## What Happens When Node Breaks?
+
+In the last section:
+
+* We have created machine-consumable logs so that we can have something like ELK ingest and process them later.
+* We also enabled log rotation on application and compute containers.
+
+Next up, is managing the node process.
+
+## What if the Node Process Crashes?
+
+…
