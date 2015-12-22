@@ -220,6 +220,71 @@ Here’s what we did in the `005-demo-split-compute` iteration:
 * We’ve put a **message bus** between these two services to enable **loose coupling** between the services.
 * We’ve added an **in-memory cache** so that we don’t need to do computations if we don’t have to.
 
+## About Service Discovery
+
+When the number of applications and services inside the application start exceeding a handful, then dynamically managing them starts exponentially harder.
+
+One of such management problems is "dynamic routing" and "dynamic service discovery".
+
+In a production setup you’d normally use something like **dynamic DNS** or a discovery service like [Consul][consul] (*which is “kind of” a DNS anyway :)*) to discover resources. For the sake of this demo, however, using `docker --link` would be sufficient.
+
+One advantage of using `docker --link` is that it dynamically configures the `/etc/hosts` file of the containers, so you don’t have to hardcode IP addresses in your app. — Hardcoding IP addresses is a one-way ticket to hell; you should be using discovery services and dynamic DNS resolution all the time.
+
 Next is, making logging a bit better.
 
-## … Insert Next Section Here …
+## Configuring the Logging
+
+> Good developers debug, great developers read logs.
+
+Actually, before configuring the logging I’ll setup some container networking. As the number of containers that I manage increases, so does the complexity in managing them.
+
+Docker, by design, isolates each container from one another. You cannot assign private static IP addresses to containers. And actually that’s a good thing: It forces you rethink your architecture. 
+
+> Any source file that has hard-coded IP addresses in it will eventually become a operational maintenance nightmare. Use DNS and discovery services instead.
+
+In a production setup, I would be using something like [consul][consul] for the discovery service, or use a DNS server. For our demo, though, both of these are overkill. I’ll use `docker link` instead.
+
+The next is configuring log rotation. 
+
+It’s relatively easy in debian-based systems:
+
+```bash
+sudo apt-get install logrotate
+```
+
+/etc/logrotate.d/fluent
+
+```
+/var/log/fluent/service.log {
+    monthly
+    size 100M
+    rotate 12
+    compress
+    delaycompress
+    missingok
+    notifempty
+    create 644 root root
+}
+```
+
+Then create an entry at `/etc/logrotate.d/`. 
+
+## What Happens When Node Breaks?
+
+In the last section:
+
+* We have created machine-consumable logs so that we can have something like ELK ingest and process them later.
+* We also enabled log rotation on application and compute containers.
+
+Next up, is managing the node process.
+
+## What if the Node Process Crashes?
+
+
+
+
+// TODO: repl in clustered mode: create one repl for the master and N different
+// repls for the children. you can also create a “debug” message queue to
+// decrease the load of real-time socket communication,
+// connection.publish( 'debug-compute-master', { action: getPid } )
+// connection.publish( 'debug-compute-child-001', { action: getOpenHandleCount } )

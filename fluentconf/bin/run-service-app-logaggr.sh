@@ -6,12 +6,12 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-docker run --privileged -i -t -d \
--h service-static-server \
+docker run -d --privileged -i -t \
+-h service-app \
+-p 8005:8005 \
+-p 8015:8015 \
 -v "${DIR}/../containers/common/opt/shared":/opt/shared \
 -v "${DIR}/../containers/common/data":/data \
--v "${DIR}/../containers/static-server/opt/fluent":/opt/fluent \
--v "${DIR}/../containers/static-server/etc/nginx/sites-enabled":/etc/nginx/sites-enabled \
--v "${DIR}/../containers/static-server/var/www":/var/www \
--p 8080:8080 \
-fluent:service-static-server /bin/bash
+-v "${DIR}/../containers/006-demo-eventbus-logaggr/service/opt/fluent":/opt/fluent \
+-v "${DIR}/../containers/006-demo-eventbus-logaggr/service/var/log/fluent":/var/log/fluent \
+fluent:service-app /bin/bash
