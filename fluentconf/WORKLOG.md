@@ -220,9 +220,21 @@ Here’s what we did in the `005-demo-split-compute` iteration:
 * We’ve put a **message bus** between these two services to enable **loose coupling** between the services.
 * We’ve added an **in-memory cache** so that we don’t need to do computations if we don’t have to.
 
+## About Service Discovery
+
+When the number of applications and services inside the application start exceeding a handful, then dynamically managing them starts exponentially harder.
+
+One of such management problems is "dynamic routing" and "dynamic service discovery".
+
+In a production setup you’d normally use something like **dynamic DNS** or a discovery service like [Consul][consul] (*which is “kind of” a DNS anyway :)*) to discover resources. For the sake of this demo, however, using `docker --link` would be sufficient.
+
+One advantage of using `docker --link` is that it dynamically configures the `/etc/hosts` file of the containers, so you don’t have to hardcode IP addresses in your app. — Hardcoding IP addresses is a one-way ticket to hell; you should be using discovery services and dynamic DNS resolution all the time.
+
 Next is, making logging a bit better.
 
 ## Configuring the Logging
+
+> Good developers debug, great developers read logs.
 
 Actually, before configuring the logging I’ll setup some container networking. As the number of containers that I manage increases, so does the complexity in managing them.
 
@@ -268,4 +280,11 @@ Next up, is managing the node process.
 
 ## What if the Node Process Crashes?
 
-…
+
+
+
+// TODO: repl in clustered mode: create one repl for the master and N different
+// repls for the children. you can also create a “debug” message queue to
+// decrease the load of real-time socket communication,
+// connection.publish( 'debug-compute-master', { action: getPid } )
+// connection.publish( 'debug-compute-child-001', { action: getOpenHandleCount } )
