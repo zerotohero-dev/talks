@@ -4,4 +4,4 @@ fluentconf/containers/common/**/*.dat
 .DS_Store
 .vscode
 fluent
-compute.log
+*.log
