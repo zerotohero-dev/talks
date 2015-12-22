@@ -9,10 +9,15 @@
 require( 'babel-register' );
 require( './server' );
 
-// TODO:
-// 1. run `cluster-run-006... sh`
-// 2. make sure that service and vantage ports are properly bound.
-// 3. make sure that folders are properly bound.
-// 4. run compute and service nodes and make sure that logs are generated properly.
-// 5. make sure that vantage works properly and can access the global context in both compute and app instance.
-// 6. when all of the above is working, update the readme, commit and merge the branch.
+// TODO: add to worklog:
+// using docker --link instead of routing outside and then coming back in
+// normally you use something like consul for discovery, however in our case
+// docker link is sufficient.
+// (discovery section on presentation, this is trying to get out of hands, add
+// a discovery service)
+
+// TODO: repl in clustered mode: create one repl for the master and N different
+// repls for the children. you can also create a “debug” message queue to
+// decrease the load of real-time socket communication,
+// connection.publish( 'debug-compute-master', { action: getPid } )
+// connection.publish( 'debug-compute-child-001', { action: getOpenHandleCount } )

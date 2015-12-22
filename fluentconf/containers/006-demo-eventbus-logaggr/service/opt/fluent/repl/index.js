@@ -24,6 +24,15 @@ let listen = () => {
     let vantage = new Vantage();
 
     vantage
+        .command( 'ping' )
+        .description( 'Checks vantage.' )
+        .action( function( args, callback ) {
+            this.log( 'pong.' );
+
+            callback();
+        } );
+
+    vantage
         .command( 'start-instrumenting' )
         .description( 'Starts gathering metrics.' )
         .action( function( args, callback ) {

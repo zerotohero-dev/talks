@@ -9,8 +9,8 @@
 import { createLogger } from 'bunyan';
 
 let logger = createLogger( {
-    name: 'fluent:compute',
-    streams: [ { path: '/var/log/fluent-service.log' } ]
+    name: 'fluent:service',
+    streams: [ { path: '/var/log/fluent/service.log' } ]
 } );
 
 export default logger;

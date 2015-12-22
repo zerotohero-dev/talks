@@ -46,7 +46,7 @@ let compute = ( message ) => {
     } );
 };
 
-let connection = connect( { host: '192.168.99.100' } );
+let connection = connect( { host: 'rabbit' } );
 
 connection.on( 'ready', () => {
     connection.queue( 'fluent-request-queue', ( q ) => {
@@ -58,3 +58,6 @@ connection.on( 'ready', () => {
 } );
 
 listen();
+
+log.info( '[fluent:compute] Started listening.' );
+console.log( '[fluent:compute] Started listening.' );

@@ -10,7 +10,7 @@ import { createLogger } from 'bunyan';
 
 let logger = createLogger( {
     name: 'fluent:compute',
-    streams: [ { path: '/var/log/fluent-compute.log' } ]
+    streams: [ { path: '/var/log/fluent/compute.log' } ]
 } );
 
 export default logger;

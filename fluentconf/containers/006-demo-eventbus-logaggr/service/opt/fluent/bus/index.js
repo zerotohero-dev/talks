@@ -6,7 +6,7 @@ import uuid from 'node-uuid';
 
 const HOURS = 1000 * 60 * 60;
 
-let connection = connect( { host: '192.168.99.100' } );
+let connection = connect( { host: 'rabbit' } );
 
 let resolvers = {};
 
@@ -17,13 +17,13 @@ process.fluent.resolvers = resolvers;
 let generateGuid = () => uuid.v4();
 
 let resolveSubscription = ( message ) => {
-    if ( !message ) { return; }
-    if ( message.error ) { return; }
+    if ( !message ) {return;}
+    if ( message.error ) {return;}
 
     let requestId = message.requestId;
     let resolver = resolvers[ requestId ];
 
-    if ( !resolver ) { return; }
+    if ( !resolver ) {return;}
 
     let resolve = resolvers[ requestId ];
 
@@ -53,7 +53,9 @@ connection.on( 'ready', () => {
 let doGet = ( key, param ) => {
     let cached = get( `${key}-${param}` );
 
-    if ( cached ) { return cached; }
+    if ( cached ) {
+        return cached;
+    }
 
     return new Promise( ( resolve, reject ) => {
         let requestId = generateGuid();
@@ -67,7 +69,7 @@ let doGet = ( key, param ) => {
             { param, key, requestId }
         );
     } ).then(
-        ( data ) => put( `${key}-${param}`, data, 3 * HOURS )
+        ( data ) => put ( `${key}-${param}`, data, 3 * HOURS )
     );
 };
 

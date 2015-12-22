@@ -222,4 +222,12 @@ Here’s what we did in the `005-demo-split-compute` iteration:
 
 Next is, making logging a bit better.
 
-## … Insert Next Section Here …
+## Configuring the Logging
+
+Actually, before configuring the logging I’ll setup some container networking. As the number of containers that I manage increases, so does the complexity in managing them.
+
+Docker, by design, isolates each container from one another. You cannot assign private static IP addresses to containers. And actually that’s a good thing: It forces you rethink your architecture. 
+
+> Any source file that has hard-coded IP addresses in it will eventually become a operational maintenance nightmare. Use DNS and discovery services instead.
+
+In a production setup, I would be using something like [consul][consul] for the discovery service, or use a DNS server. For our demo, though, both of these are overkill. I’ll use `docker link` instead.
