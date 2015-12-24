@@ -269,22 +269,64 @@ sudo apt-get install logrotate
 
 Then create an entry at `/etc/logrotate.d/`. 
 
+In this demo, however, we’re using docker containers, therefore `logrotate` will not start by default. One way to overcome that is to expose the log folder to the host machine and use the host machine’s `logrotate` process. — Since this exposes the contents of the container, this might be a security leak though.
+
+Binding a volume to the container and write your logs from your process to that mount point  maps a location in the container’s file system to a location on the host. You can then access the logs separately from the running process in your container and use tools like logrotate to handle them.
+
+Another alternative is to push the logs to a cloud log aggregator over the network.
+
 ## What Happens When Node Breaks?
 
 In the last section:
 
 * We have created machine-consumable logs so that we can have something like ELK ingest and process them later.
-* We also enabled log rotation on application and compute containers.
+* We also looked at different ways to deal with log files.
 
 Next up, is managing the node process.
 
 ## What if the Node Process Crashes?
 
+Instead of running the apps as a service, we will manually bootstrap them using forever
+
+Creating an init script or a upstart script and running `forever` in it will enable running `forever` as a service.
+
+TODO: list services like forever.
+
+So now we’re running…
+
+```bash
+docker exec -d fluent_compute forever /opt/fluent
+docker exec -d fluent_app forever /opt/fluent
+```
+
+… and that monitors the compute and app services and restarts them upon crashes.
+
+A slightly more advanced one would be 
+
+```bash
+docker exec -d fluent_compute forever /usr/bin/node /opt/fluent 
+docker exec -d fluent_app forever /usr/bin/node /opt/fluent
+```
+
+Where `--abort-on-uncaught-exception` will tell node to take a core dump
+
+## What About Memory Leaks?
+
+Memory management in modern operating systems is very complicated, and there is no simple answer to "how much memory is my process using?".
+
+We can do several things.
+
+* Programmatically take core dumps ( https://www.npmjs.com/package/core-dump )
+* Take ad-hoc core dumps ( gcore )
+* Take core dumps at `--abort-on-uncaught-exception`
+
+These will give valuable data, you can visualize them, diff them, count object in them to detect memory leaks.
+
+Similarly we can.
+
+* Programmatically take heap snapshots (when your "monitoring" thingy suspects memory leaks)
+* Take a heap snapshot just before the app crashes (can help you root-cause problems, and it’s relatively easier to analyze than a core file)
+
+Next up, we’ll deal with these things which will make our app vigilant and robust enough so that we can talk about scaling it.
 
 
-
-// TODO: repl in clustered mode: create one repl for the master and N different
-// repls for the children. you can also create a “debug” message queue to
-// decrease the load of real-time socket communication,
-// connection.publish( 'debug-compute-master', { action: getPid } )
-// connection.publish( 'debug-compute-child-001', { action: getOpenHandleCount } )

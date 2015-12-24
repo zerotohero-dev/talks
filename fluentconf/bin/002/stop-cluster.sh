@@ -4,7 +4,7 @@
 # <https://github.com/v0lkan/talks/blob/master/LICENSE.md>
 # Send your comments and suggestions to <me@volkan.io>.
 
-ifconfig | awk '/inet addr/{print substr($2,6)}' | grep 172 > /data/service-tcp.dat
+docker stop fluent_tcp
+docker stop fluent_bastion
 
-echo "[${HOSTNAME}] Initialized successfully."
-cd /opt/fluent/
+echo "Stopped the cluster."

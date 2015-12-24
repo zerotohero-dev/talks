@@ -4,12 +4,7 @@
 # <https://github.com/v0lkan/talks/blob/master/LICENSE.md>
 # Send your comments and suggestions to <me@volkan.io>.
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+ifconfig | awk '/inet addr/{print substr($2,6)}' | grep 172 > /data/service-demo.dat
 
-cd "${DIR}"
-
-./run-service-rabbit.sh
-./run-service-compute.sh
-./run-service-static-server.sh
-./run-service-app.sh
-./run-service-compute.sh
+echo "[${HOSTNAME}] Initialized successfully."
+cd /opt/fluent/
