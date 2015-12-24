@@ -1,6 +1,14 @@
 Source code for my FluenConf talk.
 
-I'll update this README.
+<http://conferences.oreilly.com/fluent/javascript-html-us/public/schedule/detail/46028> 
+
+> **Note**
+>
+> I’m constantly adding bits and pieces here, and updating the code in this folder almost daily.
+>
+> Stay tuned.
+
+I’ll update this README.
 
 ## Environment Setup
 
