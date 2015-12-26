@@ -329,4 +329,91 @@ Similarly we can.
 
 Next up, we’ll deal with these things which will make our app vigilant and robust enough so that we can talk about scaling it.
 
+TODO: before anything, make README.md better.
 
+TODO: cleanup before commit, move stuff to wunderlist.
+TODO: Generate heapdump on unhandled exception.
+TODO: Generate core dump on unhandled exception.
+TODO: regularly take heap dumps
+TODO: check for leaks and take dumps if there’s a leak.
+TODO: talk about diagnosing gc behavior ( --expose-gc and its friends )
+
+
+Gut feeeling does not work in production. And 99% of the time the root cause of a problem will be diagonally different than what you initially have suspected.
+
+So always apply the scientific methodology:
+
+* Construct a hyphothesis
+* Gather evidence
+* Review your hyphothesis with the light of this evidence.
+* Improve your hyphothesis or form a new hyphotehesis.
+* Rinse an repeat until you find the root cause.
+
+measuring performance
+handling crashes
+memory leaks
+
+note: Restify keeps timers for each handler (middleware) took to run in microseconds.
+(how long it took to parse the body) -> CPU intensive
+(how long it took to render the response) -> CPU intensive
+(how long it too to do the I/O) -> network intensive
+
+will lock all the other requests in the system.
+
+statistically sample the stack traces.
+
+A stack trace is a report of the active stack frames at a certain point in time during the execution of a program.
+
+you’ll need to sample stack traces from a running instance with minimal impact to performance:
+
+linux perf events (link)
+    can sample stack traces of running processes.
+    it is available in most of the modern linux kernels.
+    can be used at runtime, in production.
+    
+node --perf_basic_prof_only_functions 
+outputs a map file that translates native memory addresses to actual javascript files and their line numbers.
+
+--abort_on_uncaught_exception
+
+toolkits for analyzing core dumps:
+lldb-v8 (not fully featuyre complete)
+llnode (not fully feature complete)
+
+mdb_v8 (solaris) -> fully featured and compatible with linux cores.
+
+can have a debug sloaris instance
+or can use cloud tools for that like manta
+you can debug your app anywhere else you like, it contains a canonical state of your app (core dump)
+
+Always name your functions.
+
+Foo.prototoype.bar = function bar() {}
+
+TODO: update the repl to take core files and heap snapshots
+ 
+ Core dump ==== complete state of the app at the time taken.
+ 
+
+can be run in production, very negligible impact (v5, cmoming to v4)
+
+Flame graphs
+
+Take core dump, you can load that dump elsewhere to do post-mortem debugging.
+
+gcore -> take core dump of the process w/o interrupting it.
+
+
+leak:
+    generate core dump ad-hoc.
+    
+    gcore
+
+
+
+Post mortem debugging is a “must have” for any production system. It gives so much state information that it is virtually impossible to simply catch by reading log files.
+
+    
+alternative to forever:
+https://github.com/tj/mon
+TODO: list some other alternatives too.    

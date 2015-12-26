@@ -1,3 +1,14 @@
+----
+
+## How About Garbage Collection
+
+* See http://jayconrod.com/posts/55/a-tour-of-v8-garbage-collection for in-depth details.
+
+
+
+----
+
+
 // TODO: process this file and add parts of it to README.md etc.
 
 note:
