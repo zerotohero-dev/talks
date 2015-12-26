@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # vim /etc/bash.bashrc
 
 INJECTED_RUNNER="/opt/shared/bin/bashrc-run.sh"

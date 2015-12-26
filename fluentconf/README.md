@@ -1,51 +1,64 @@
-Source code for my FluenConf talk.
-
-<http://conferences.oreilly.com/fluent/javascript-html-us/public/schedule/detail/46028> 
+## About
 
 > **Note**
 >
-> I’m constantly adding bits and pieces here, and updating the code in this folder almost daily.
+> I’m constantly adding bits and pieces here, and updating the code in this folder **almost daily**.
 >
 > Stay tuned.
 
-I’ll update this README.
+This is the repository for [O’Reilly FluentConf 2016 **Scaling Your *Node.JS* API Like a Boss**][talk] talk. 
+
+Along with the source code, you’ll also see other useful nuggets, and reference material. This repository also contains code and information that have not been covered in the talk (*due to scope and/or time limitations*).
+
+Enjoy!
+
+## Directory Structure
+
+Here’s a brief outline of how this project is organized:
+
+* **bin**: Contains runner scripts for various scenarios
+* **containers**: Contains source code for various containers. Note that these folders are **numbered**. Each number represents the next step in the application’s development. You can think of these as `git tag`s.
+* **containers/bastion**: This is the entry container that we use to access and/or benchmark other containers.
+* **meta**: Contains random data to be sorted.
+* **assets**: Mostly contains images to be used in the presentation.
 
 ## Environment Setup
 
+In case you’d like to try the examples yourself, you have some prep work to do.
+
 ### Host Machine
 
-> The demos here use [docker][docker] containers ona Mac OS laptop. If you are using a different operating system, then your setup might be different.
+The demos use **[docker][docker]** containers on a *MacBook Pro (Late 2013), 2.4 GHz Intel Core i5, 16 GB 1600 MHz DDR3 memory, solid state drive, OS X El Capitan Version 10.11.x*.
 
-Before starting docker, I ran these commands on the host to configure networking. These are probably not necessary as each docker container manages its own **maxfile** and **socket** limits. Yet, since a docker container is not strictly independent from its host system, I've put them "just in case":
+If you are using a different operating system, then your setup might be different.
+
+### Container Preparation
+
+First let’s make sure that the host machine does not have any network or file handler limitations:
 
 ```bash
 user@Macbook:/#
-sudo sysctl -w kern.maxfiles=65536
+
+sysctl kern.maxfiles=65536
+kern.maxfiles: 524288
+
 sudo sysctl -w kern.maxfilesperproc=65000
-sudo sysctl -w kern.ipc.somaxconn=60000
-ulimit -S -n 50000
+kern.maxfilesperproc: 524288
+
+sysctl kern.ipc.somaxconn=60000
+maxconn: 40000
+
+ulimit -n
+524288
 ```
 
-### Containers
+These numbers are **good enough** for our demo purposes.
 
-The containers have `128` maximum socket connections by default. This is not enough for highly-concurrent load testing. You'll need to run the containers in
-[privileged mode][privileged] and execute the following **in the containers** so that the network requests do not drop and/or the test do not crash in the middle.
+The docker containers that I’ll be using in this demo are **Ubuntu 14.04.3 LTS**.
 
-```bash
-root@container:/#
-# The default is 128.
-# You typically pick something around 1024-2048 for this for production.
-# We are choosing a little higher, to produce smoother results.
-sysctl -w net.core.somaxconn=32768
-```
-
-ab -r -n 40000 -c 4000 http://172.17.0.3:8080/hello
-
-Also verify that you have proper limits.
+When I do an `ulimit -a`, I get the following:
 
 ```bash
-root@container:/#
-ulimit -a
 core file size          (blocks, -c) 0
 data seg size           (kbytes, -d) unlimited
 scheduling priority             (-e) 0
@@ -64,7 +77,9 @@ virtual memory          (kbytes, -v) unlimited
 file locks                      (-x) unlimited
 ```
 
-You'll especially want **high** `open files` and `max user processes` numbers.
+This is also **good enough** for our demo purposes.
+
+You’ll especially want **high** `open files` and `max user processes` numbers.
 
 If they are not high enough, consider raising them with `ulimit -w`
 
@@ -72,74 +87,99 @@ You may also want to modify the local ephemeral port ranges on the containers:
 
 ```bash
 root@container:/#
-# The default is "32768 61000" and it's "suficcent" for our purposes.
+# The default range is "32768 61000" and it's "suficcent" for our purposes.
 # Increasing the range a bit won't hurt though:
 sysctl -w net.ipv4.ip_local_port_range="1024 65000"
 ```
 
-### Notes About `ab` Test
+There’s only one remainingproblem to be adjusted:
 
-There are some problems with ab to be aware of –
+The containers have `128` maximum socket connections by default. And this is not enough for highly-concurrent load testing. 
 
-First of all `ab -n 40000 -c 4000` is **a lot**. That is "*4000
-concurrent users, each doing 10 page hits*". — Since network latency
-is essentially zero (*because the containers are on a virtual
-private subnet on the same machine*)
+To modify this limit the containers need to be run in [privileged mode][docker-run]. Then we’ll have to run the following code whenever a container launches:
 
-> `ab` will **flood** the server as fast as it can generate the requests. It has no option to delay between the requests.
+```bash
+root@container:/#
+sysctl -w net.core.somaxconn=32768
+```
 
-Given that the network layer is essentially bypassed, `ab` will create a peak level of requests that will eventually start the container OS, or the Node.JS instance, or both stop responding and start blocking additional requests. Especially if the requested resource is a very simple page that served in a few milliseconds.
+One dirty hack would be to put this code into `/etc/bash.bashrc`. This is suboptimal, and it saves the day nonetheless.
 
-> Expect the behavior of the ab tests to be increasingly non-deterministic under higher concurrent loads.
+> **Note**
+>
+> In a production setup the **somaxconn** you need will depend on your concurrency needs. If you have a gaming service with tens of thousands of realtime concurrent users that constantly keep an open socket connection, then a high number would be necessary. 
+>
+> In such a realtime app, you might go as high as a few tens of thousands; however, most probably your virtual machine will start to break somewhere around 5K to 10K concurrent connections; and you’ll need to autoscale after that point anyway.
+>
+> In a typical API service that will face highly concurrent load, this setting generally falls somewhere between **1204** and **2048**.
 
-In the current few tests the number of requests (`-n`) is high to observe the maximum throughput of the system. In a production benchmark, using `ab` with lower `-n` and `-c` values (*like `-n == 400, -c == 10`) and then slowly increasing the values would provide much valuable insights.
+## Running the Demos
 
-Again, when opening large number of connections, `ab` test might turn out to be non-deterministic unreliable due to ephemeral port exhaustion. In that case, waiting for ~4 minutes, and restarting the containers will help stabilize things.
+You’ll need the docker containers that I’m using to be able to use `setup-cluster` and `stop-cluster` commands that reside inside the `bin` folder. — I’ll find a way/place to distribute them. — Stay tuned.
 
+TODO: publicly distribute the docker images.
+
+## Appendix
+
+### About the `ab` Tool
+
+During certain parts of the demo we use the [`ab`][ab] tool to measure the application throughput.
+
+There are, however, some problems with ab to be aware of:
+
+Firstly, `ab` will **flood** the server as fast as it can generate the requests. It has no option to delay between the requests.
+
+Given that the network layer is essentially bypassed (*i.e., because of proximity we can assume zero network delay for all practical purposes*). `ab` will create a peak level of requests that will eventually saturate the resources.
+
+Moreover, expect the behavior of the `ab` tests to be increasingly non-deterministic under higher concurrent loads.
+
+> **Aside**
+> 
+> In the current few tests the number of requests (`-n`) is set up high to observe the maximum throughput of the system. 
+> 
+> In a production benchmark, using `ab` with lower `-n` and `-c` values (*like `-n == 400, -c == 10`) and then slowly increasing the values would provide much valuable insights into the system.
 > As a rule of thumb, when you increase `-c`, consider lowering `-n`.
 >
 > Even with relatively low values like `-c == 10` and `-n == 500` you can get pretty intuitive results.
 >
-> Do not increate the limits too much.
->
-> If you need really high concurrency, then you'd better use a distributed load testing setup (*like a cluster of AWS instance in different zones, or a distributed load teesting "as a service" solution*).
+> **Do not increment the limits too much**.
 
-Additionally, testing an almost empty static API response does not tell too much about how different parts of our API holds up under stress, or how different API paths affect each other (*e.g., does reponse to a GET request slow down because a high concurrency on a POST causing a bottleneck on the persistence layer, etc.*)
+Again, when opening large number of connections, `ab` test might turn out to be non-deterministic unreliable due to ephemeral port exhaustion. In that case, waiting for ~4 minutes, and restarting the containers will help stabilize things.
 
-One last thing is `ab` is an **HTTP/1.0** client; i.e., it's not an HTTP/1.1 client, therefore what you test with `ab` will **not** represent how your API behaves in the wild.
+If you need really high concurrency, then you'd better use a distributed load testing setup (*like a cluster of AWS instance in different zones, or a distributed load teesting "as a service" solution*).
+
+One last thing is `ab` is an **HTTP/1.0** client; i.e., it’s not an HTTP/1.1 client, therefore what you test with `ab` will **not** represent how your API behaves in the wild.
+
+### Thinks To Watch For When Running an `ab` Test
 
 Before running your `ab` tests, make sure that:
 
 * Nothing else is consuming network resources (*there are no downloads, no browser tabs open*).
 * There is no CPU-intensive activity (*such as a scheduled background task*).
 * You restart the service before each test.
-* If there's anything suspicious, wait for 4 minutes to avoid ephemeral port exhaustion, and try again.
+* If there’s anything suspicious, wait for 4 minutes to avoid ephemeral port exhaustion, and try again.
 * Repeat tests five times, eliminate the top and bottom ones, and use the average of the remaining three.
 
-### Additional Notes
-
-#### **Load Testing** versus **Stress Testing**
+### **Load Testing** versus **Stress Testing**
 
 A **load test** is usually conducted to understand the behavior of the system under a specific expected load; whereas a **stress test** is a test to understand the upper capacity limits of a system, it measures the system's robustness under extreme load.
 
-#### Running Tests From Multiple Geolocations
+### Running Tests From Multiple Geolocations
 
-Running a geographically spread test is important because it's the closest way to mimic actual end usage pattern. Besides, when you start assuming non-zero network delay, **concurrency** and **throughput** metrics start becmoning much more meaningful. — Additionally, this kind of test will be benchmarking your entire architecture as a whole (*i.e., your caching layer, your load balancer, etc.*), and in the end of the day, that **is** what matters. — Nobody cares how cool your architecture is; the only thing the users care about is how **fast** and how **reliable** your APIs are.
+Running a geographically spread test is important because it’s the closest way to mimic actual end usage pattern. 
 
-#### Load Testing and Benchmarking Tools and Services
+Besides, when you start assuming non-zero network delay, **concurrency** and **throughput** metrics start to become much more meaningful. — Additionally, this kind of test will be benchmarking your entire architecture as a whole (*i.e., your caching layer, your load balancer, etc.*), and in the end of the day, that **is** what matters. 
+
+Nobody cares how cool your architecture is; the only thing the users care about is how **fast** and how **reliable** your APIs are.
+
+### Load Testing and Benchmarking Tools and Services
 
 Here are certain tools and services that you can evaluate. This is, by no means a conclusive list.
 
-* https://github.com/kubernetes/kubernetes
-* https://blazemeter.com
-* http://smartbear.com/
-* http://jmeter.apache.org/
+* <https://blazemeter.com>
+* <http://smartbear.com/>
+* <http://jmeter.apache.org/>
 * TODO:// add more.
-
-#### Configuration Files
-
-* [etc/sysctl.conf](containers/service/etc/sysctl.conf)
-* // TODO: add more
 
 ### Show Me The Results
 
@@ -151,6 +191,12 @@ Here are certain tools and services that you can evaluate. This is, by no means 
 
 ### License
 
-MIT
+**MIT** License
 
-// TODO: link to the license file.
+[See the License file for details](LICENSE.md).
+
+
+[talk]: http://conferences.oreilly.com/fluent/javascript-html-us/public/schedule/detail/46028 "Scaling Your Node.JS API Like a Boss" 
+[docker]: https://www.docker.com "Docker: Build, Ship, Run"
+[docker-run]: https://docs.docker.com/engine/reference/run/ "Docker: `run` command."
+[ab]: https://httpd.apache.org/docs/2.2/programs/ab.html
