@@ -7,6 +7,7 @@
  */
 
 import Vantage from 'vantage';
+import { dumpHeap, dumpCore } from '../dump';
 import { startInstrumenting, stopInstrumenting } from '../monitor';
 
 let voidInformer = { inform: () => {} };
@@ -72,6 +73,38 @@ let listen = () => {
             this.log( 'Toggled logging.' );
 
             callback();
+        } );
+
+    vantage
+        .command( 'dump' )
+        .description( 'Takes a core dump.' )
+        .action( function( args, callback ) {
+            this.log( 'Will take a core dump…' );
+
+            let self = this;
+
+            dumpCore( () => {
+                self.log( 'Core dumped.' );
+
+                callback();
+            } );
+
+
+        } );
+
+    vantage
+        .command( 'snapshot' )
+        .description( 'Takes a heap snapshot' )
+        .action( function( args, callback ) {
+            this.log( 'Will take a heap snapshot…' );
+
+            let self = this;
+
+            dumpHeap( () => {
+                self.log( 'Heap snapshot taken.' );
+
+                callback();
+            } );
         } );
 
     vantage.listen( 8015 );

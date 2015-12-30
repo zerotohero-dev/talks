@@ -4,8 +4,10 @@
 # <https://github.com/v0lkan/talks/blob/master/LICENSE.md>
 # Send your comments and suggestions to <me@volkan.io>.
 
-docker exec -d fluent_compute forever /opt/fluent
-docker exec -d fluent_app forever /opt/fluent
-docker exec -d fluent_web /bin/bash
+docker stop fluent_rabbit
+docker stop fluent_web
+docker stop fluent_compute
+docker stop fluent_app
+docker stop fluent_bastion
 
-echo "Started the cluster."
+echo "Stopped the cluster."
