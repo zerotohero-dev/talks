@@ -4,6 +4,11 @@
 
 * See http://jayconrod.com/posts/55/a-tour-of-v8-garbage-collection for in-depth details.
 
+----
+
+Monitoring / Diagnosing a clustered app:
+
+Since, statistically speaking, any virtual container in the cluster has equal likeliness of manifesting the problem, 99% of the time analyzing heap and stack characteristics of a single representative virtual container would be enough to figure out what the problem is.
 
 
 ----

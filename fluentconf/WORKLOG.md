@@ -38,9 +38,15 @@ That said, for an actual production setup, it would make more sense to conduct a
 
 ## **Step 001**: Benchmarking a Simple Restify App
 
-TODO: before that, commit the current state of the containers to their corresponding images.
-TODO: repeat the test: limit bastion to 2 cores, and use a separate core for the service.
-TODO: make sure that you are not running anything else on your system while you're running your benchmarks.
+> *Note*
+> 
+> Make sure that you are not running anything else on your system while you’re running your benchmarks.
+
+> *Note*
+>
+> The test environments should be as identical as possible.
+>
+> The system should **not** be on battery power because Mac OS does crazy cpu deoptimizations to save battery when not connected to the power cord. And those optimizations are non-deterministic (to my observation), which can lead in having significantly different results when you run the same test with the same parameters repeatedly. 
 
 Here's what I ran:
 
@@ -48,10 +54,7 @@ Here's what I ran:
 ab -n 100000 -c "${CONCURRENCY}" http://${HOST}:8080/hello
 ```
 
-// TODO: repeat the tests with wifi turned off. + disconnected from other
-monitors + on battery power.
-
-And here are the results:
+Here are the results:
 
 ```bash
 Results:
@@ -94,7 +97,7 @@ I'll take a level of concurrency that I know that I've saturated throughput
 and do two other measurements, one for a plain Node.js HTTP server, and one for
 a plain node.js socket app.
 
-// TODO: implement. make sure you do the benchmark on a reliable network.
+// TODO: discuss findings
 
 ## **Step 003**: A Simple Demo API
 
@@ -329,91 +332,73 @@ Similarly we can.
 
 Next up, we’ll deal with these things which will make our app vigilant and robust enough so that we can talk about scaling it.
 
-TODO: before anything, make README.md better.
+So, to diagnose and monitor our virtual containers:
 
-TODO: cleanup before commit, move stuff to wunderlist.
-TODO: Generate heapdump on unhandled exception.
-TODO: Generate core dump on unhandled exception.
-TODO: regularly take heap dumps
-TODO: check for leaks and take dumps if there’s a leak.
+* We’ve established good logging practices.
+* We’ve aggregated our log files for later analysis.
+* We’ve made important global state easily accessible.
+* We’ve put probes in the code to trace important events.
+* We’ve taken statistical samples of the stack trace.
+* We’ve dumped core files and taken heap snapshots on an ad-hoc basis.
+* We’ve dumped core files and taken heap snapshots on app crashes.
+* We’ve dumped core files and taken heap snapshot whenever we suspect a memory leak.
+
+
+Summary so far: We are measuring performance, handling crashes, and closely tracking memory leaks, and also looking into other metrics like the “event loop delay”. 
+
+We also kept timers on how long each request took: If a requests takes particularly longer, we can drill down further and add more probes to see what’s taking so long. — Soon, we’ll see a way to do this without disrupting the operation (*i.e. hot swapping*).
+
+All of these are critical for the operation, and auto-scalability of a production system.
+
+These should be **good enough** for hardening our individual virtual container, and now we can talk about horizontal scaling.
+
+## Exposing the Garbage Collector (*for diagnostic purposes*)
+
 TODO: talk about diagnosing gc behavior ( --expose-gc and its friends )
 
+node --expose_gc --trace-gc --trace_gc_verbose --gc_global .
 
-Gut feeeling does not work in production. And 99% of the time the root cause of a problem will be diagonally different than what you initially have suspected.
+--v8-options | grep gc
 
-So always apply the scientific methodology:
+## Other Tools
 
-* Construct a hyphothesis
-* Gather evidence
-* Review your hyphothesis with the light of this evidence.
-* Improve your hyphothesis or form a new hyphotehesis.
+You can statistically sample stack traces (*[using linux perf events]*), and then use a [flame chart] to visualize and analyze them. 
+
+While doing that if you use `--perf_basic_prof_only_functions` (*new in Node 5*) your flame graph data will make much more sense.
+
+(`--perf_basic_prof_only_functions` outputs a map file that translates native memory addresses to actual javascript files and their line numbers)
+
+Your **core dump** contains a canonical representation of your app’s state; therefore you can do your post-mortem debugging anywhere you like.
+
+To analyze core dumps your best bet is to use a solaris instance dedicated to that or use an “as a service” solution (*such as Manta*)
+
+Another hint would be **name your functions**, especially event-handling functions and callbacks. And also **do not nest functions within scopes**. You’ll thank me later **:)**.
+
+v8 runtime is most of the time intelligent enough to infer function names; yet sometimes you will need to give the anonymous functions names (*i.e., make them “named” functions*) to get a better and more useful stack trace.
+
+By extension, naming your functions will help you analyze them better in the flame graphs.
+Named function expressions is the only way to get a truly robust stack inspection.
+
+Fat arrows are cool; however, naming your functions will give valuable hints to the post-mortem analysis tools that you’ll use. So don’t hesitate to give your globally-accessed 
+
+Nesting functions will make your code, arguably, harder to read. And more important than that, nested functions, if not used carefully, can create very-difficult-to-diagnose memory leak problems.
+
+Also `gcore`: takes the core dump of a process w/o interrupting it.
+
+Post-mortem debugging is a “must have” for any production system. It gives so much state information that it’s virtually impossible to attain the same depth and breath of information by simply analyzing aggregated log files.
+
+## «« Your Jedi mind tricks don’t work on me »»
+
+Keep in mind that your “gut feeling” does not work in production. 99% of the time, the root cause of the problem will be diagonally different thant what you initially have suspected. So always use a scientific methodology:
+
+* Form a hypothesis.
+* Gather evidence.
+* Review your hypothesis in the light of the evidence.
+* Improve your hypothesis or form a new hypothesis.
 * Rinse an repeat until you find the root cause.
+                        
+That’s the only true way to root-cause a problem; or fix a performance issue as fast as possible, with as little code change and regressions as possible.
 
-measuring performance
-handling crashes
-memory leaks
+Next up? Horizontal scaling.
 
-note: Restify keeps timers for each handler (middleware) took to run in microseconds.
-(how long it took to parse the body) -> CPU intensive
-(how long it took to render the response) -> CPU intensive
-(how long it too to do the I/O) -> network intensive
-
-will lock all the other requests in the system.
-
-statistically sample the stack traces.
-
-A stack trace is a report of the active stack frames at a certain point in time during the execution of a program.
-
-you’ll need to sample stack traces from a running instance with minimal impact to performance:
-
-linux perf events (link)
-    can sample stack traces of running processes.
-    it is available in most of the modern linux kernels.
-    can be used at runtime, in production.
-    
-node --perf_basic_prof_only_functions 
-outputs a map file that translates native memory addresses to actual javascript files and their line numbers.
-
---abort_on_uncaught_exception
-
-toolkits for analyzing core dumps:
-lldb-v8 (not fully featuyre complete)
-llnode (not fully feature complete)
-
-mdb_v8 (solaris) -> fully featured and compatible with linux cores.
-
-can have a debug sloaris instance
-or can use cloud tools for that like manta
-you can debug your app anywhere else you like, it contains a canonical state of your app (core dump)
-
-Always name your functions.
-
-Foo.prototoype.bar = function bar() {}
-
-TODO: update the repl to take core files and heap snapshots
- 
- Core dump ==== complete state of the app at the time taken.
- 
-
-can be run in production, very negligible impact (v5, cmoming to v4)
-
-Flame graphs
-
-Take core dump, you can load that dump elsewhere to do post-mortem debugging.
-
-gcore -> take core dump of the process w/o interrupting it.
-
-
-leak:
-    generate core dump ad-hoc.
-    
-    gcore
-
-
-
-Post mortem debugging is a “must have” for any production system. It gives so much state information that it is virtually impossible to simply catch by reading log files.
-
-    
-alternative to forever:
-https://github.com/tj/mon
-TODO: list some other alternatives too.    
+## Clustering Our App
