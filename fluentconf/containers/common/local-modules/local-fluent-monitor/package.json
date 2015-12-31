@@ -1,0 +1,15 @@
+{
+  "name": "local-fluent-monitor",
+  "version": "0.1.0",
+  "description": "monitors stuff.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "monitor",
+    "metrics"
+  ],
+  "author": "Volkan Özçelik",
+  "license": "MIT"
+}

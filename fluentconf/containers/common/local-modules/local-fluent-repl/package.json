@@ -1,0 +1,15 @@
+{
+  "name": "local-fluent-repl",
+  "version": "0.1.0",
+  "description": "a vantage repl.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "repl",
+    "vantage"
+  ],
+  "author": "Volkan Özçelik",
+  "license": "MIT"
+}

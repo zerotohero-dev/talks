@@ -1,0 +1,18 @@
+{
+  "name": "local-fluent-leakdetector",
+  "version": "0.1.0",
+  "description": "Detects memory leaks, and warns, and takes snapshots.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "leak",
+    "memory",
+    "leak",
+    "leak",
+    "detection"
+  ],
+  "author": "Volkan Özçelik",
+  "license": "MIT"
+}

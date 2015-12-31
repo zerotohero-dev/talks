@@ -1,0 +1,19 @@
+{
+  "name": "local-fluent-data",
+  "version": "0.1.0",
+  "description": "Does word processing… I know; it needs a better name.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "data",
+    "word",
+    "nlp",
+    "word",
+    "processing",
+    "tokenization"
+  ],
+  "author": "Volkan Özçelik",
+  "license": "MIT"
+}
