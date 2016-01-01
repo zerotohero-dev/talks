@@ -7,7 +7,7 @@
  */
 
 import log from 'local-fluent-logger';
-import { init as initCompute } from './compute';
+import { init as initCompute } from 'local-fluent-compute';
 import { init as initLeakDetector } from 'local-fluent-leakdetector';
 import { init as initPostMortem } from 'local-fluent-postmortem';
 import { listen as startRepl } from 'local-fluent-repl';

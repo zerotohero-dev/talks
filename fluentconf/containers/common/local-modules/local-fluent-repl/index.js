@@ -9,14 +9,17 @@
 import Vantage from 'vantage';
 import { dumpHeap, dumpCore } from 'local-fluent-dump';
 import { startInstrumenting, stopInstrumenting } from 'local-fluent-monitor';
+import logger from 'local-fluent-logger';
 
-let voidInformer = { inform: () => {} };
-let informer = null;
+let noop = () => {};
+let log = ( stuff ) => logger.info.apply( logger, stuff );
+
+let currentLogger = noop;
 
 /**
  *
  */
-let inform = ( what ) => ( informer || voidInformer ).log( what );
+let inform = ( ...stuff ) => currentLogger( stuff );
 
 /**
  *
@@ -68,7 +71,7 @@ let listen = () => {
         .command( 'toggle-logging' )
         .description( 'Toggles request logging.' )
         .action( function( args, callback ) {
-            informer = informer ? null : this;
+            currentLogger = currentLogger === noop ? log : noop;
 
             this.log( 'Toggled logging.' );
 

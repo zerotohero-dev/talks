@@ -19,19 +19,17 @@
   "license": "MIT",
   "dependencies": {
     "amqp": "0.2.4",
+    "babel-preset-es2015": "6.3.13",
     "babel-register": "6.3.13",
     "bluebird": "3.1.1",
-    "bunyan": "1.5.1",
+    "local-fluent-circuit": "*",
+    "local-fluent-data": "*",
     "local-fluent-dump": "*",
+    "local-fluent-leakdetector": "*",
     "local-fluent-logger": "*",
-    "gc-profiler": "1.3.1",
-    "gcore": "0.0.3",
-    "heapdump": "0.3.7",
-    "natural": "0.2.1",
-    "pos": "0.3.0",
-    "request": "2.67.0",
-    "stpwrds": "*",
-    "unfluff": "0.11.0",
-    "vantage": "1.5.1"
+    "local-fluent-monitor": "*",
+    "local-fluent-postmortem": "*",
+    "local-fluent-repl": "*",
+    "request": "2.67.0"
   }
 }

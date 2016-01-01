@@ -6,7 +6,7 @@
  * Send your comments and suggestions to <me@volkan.io>.
  */
 
-import { prepareTaggedWords, singularize } from '../transform';
+import { prepareTaggedWords, singularize } from 'local-fluent-transform';
 import { en_technical as stopWords } from 'stpwrds';
 
 let cache = { tags: {}, urls: {} };

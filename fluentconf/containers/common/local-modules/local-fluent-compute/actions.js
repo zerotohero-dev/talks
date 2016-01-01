@@ -7,6 +7,11 @@
  */
 
 import { Promise } from 'bluebird';
+import {
+    getTags as getTagsFromData,
+    getUrls as getUrlsFromData
+} from 'local-fluent-data';
+import log from 'local-fluent-logger';
 import { isOpen as isCircuitOpen } from 'local-fluent-circuit';
 import { get } from 'request';
 
@@ -15,6 +20,9 @@ import { get } from 'request';
  */
 let getTags = ( url ) => new Promise( ( resolve, reject ) => {
     if ( isCircuitOpen() ) {
+        console.log( 'Circuit is open… Exiting.' );
+        log.info( 'Circuit is open… Exiting.' );
+
         reject( {
             error: true,
             description: 'I cannot handle your request right now because the service is shutting down.'
@@ -25,12 +33,16 @@ let getTags = ( url ) => new Promise( ( resolve, reject ) => {
 
     get( url, ( error, response, body ) => {
         if ( error ) {
+            console.log( 'error in response' );
+
             reject( error );
 
             return;
         }
 
-        resolve( getTags( url, body ) );
+        console.log( 'resolving response ' );
+
+        resolve( getTagsFromData( url, body ) );
     } );
 } );
 
@@ -39,18 +51,21 @@ let getTags = ( url ) => new Promise( ( resolve, reject ) => {
  */
 let getUrls = ( tag ) => {
     if ( isCircuitOpen() ) {
+        console.log( 'Circuit is open… Exiting.' );
+        log.info( 'Circuit is open… Exiting.' );
+
         return Promise.reject( {
             error: true,
             description: 'I cannot handle your request right now because the service is shutting down.'
         } );
     }
 
-    return Promise.resolve( getUrls( tag ) );
+    return Promise.resolve( getUrlsFromData( tag ) );
 };
 
 /**
  *
  */
-let all = [ getTags, getUrls ];
+let all = { getTags, getUrls };
 
 export { getTags, getUrls, all };

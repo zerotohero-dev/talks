@@ -76,6 +76,7 @@ docker run -d --privileged -i -t --cpuset-cpus="0" \
 --name fluent_bastion \
 -v "${DIR}/../../containers/common/opt/shared":/opt/shared \
 -v "${DIR}/../../containers/common/data":/data \
+-v "${DIR}/../../containers/common/local-modules":/locals \
 -v "${DIR}/../../containers/bastion/opt/fluent":/opt/fluent \
 --link fluent_rabbit:rabbit \
 --link fluent_web:web \

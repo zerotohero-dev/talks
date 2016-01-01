@@ -25,17 +25,28 @@ let die = () => {
  */
 let init = () => {
     process.on('unhandledRejection', ( error, promise ) => {
+        console.error( 'Unhandled Promise rejection detected.' );
+        console.error( error );
+        console.error( promise );
+        console.info( 'Will dump core and exit.' );
+
         log.error( 'Unhandled Promise rejection detected.' );
         log.error( error );
         log.error( promise );
         log.info( 'Will dump core and exit.' );
+
         die();
     } );
 
     process.on('uncaughtException', ( error ) => {
+        console.error( 'Unhandled exception detected.' );
+        console.error( error );
+        console.info( 'Will dump core and exit.' );
+
         log.error( 'Unhandled exception detected.' );
         log.error( error );
         log.info( 'Will dump core and exit.' );
+
         die();
     } );
 };

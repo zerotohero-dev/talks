@@ -1,8 +1,8 @@
 {
   "name": "local-fluent-data",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Does word processing… I know; it needs a better name.",
-  "main": "index.js",
+  "main": "release/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,5 +15,9 @@
     "tokenization"
   ],
   "author": "Volkan Özçelik",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "local-fluent-transform": "*",
+    "stpwrds": "*"
+  }
 }

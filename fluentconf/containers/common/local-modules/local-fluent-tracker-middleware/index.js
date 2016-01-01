@@ -27,7 +27,7 @@ let starteds = {};
  *
  */
 let create = ( options ) => {
-    let key = ( options.host || '' ) + ':' +( options.port || '' );
+    let key = `${options.host||''}:${options.port||''}`;
 
     if ( !starteds[ key ] ) {
         starteds[ key  ] = true;

@@ -1,0 +1,30 @@
+{
+  "name": "local-fluent-compute",
+  "version": "0.1.1",
+  "description": "The compute module (CPU-Intensive)",
+  "main": "release/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "compute",
+    "computation",
+    "mapreduce",
+    "nlp",
+    "language",
+    "tokenization",
+    "tagging",
+    "lexer",
+    "parser"
+  ],
+  "author": "Volkan Özçelik",
+  "license": "MIT",
+  "dependencies": {
+    "amqp": "0.2.4",
+    "bluebird": "3.1.1",
+    "local-fluent-circuit": "*",
+    "local-fluent-data": "*",
+    "local-fluent-logger": "*",
+    "request": "2.67.0"
+  }
+}

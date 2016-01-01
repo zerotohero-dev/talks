@@ -9,7 +9,7 @@
 import { trace } from 'kiraz';
 import { getCpuAverage, getMemoryUsage } from './metrics';
 
-// Choosing a prime number for interval, because it's cool:
+// Choosing a prime number for interval, because it’s cool:
 const INTERVAL = 467;
 
 let startMeasure = 0;

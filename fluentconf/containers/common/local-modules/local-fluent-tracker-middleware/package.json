@@ -1,8 +1,8 @@
 {
   "name": "local-fluent-tracker-middleware",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "An express.js middleware to track and report response times.",
-  "main": "index.js",
+  "main": "release/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

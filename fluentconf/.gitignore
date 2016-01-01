@@ -1,2 +1,4 @@
 containers/common/npm
 containers/common/**/*.dat
+*.snapshot
+*.core

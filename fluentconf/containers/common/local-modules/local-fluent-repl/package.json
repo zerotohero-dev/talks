@@ -1,8 +1,8 @@
 {
   "name": "local-fluent-repl",
-  "version": "0.1.0",
+  "version": "0.2.2",
   "description": "a vantage repl.",
-  "main": "index.js",
+  "main": "release/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -11,5 +11,11 @@
     "vantage"
   ],
   "author": "Volkan Özçelik",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "local-fluent-logger": "*",
+    "local-fluent-dump": "*",
+    "local-fluent-monitor": "*",
+    "vantage": "1.5.1"
+  }
 }

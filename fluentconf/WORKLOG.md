@@ -413,6 +413,10 @@ Using a private npm has several advantages:
 
 TODO: list them.
 
+* If public npm is unreachable for some reason, you can still use cached modules.
+* You can easily share reusable code across teams.
+
+
 
 
 ## Clustering Our App

@@ -8,11 +8,15 @@
 
 import { isOpen as isCircuitOpen } from 'local-fluent-circuit';
 import query from 'local-fluent-graphql-query';
-import schema from '../schema';
+import schema from 'local-fluent-schema';
+import log from 'local-fluent-logger';
 
 const HTTP_INTERNAL_SERVER_ERROR = 500;
 
-let endResponse = ( res ) =>
+let endResponse = ( res ) => {
+    console.log( 'Ending response: Most probably the circuit is open.' );
+    log.info( 'Ending response: Most probably the circuit is open.' );
+
     res
         .status( HTTP_INTERNAL_SERVER_ERROR )
         .send(
@@ -21,6 +25,7 @@ let endResponse = ( res ) =>
                 description: 'I cannot handle your request right now because the service is shutting down.'
             } )
         );
+};
 
 let setup = ( app ) => {
     app.post( '/api/v1/graph', ( req, res ) => {
@@ -49,7 +54,11 @@ let setup = ( app ) => {
             ) }`
         };
 
+        console.log( 'calling query' );
+
         query( schema, request, res );
+
+        console.log( 'called query' );
     } );
 
     app.get( '/benchmark/get-urls', ( req, res ) => {

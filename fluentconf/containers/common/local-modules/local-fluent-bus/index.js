@@ -1,8 +1,18 @@
+'use strict';
 
-import { Promise } from 'bluebird';
-import { createConnection as connect } from 'amqp';
-import { put, get } from 'memory-cache';
+/*
+ * This program is distributed under the terms of the MIT license:
+ * <https://github.com/v0lkan/talks/blob/master/LICENSE.md>
+ * Send your comments and suggestions to <me@volkan.io>.
+ */
+
+import log from 'local-fluent-logger';
 import uuid from 'node-uuid';
+import { createConnection as connect } from 'amqp';
+import { Promise } from 'bluebird';
+import { put, get } from 'memory-cache';
+
+let a = 12;
 
 const HOURS = 1000 * 60 * 60;
 
@@ -17,13 +27,26 @@ process.fluent.resolvers = resolvers;
 let generateGuid = () => uuid.v4();
 
 let resolveSubscription = ( message ) => {
-    if ( !message ) {return;}
-    if ( message.error ) {return;}
+    if ( !message ) {
+        log.warn( 'resolveSubscription: Cannot find message.' );
+
+        return;
+    }
+
+    if ( message.error ) {
+        log.warn( 'resolveSubscription: Message has error', message.error );
+
+        return;
+    }
 
     let requestId = message.requestId;
     let resolver = resolvers[ requestId ];
 
-    if ( !resolver ) {return;}
+    if ( !resolver ) {
+        log.info( 'Resolver not found.');
+
+        return;
+    }
 
     let resolve = resolvers[ requestId ];
 
@@ -44,6 +67,9 @@ let rejectDeferred = ( requestId, param, action, reject ) =>
     }, 5000 );
 
 connection.on( 'ready', () => {
+    console.log( 'AMQP connection is ready!' );
+    log.info( 'AMQP connection is ready!' );
+
     connection.queue( 'fluent-response-queue', ( q ) => {
         q.bind( '#' );
         q.subscribe( resolveSubscription );
@@ -69,7 +95,7 @@ let doGet = ( key, param ) => {
             { param, key, requestId }
         );
     } ).then(
-        ( data ) => put ( `${key}-${param}`, data, 3 * HOURS )
+        ( data ) => put( `${key}-${param}`, data, 3 * HOURS )
     );
 };
 

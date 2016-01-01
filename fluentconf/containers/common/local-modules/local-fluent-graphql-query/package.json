@@ -1,8 +1,8 @@
 {
   "name": "local-fluent-graphql-query",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "A graphql query utility module.",
-  "main": "index.js",
+  "main": "release/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -12,5 +12,8 @@
     "graph"
   ],
   "author": "Volkan Özçelik",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "graphql": "0.4.14"
+  }
 }

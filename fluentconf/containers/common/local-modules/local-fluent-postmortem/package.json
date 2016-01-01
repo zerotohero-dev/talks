@@ -1,8 +1,8 @@
 {
   "name": "local-fluent-postmortem",
-  "version": "0.1.0",
+  "version": "0.1.3",
   "description": "Dumps heap snapshots and core files for post-mortem analysis.",
-  "main": "index.js",
+  "main": "release/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

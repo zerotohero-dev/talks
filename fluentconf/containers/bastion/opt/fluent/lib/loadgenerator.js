@@ -9,11 +9,15 @@
 import { get } from 'request';
 
 let getUrl = ( url ) => {
-    get( url, () => {} );
-    get( url, () => {} );
-    get( url, () => {} );
-    get( url, () => {} );
-    get( url, () => getUrl( url ) );
+    //get( url, () => {} );
+    //get( url, () => {} );
+    //get( url, () => {} );
+    //get( url, () => {} );
+
+    setTimeout( () => {
+        console.log( '»» hitting...' );
+        get( url, () => getUrl( url ) );
+    }, 2000 );
 };
 
 // TODO: make this configurable from environment
