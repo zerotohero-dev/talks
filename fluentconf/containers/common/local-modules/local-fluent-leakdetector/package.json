@@ -1,0 +1,23 @@
+{
+  "name": "local-fluent-leakdetector",
+  "version": "0.3.2",
+  "description": "Detects memory leaks, and warns, and takes snapshots.",
+  "main": "release/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "leak",
+    "memory",
+    "leak",
+    "leak",
+    "detection"
+  ],
+  "author": "Volkan Özçelik",
+  "license": "MIT",
+  "dependencies": {
+    "gc-profiler": "1.3.1",
+    "local-fluent-dump": "*",
+    "local-fluent-logger": "*"
+  }
+}

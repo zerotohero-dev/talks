@@ -1,0 +1,14 @@
+{
+  "name": "local-fluent-transform",
+  "version": "0.1.2",
+  "description": "transforms, lexes, and tags stuff.",
+  "main": "release/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "transform"
+  ],
+  "author": "Volkan Özçelik",
+  "license": "MIT"
+}

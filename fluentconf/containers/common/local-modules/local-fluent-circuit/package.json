@@ -1,0 +1,12 @@
+{
+  "name": "local-fluent-circuit",
+  "version": "0.2.1",
+  "description": "A circuit state machine.",
+  "main": "release/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [ "circuit", "circuit breaker", "circuit breaker pattern" ],
+  "author": "Volkan Özçelik",
+  "license": "MIT"
+}

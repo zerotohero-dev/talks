@@ -1,6 +1,5 @@
 .idea
 node_modules
-fluentconf/containers/common/**/*.dat
 .DS_Store
 .vscode
 *.log

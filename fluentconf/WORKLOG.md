@@ -401,4 +401,22 @@ That’s the only true way to root-cause a problem; or fix a performance issue a
 
 Next up? Horizontal scaling.
 
+## Creating a Private npm
+
+After developing your apps for a while you’ll realize that there are common code that you can reuse between modules.
+
+The proper way to reuse them is through npm registries.
+
+For that you can either use a private npm as a cloud, or you can use your own private npm registry.
+
+Using a private npm has several advantages:
+
+TODO: list them.
+
+* If public npm is unreachable for some reason, you can still use cached modules.
+* You can easily share reusable code across teams.
+
+
+
+
 ## Clustering Our App

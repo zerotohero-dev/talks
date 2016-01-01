@@ -1,0 +1,25 @@
+{
+  "name": "local-fluent-bus",
+  "version": "0.1.2",
+  "description": "Message bus from service to the compute",
+  "main": "release/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "bus",
+    "message",
+    "bus",
+    "rabbit",
+    "rabbitmq"
+  ],
+  "author": "Volkan Özçelik",
+  "license": "MIT",
+  "dependencies": {
+    "amqp": "0.2.4",
+    "bluebird": "3.1.1",
+    "local-fluent-logger": "*",
+    "memory-cache": "0.1.4",
+    "node-uuid": "1.4.7"
+  }
+}
