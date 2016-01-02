@@ -7,13 +7,7 @@
  */
 
 import bodyParser from 'body-parser';
-
-// TODO: when using this, the process does not die on CRL+C
-// TODO: open an issue for this against the `kiraz` library.
-//
-// I’m disabling it, since tracker middleware is not vital for the upcoming
-// parts of the demo; I’ll fix it if I have time.
-//import createTracker from 'local-fluent-tracker-middleware';
+import createTracker from 'local-fluent-tracker-middleware';
 
 import log from 'local-fluent-logger';
 
@@ -25,7 +19,7 @@ const PORT = 8005;
  *
  */
 let initializeApp = ( app ) => {
-    //app.use ( createTracker ( {host: MONITOR_ENDPOINT, port: MONITOR_PORT} ) );
+    app.use ( createTracker ( {host: MONITOR_ENDPOINT, port: MONITOR_PORT} ) );
     app.use ( bodyParser.text ( {type: 'application/graphql'} ) );
 };
 

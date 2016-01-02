@@ -82,6 +82,7 @@ docker run -d --privileged -i -t \
 -v "${DIR}/../../containers/common/data":/data \
 -v "${DIR}/../../containers/common/local-modules":/locals \
 -v "${DIR}/../../containers/bastion/opt/fluent":/opt/fluent \
+-v "${DIR}/../../containers/bastion/var/log/fluent":/var/log/fluent \
 --link fluent_rabbit:rabbit \
 --link fluent_web:web \
 --link fluent_compute:compute \

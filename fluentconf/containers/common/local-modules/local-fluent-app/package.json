@@ -1,6 +1,6 @@
 {
   "name": "local-fluent-app",
-  "version": "0.2.0",
+  "version": "0.2.3",
   "description": "Demo Web Service",
   "main": "release/index.js",
   "scripts": {
@@ -25,6 +25,7 @@
     "local-fluent-cluster": "*",
     "local-fluent-graphql-query": "*",
     "local-fluent-logger": "*",
-    "local-fluent-schema": "*"
+    "local-fluent-schema": "*",
+    "local-fluent-tracker-middleware": "*"
   }
 }
