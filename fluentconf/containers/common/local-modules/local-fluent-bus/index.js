@@ -17,6 +17,8 @@ let currentClusterId = null;
 
 let resolvers = {};
 
+const HOURS = 1000 * 60 * 60;
+
 // Expose state to the REPL.
 process.fluent = process.fluent || {};
 process.fluent.resolvers = resolvers;
@@ -26,12 +28,10 @@ let generateGuid = () => uuid.v4();
 /**
  *
  */
-let init = ( clusterId ) = {
+let init = ( clusterId ) => {
     currentClusterId = clusterId;
 
     connection = connect( { host: 'rabbit' } );
-
-    const HOURS = 1000 * 60 * 60;
 
     connection.on( 'ready', () => {
         console.log( 'AMQP connection is ready!' );

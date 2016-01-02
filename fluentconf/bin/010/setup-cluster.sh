@@ -4,10 +4,6 @@
 # <https://github.com/v0lkan/talks/blob/master/LICENSE.md>
 # Send your comments and suggestions to <me@volkan.io>.
 
-// TODO: update sinopia.
-// TODO: modify this script, adjust paths.
-// TODO: reveal the web server port so that we can hit the API from the host instead of the bastion.
-
 docker rm -f fluent_rabbit
 docker rm -f fluent_web
 docker rm -f fluent_compute
@@ -43,6 +39,7 @@ rabbitmq:3-management
 docker run --privileged -i -t -d \
 -h service-static-server \
 --name fluent_web \
+-p 9090:8080 \
 -v "${DIR}/../../containers/common/opt/shared":/opt/shared \
 -v "${DIR}/../../containers/common/data":/data \
 -v "${DIR}/../../containers/static-server/opt/fluent":/opt/fluent \
@@ -56,8 +53,8 @@ docker run -d --privileged -i -t \
 --name fluent_compute \
 -v "${DIR}/../../containers/common/opt/shared":/opt/shared \
 -v "${DIR}/../../containers/common/data":/data \
--v "${DIR}/../../containers/009-demo-setting-up-private-npm/compute/opt/fluent":/opt/fluent \
--v "${DIR}/../../containers/009-demo-setting-up-private-npm/compute/var/log/fluent":/var/log/fluent \
+-v "${DIR}/../../containers/010-cluster/compute/opt/fluent":/opt/fluent \
+-v "${DIR}/../../containers/010-cluster/compute/var/log/fluent":/var/log/fluent \
 --link fluent_rabbit:rabbit \
 --link fluent_sinopia:npm \
 --link fluent_web:web \
@@ -67,10 +64,11 @@ fluent:service-compute /bin/bash
 docker run -d --privileged -i -t \
 -h service-app \
 --name fluent_app \
+-p 9005:8005 \
 -v "${DIR}/../../containers/common/opt/shared":/opt/shared \
 -v "${DIR}/../../containers/common/data":/data \
--v "${DIR}/../../containers/009-demo-setting-up-private-npm/service/opt/fluent":/opt/fluent \
--v "${DIR}/../../containers/009-demo-setting-up-private-npm/service/var/log/fluent":/var/log/fluent \
+-v "${DIR}/../../containers/010-cluster/service/opt/fluent":/opt/fluent \
+-v "${DIR}/../../containers/010-cluster/service/var/log/fluent":/var/log/fluent \
 --link fluent_rabbit:rabbit \
 --link fluent_sinopia:npm \
 fluent:service-app /bin/bash

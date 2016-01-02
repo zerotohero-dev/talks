@@ -34,6 +34,7 @@
     "bluebird": "3.0.6",
     "body-parser": "1.14.1",
     "express": "4.13.3",
+    "local-fluent-bus": "*",
     "local-fluent-circuit": "*",
     "local-fluent-dump": "*",
     "local-fluent-graphql-query": "*",
@@ -41,6 +42,7 @@
     "local-fluent-logger": "*",
     "local-fluent-postmortem": "*",
     "local-fluent-repl": "*",
+    "local-fluent-schema": "^0.1.0",
     "local-fluent-tracker-middleware": "*",
     "request": "2.67.0"
   }

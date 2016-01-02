@@ -10,6 +10,7 @@ import cluster from 'cluster';
 import log from 'local-fluent-logger';
 import { all as actions } from './actions';
 import { createConnection as connect } from 'amqp';
+import { cpus } from 'os';
 
 let compute = ( connection, message ) => {
     if ( !message ) {
