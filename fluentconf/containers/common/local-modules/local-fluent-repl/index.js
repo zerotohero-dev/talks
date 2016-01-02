@@ -24,7 +24,7 @@ let inform = ( ...stuff ) => currentLogger( stuff );
 /**
  *
  */
-let listen = () => {
+let listen = ( port ) => {
     let vantage = new Vantage();
 
     vantage
@@ -108,7 +108,10 @@ let listen = () => {
             } );
         } );
 
-    vantage.listen( 8016 );
+    vantage.listen( port );
+
+    logger.info( `Vantage: Listening at port: "${port}".` );
+    console.log( `Vantage: Listening at port: "${port}".` );
 
     return vantage;
 };

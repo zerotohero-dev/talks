@@ -6,5 +6,4 @@
  * Send your comments and suggestions to <me@volkan.io>.
  */
 
-require( 'babel-register' );
-require( './server' );
+require('local-fluent-compute').init();

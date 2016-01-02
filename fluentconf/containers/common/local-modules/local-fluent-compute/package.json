@@ -1,6 +1,6 @@
 {
   "name": "local-fluent-compute",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "The compute module (CPU-Intensive)",
   "main": "release/index.js",
   "scripts": {

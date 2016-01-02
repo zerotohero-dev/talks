@@ -31,7 +31,10 @@ let init = () => {
         if ( !leaking ) { return; }
 
         log.warn( 'The memory appears to be leaking; taking a heap snapshot.' );
-        dumpHeap( () => {}, 'memoryLeak' );
+        console.log( 'The memory appears to be leaking', usages );
+
+        // TODO: fixme.
+        //dumpHeap( () => {}, 'memoryLeak' );
     } );
 };
 

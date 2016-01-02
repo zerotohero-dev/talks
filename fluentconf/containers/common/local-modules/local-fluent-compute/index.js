@@ -6,11 +6,11 @@
  * Send your comments and suggestions to <me@volkan.io>.
  */
 
-import cluster from 'cluster';
 import log from 'local-fluent-logger';
 import { all as actions } from './actions';
 import { createConnection as connect } from 'amqp';
 import { cpus } from 'os';
+import { init as initCluster } from 'local-fluent-cluster';
 
 let compute = ( connection, message ) => {
     if ( !message ) {
@@ -55,32 +55,22 @@ let startListening = ( connection ) => {
         ( queue ) => processQueue( queue, connection )
     );
 
-    console.log( `[fluent:compute] The compute node is ready.` );
-    log.info( `[fluent:compute] The compute node is ready.` );
+    console.log( `[fluent:compute:${process.pid}] The compute node is ready.` );
+    log.info( `[fluent:compute:${process.pid}] The compute node is ready.` );
 };
 
 /**
  *
  */
 let init = () => {
-    if ( cluster.isMaster ) {
-        let numCpus = cpus().length;
+    initCluster(
+        () => {},
+        () => {
+            let connection = connect( { host: 'rabbit' } );
 
-        for ( let i = 0; i < numCpus; i++ ) {
-            cluster.fork();
+            connection.on( 'ready', () => startListening( connection ) );
         }
-
-        // Respawn the workers that die:
-        cluster.on('exit', ( worker, code, signal ) => {
-            log.info( `Worker "${worker.process.pid}" died (${signal||code}). Restarting…` );
-
-            cluster.fork();
-        } );
-    } else {
-        let connection = connect( { host: 'rabbit' } );
-
-        connection.on( 'ready', () => startListening( connection ) );
-    }
+    );
 };
 
 export { init };

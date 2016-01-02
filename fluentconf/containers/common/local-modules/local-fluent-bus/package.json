@@ -1,6 +1,6 @@
 {
   "name": "local-fluent-bus",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Message bus from service to the compute",
   "main": "release/index.js",
   "scripts": {

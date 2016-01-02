@@ -4,6 +4,8 @@
 # <https://github.com/v0lkan/talks/blob/master/LICENSE.md>
 # Send your comments and suggestions to <me@volkan.io>.
 
+# TODO: bind /var/log/fluent to bastion too.
+
 docker rm -f fluent_rabbit
 docker rm -f fluent_web
 docker rm -f fluent_compute
@@ -73,7 +75,7 @@ docker run -d --privileged -i -t \
 --link fluent_sinopia:npm \
 fluent:service-app /bin/bash
 
-docker run -d --privileged -i -t --cpuset-cpus="0" \
+docker run -d --privileged -i -t \
 -h bastion \
 --name fluent_bastion \
 -v "${DIR}/../../containers/common/opt/shared":/opt/shared \

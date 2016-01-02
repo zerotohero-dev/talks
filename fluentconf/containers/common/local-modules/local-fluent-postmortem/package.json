@@ -1,6 +1,6 @@
 {
   "name": "local-fluent-postmortem",
-  "version": "0.1.3",
+  "version": "0.4.0",
   "description": "Dumps heap snapshots and core files for post-mortem analysis.",
   "main": "release/index.js",
   "scripts": {
@@ -16,5 +16,10 @@
     "crash"
   ],
   "author": "Volkan Özçelik",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "local-fluent-circuit": "*",
+    "local-fluent-dump": "*",
+    "local-fluent-logger": "*"
+  }
 }

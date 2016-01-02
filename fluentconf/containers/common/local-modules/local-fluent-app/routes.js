@@ -54,11 +54,7 @@ let setup = ( app ) => {
             ) }`
         };
 
-        console.log( 'calling query' );
-
         query( schema, request, res );
-
-        console.log( 'called query' );
     } );
 
     app.get( '/benchmark/get-urls', ( req, res ) => {

@@ -9,10 +9,10 @@
 import bodyParser from 'body-parser';
 
 // TODO: when using this, the process does not die on CRL+C
-// TODO: open an issue for this against `kiraz` library.
+// TODO: open an issue for this against the `kiraz` library.
 //
 // I’m disabling it, since tracker middleware is not vital for the upcoming
-// parts of the demo; I’ll fix it when I have time.
+// parts of the demo; I’ll fix it if I have time.
 //import createTracker from 'local-fluent-tracker-middleware';
 
 import log from 'local-fluent-logger';
@@ -35,8 +35,8 @@ let initializeApp = ( app ) => {
 let startListening = ( app ) => {
     app.listen( PORT );
 
-    log.info( `[fluent:app] App is ready at port '${PORT}'.` );
-    console.log( `[fluent:app] App is ready at port '${PORT}'.` );
+    log.info( `[fluent:app:${process.pid}] App is ready at port '${PORT}'.` );
+    console.log( `[fluent:app:${process.pid}] App is ready at port '${PORT}'.` );
 };
 
 export { initializeApp, startListening };
