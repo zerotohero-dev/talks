@@ -6,6 +6,7 @@
  * Send your comments and suggestions to <me@volkan.io>.
  */
 
+import cluster from 'cluster';
 import log from 'local-fluent-logger';
 import { all as actions } from './actions';
 import { createConnection as connect } from 'amqp';
@@ -23,8 +24,9 @@ let compute = ( connection, message ) => {
         return;
     }
 
-    let key = message.key;
-    let requestId = message.requestId;
+    let {
+        key, requestId, clusterId
+    } = message;
 
     if ( !actions[ key ] ) {
         log.info( `No action key found for "${key}. Yielding.` );
@@ -33,11 +35,11 @@ let compute = ( connection, message ) => {
     }
 
     actions[ key ]( message.param ).then( ( data ) => {
-        connection.publish( 'fluent-response-queue', { data, requestId } );
+        connection.publish( `fluent-response-queue-${clusterId}`, { data, requestId } );
     } ).catch ( ( error ) => {
         log.error( error, 'Error in computing response.' );
 
-        connection.publish( 'fluent-response-queue', { error: true, requestId } );
+        connection.publish( `fluent-response-queue-${clusterId}`, { error: true, requestId } );
     } );
 };
 
@@ -60,9 +62,24 @@ let startListening = ( connection ) => {
  *
  */
 let init = () => {
-    let connection = connect( { host: 'rabbit' } );
+    if ( cluster.isMaster ) {
+        let numCpus = cpus().length;
 
-    connection.on( 'ready', () => startListening( connection ) );
+        for ( let i = 0; i < numCpus; i++ ) {
+            cluster.fork();
+        }
+
+        // Respawn the workers that die:
+        cluster.on('exit', ( worker, code, signal ) => {
+            log.info( `Worker "${worker.process.pid}" died (${signal||code}). Restarting…` );
+
+            cluster.fork();
+        } );
+    } else {
+        let connection = connect( { host: 'rabbit' } );
+
+        connection.on( 'ready', () => startListening( connection ) );
+    }
 };
 
 export { init };

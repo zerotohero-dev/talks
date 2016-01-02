@@ -6,10 +6,10 @@
  * Send your comments and suggestions to <me@volkan.io>.
  */
 
+import logger from 'local-fluent-logger';
 import Vantage from 'vantage';
 import { dumpHeap, dumpCore } from 'local-fluent-dump';
 import { startInstrumenting, stopInstrumenting } from 'local-fluent-monitor';
-import logger from 'local-fluent-logger';
 
 let noop = () => {};
 let log = ( stuff ) => logger.info.apply( logger, stuff );

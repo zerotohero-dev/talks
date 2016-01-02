@@ -22,7 +22,11 @@ let init = () => {
         usages.push( process.memoryUsage().heapUsed );
         if ( usages.length > 5 ) { usages.shift(); }
 
-        let leaking = usages.sort().toString() !== usages.toString();
+        // If there a constant heap increase in the last 5 full garbage
+        // collections, then we suspect a leak.
+        // If the number are not constantly increasing, then the sorted
+        // version would be different from the unsorted one.
+        let leaking = usages.sort().toString() === usages.toString();
 
         if ( !leaking ) { return; }
 

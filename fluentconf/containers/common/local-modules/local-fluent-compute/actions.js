@@ -6,14 +6,14 @@
  * Send your comments and suggestions to <me@volkan.io>.
  */
 
-import { Promise } from 'bluebird';
+import log from 'local-fluent-logger';
+import { get } from 'request';
 import {
     getTags as getTagsFromData,
     getUrls as getUrlsFromData
 } from 'local-fluent-data';
-import log from 'local-fluent-logger';
 import { isOpen as isCircuitOpen } from 'local-fluent-circuit';
-import { get } from 'request';
+import { Promise } from 'bluebird';
 
 /**
  *

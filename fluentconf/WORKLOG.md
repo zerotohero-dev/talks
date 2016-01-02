@@ -416,7 +416,11 @@ TODO: list them.
 * If public npm is unreachable for some reason, you can still use cached modules.
 * You can easily share reusable code across teams.
 
-
-
-
 ## Clustering Our App
+
+So we’ve created a mirror private npm repository, and we’ve factored out most of our code as modules inside that repo. — This will increase code reusability and modularity across applications.
+
+Next, we’ll cluster our app for several advantages:
+
+TODO: list advantages of clustering, such as hot swapping etc.
+
