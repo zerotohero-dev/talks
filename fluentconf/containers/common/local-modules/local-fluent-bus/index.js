@@ -12,19 +12,37 @@ import { createConnection as connect } from 'amqp';
 import { Promise } from 'bluebird';
 import { put, get } from 'memory-cache';
 
-let a = 12;
-
-const HOURS = 1000 * 60 * 60;
-
-let connection = connect( { host: 'rabbit' } );
+let connection = null;
+let currentClusterId = null;
 
 let resolvers = {};
+
+const HOURS = 1000 * 60 * 60;
 
 // Expose state to the REPL.
 process.fluent = process.fluent || {};
 process.fluent.resolvers = resolvers;
 
 let generateGuid = () => uuid.v4();
+
+/**
+ *
+ */
+let init = ( clusterId ) => {
+    currentClusterId = clusterId;
+
+    connection = connect( { host: 'rabbit' } );
+
+    connection.on( 'ready', () => {
+        console.log( 'AMQP connection is ready!' );
+        log.info( 'AMQP connection is ready!' );
+
+        connection.queue( `fluent-response-queue-${clusterId}`, ( q ) => {
+            q.bind( '#' );
+            q.subscribe( resolveSubscription );
+        } );
+    } );
+};
 
 let resolveSubscription = ( message ) => {
     if ( !message ) {
@@ -66,16 +84,6 @@ let rejectDeferred = ( requestId, param, action, reject ) =>
         } );
     }, 5000 );
 
-connection.on( 'ready', () => {
-    console.log( 'AMQP connection is ready!' );
-    log.info( 'AMQP connection is ready!' );
-
-    connection.queue( 'fluent-response-queue', ( q ) => {
-        q.bind( '#' );
-        q.subscribe( resolveSubscription );
-    } );
-} );
-
 let doGet = ( key, param ) => {
     let cached = get( `${key}-${param}` );
 
@@ -90,10 +98,21 @@ let doGet = ( key, param ) => {
 
         rejectDeferred( requestId, param, key, reject );
 
-        connection.publish(
-            'fluent-request-queue',
-            { param, key, requestId }
-        );
+        if ( !connection ) {
+            reject( {
+                error: true,
+                message: 'Connection is not ready yet.'
+            } );
+
+            return;
+        }
+
+        connection.publish( 'fluent-request-queue', {
+            param,
+            key,
+            requestId,
+            clusterId: currentClusterId
+        } );
     } ).then(
         ( data ) => put( `${key}-${param}`, data, 3 * HOURS )
     );
@@ -109,4 +128,4 @@ let getTags = ( url ) => doGet( 'getTags', url );
  */
 let getUrls = ( tag ) => doGet( 'getUrls', tag );
 
-export { getTags, getUrls };
+export { getTags, getUrls, init };

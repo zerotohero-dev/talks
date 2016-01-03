@@ -9,8 +9,8 @@
 import { createLogger } from 'bunyan';
 
 let logger = createLogger( {
-    name: `fluent:${process.env.HOSTNAME}`,
-    streams: [ { path: '/var/log/fluent/${process.env.HOSTNAME}.log' } ]
+    name: `fluent:${process.env.HOSTNAME}-${process.pid}`,
+    streams: [ { path: `/var/log/fluent/${process.env.HOSTNAME}-${process.pid}.log` } ]
 } );
 
 export default logger;

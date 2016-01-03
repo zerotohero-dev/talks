@@ -9,6 +9,8 @@
 import log from 'local-fluent-logger';
 import { all as actions } from './actions';
 import { createConnection as connect } from 'amqp';
+import { cpus } from 'os';
+import { init as initCluster } from 'local-fluent-cluster';
 
 let compute = ( connection, message ) => {
     if ( !message ) {
@@ -23,8 +25,9 @@ let compute = ( connection, message ) => {
         return;
     }
 
-    let key = message.key;
-    let requestId = message.requestId;
+    let {
+        key, requestId, clusterId
+    } = message;
 
     if ( !actions[ key ] ) {
         log.info( `No action key found for "${key}. Yielding.` );
@@ -33,11 +36,11 @@ let compute = ( connection, message ) => {
     }
 
     actions[ key ]( message.param ).then( ( data ) => {
-        connection.publish( 'fluent-response-queue', { data, requestId } );
+        connection.publish( `fluent-response-queue-${clusterId}`, { data, requestId } );
     } ).catch ( ( error ) => {
         log.error( error, 'Error in computing response.' );
 
-        connection.publish( 'fluent-response-queue', { error: true, requestId } );
+        connection.publish( `fluent-response-queue-${clusterId}`, { error: true, requestId } );
     } );
 };
 
@@ -52,17 +55,22 @@ let startListening = ( connection ) => {
         ( queue ) => processQueue( queue, connection )
     );
 
-    console.log( `[fluent:compute] The compute node is ready.` );
-    log.info( `[fluent:compute] The compute node is ready.` );
+    console.log( `[fluent:compute:${process.pid}] The compute node is ready.` );
+    log.info( `[fluent:compute:${process.pid}] The compute node is ready.` );
 };
 
 /**
  *
  */
 let init = () => {
-    let connection = connect( { host: 'rabbit' } );
+    initCluster(
+        () => {},
+        () => {
+            let connection = connect( { host: 'rabbit' } );
 
-    connection.on( 'ready', () => startListening( connection ) );
+            connection.on( 'ready', () => startListening( connection ) );
+        }
+    );
 };
 
 export { init };

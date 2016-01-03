@@ -27,20 +27,30 @@ let init = () => {
     process.on('unhandledRejection', ( error, promise ) => {
         console.error( 'Unhandled Promise rejection detected.' );
         console.error( error );
+        if ( error ) {
+            console.error( error.stack );
+        }
         console.error( promise );
-        console.info( 'Will dump core and exit.' );
 
         log.error( 'Unhandled Promise rejection detected.' );
         log.error( error );
+        if ( error ) {
+            log.error( error.stack );
+        }
         log.error( promise );
-        log.info( 'Will dump core and exit.' );
 
-        die();
+        // No need to die on unhandled promise rejection because the promise
+        // rejection may be due to some of the libraries that we are using
+        // such as vorpal or vantage.
+        // die();
     } );
 
     process.on('uncaughtException', ( error ) => {
         console.error( 'Unhandled exception detected.' );
         console.error( error );
+        if ( error ) {
+            console.error( error.stack );
+        }
         console.info( 'Will dump core and exit.' );
 
         log.error( 'Unhandled exception detected.' );

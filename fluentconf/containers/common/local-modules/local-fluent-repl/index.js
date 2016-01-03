@@ -6,10 +6,10 @@
  * Send your comments and suggestions to <me@volkan.io>.
  */
 
+import logger from 'local-fluent-logger';
 import Vantage from 'vantage';
 import { dumpHeap, dumpCore } from 'local-fluent-dump';
 import { startInstrumenting, stopInstrumenting } from 'local-fluent-monitor';
-import logger from 'local-fluent-logger';
 
 let noop = () => {};
 let log = ( stuff ) => logger.info.apply( logger, stuff );
@@ -24,7 +24,7 @@ let inform = ( ...stuff ) => currentLogger( stuff );
 /**
  *
  */
-let listen = () => {
+let listen = ( port ) => {
     let vantage = new Vantage();
 
     vantage
@@ -108,7 +108,10 @@ let listen = () => {
             } );
         } );
 
-    vantage.listen( 8016 );
+    vantage.listen( port );
+
+    logger.info( `Vantage: Listening at port: "${port}".` );
+    console.log( `Vantage: Listening at port: "${port}".` );
 
     return vantage;
 };

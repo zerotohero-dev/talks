@@ -8,17 +8,19 @@
 
 import { get } from 'request';
 
-let getUrl = ( url ) => {
-    //get( url, () => {} );
-    //get( url, () => {} );
-    //get( url, () => {} );
-    //get( url, () => {} );
-
+let getUrl = function( url ) {
     setTimeout( () => {
-        console.log( '»» hitting...' );
-        get( url, () => getUrl( url ) );
+        get( url, ( err, response, body ) => {
+            console.log( body );
+
+            getUrl( url );
+        } );
     }, 2000 );
 };
+
+// KLUDGE: probably a transipler bug.
+// if not defined, getUrl becomes undefined in closure.
+let getUrl2 = ( url ) => getUrl( url );
 
 // TODO: make this configurable from environment
 // TODO: pass env variables from startup script using the -e flag

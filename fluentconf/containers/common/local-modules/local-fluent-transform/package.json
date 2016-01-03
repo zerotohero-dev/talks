@@ -1,6 +1,6 @@
 {
   "name": "local-fluent-transform",
-  "version": "0.1.2",
+  "version": "0.2.1",
   "description": "transforms, lexes, and tags stuff.",
   "main": "release/index.js",
   "scripts": {
@@ -10,5 +10,10 @@
     "transform"
   ],
   "author": "Volkan Özçelik",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "natural": "0.2.1",
+    "pos": "0.3.0",
+    "unfluff": "0.11.0"
+  }
 }
