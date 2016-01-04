@@ -6,8 +6,12 @@
  * Send your comments and suggestions to <me@volkan.io>.
  */
 
-import { prepareTaggedWords, singularize } from 'local-fluent-transform';
 import { en_technical as stopWords } from 'stpwrds';
+import { prepareTaggedWords, singularize } from 'local-fluent-transform';
+import {
+    put as putToRemoteCache,
+    get as getFromRemoteCache
+} from 'local-fluent-cache';
 
 let cache = { tags: {}, urls: {} };
 
@@ -148,26 +152,56 @@ let computeTags = ( seed, url ) => {
 
 let pluckTags = ( url ) => cache.urls[ url ].tags;
 
-let resetCache = ( url ) => cache.urls[ url ] = { words: {}, counts: [], tags: [] };
+let resetLocalCache = ( url ) => cache.urls[ url ] = {
+    words: {}, counts: [], tags: []
+};
 
 /**
  *
  */
-let getUrls = ( tag ) => cache.tags[ tag ];
+let getUrls = ( tag ) => Promise.resolve( cache.tags[ tag ] );
 
 /**
  *
  */
 let getTags = ( url, body ) => {
-    resetCache( url );
+    return getFromRemoteCache( `getTags-${url}` ).then( ( data ) => {
+        if ( data ) { return data; }
 
-    let tags = setWordCounts( url, body );
+        // ---------------------------------------------------------------------
+        //
+        // This section is “computationally expensive”; however, you can live
+        // with it because the owner module is not directly accessed by the API
+        // clients; in contrast, they call it in a non-blocking manner through
+        // a TCP connection. So this module kind of acts as a “worker”.
+        //
+        // If you want to make it even more performant, you can…
+        //
+        // 1) Either convert it to a native Node.JS extension.
+        // 2) Or write it in a different language (such as C) and shell out to
+        // call it using `child_process.fork`.
+        // 3) Or, you can even write it in JavaScript (Node.JS) if you are
+        // willing to sacrifice some performance in lieu of ease of maintenance
+        // However you should assume at least 30ms startup delay and spawn
+        // memory for each new child process. That is to say, you cannot create
+        // many thousands of them.
+        //
+        resetLocalCache( url );
+        let tags = setWordCounts( url, body );
+        postProcessWords( url );
+        computeCounts( url );
+        computeTags( tags, url );
+        let result = pluckTags( url );
+        //
+        // ---------------------------------------------------------------------
 
-    postProcessWords( url );
-    computeCounts( url );
-    computeTags( tags, url );
+        putToRemoteCache( `getTags-${url}`, result );
 
-    return pluckTags( url );
+        // We don’t need to wait for the above cache operation to complete,
+        // we can return the result immediately and let it process in the
+        // background.
+        return result;
+    } );
 };
 
 export {

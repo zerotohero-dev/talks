@@ -1,0 +1,26 @@
+{
+  "name": "local-fluent-cache",
+  "version": "0.2.0",
+  "description": "A cache utility module If there’s a redis host defined, uses it for caching, othwerwise falls back to an in-memory cache.",
+  "main": "release/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "cache",
+    "redis",
+    "caching",
+    "ttl",
+    "memory",
+    "state",
+    "shared",
+    "state"
+  ],
+  "author": "Volkan Özçelik",
+  "license": "MIT",
+  "dependencies": {
+    "local-fluent-logger": "*",
+    "memory-cache": "0.1.4",
+    "redis": "2.4.2"
+  }
+}

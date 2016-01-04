@@ -441,4 +441,19 @@ None of these options are inferior to one another, and your application might ne
 
 However, in this demo, we will use a shared memory for app and compute nodes because it’s relatively simpler to implement; and honestly it will be the “go to” solution of 85% of your “how can I share state information” problems. — In-memory data structures are extremely fast, and reliable (given you have implemented proper sharding, backup and replication strategies).
 
-## Moving the Memory Out
+## Sharing State Information
+
+So we’ve move the in-memory state information to redis.
+
+The next thing is to use a load-balancer to increase the cluster size.
+
+Here, again, there are many options to choose from:
+
+* You can use a “Load Balancer as a Service” solution.
+* You can use a reverse proxy like NGINX, or HAProxy and configure it to distribute the load in a round-robin fashion.
+* You can even write a simple load balancer in node. — Don’t underestimate the power of this third alternative:
+    1. It is really easy to set up
+    2. You can be able to write actual code to redirect traffic based on things like source IP, header values, URL etc.
+    3. It’s performance is surprisingly “good enough”.
+    
+To have some fun, we’ll go ahead with option 3 for this demo **:)**.

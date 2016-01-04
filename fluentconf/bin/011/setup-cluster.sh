@@ -10,6 +10,9 @@ docker rm -f fluent_compute
 docker rm -f fluent_app
 docker rm -f fluent_bastion
 docker rm -f fluent_sinopia
+docker rm -f fluent_redis_compute
+docker rm -f fluent_redis_app
+docker rm -f fluent_redis_bastion
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
@@ -35,6 +38,24 @@ rabbitmq:3-management
 # -p 5671:5671 \
 # -p 5672:5672 \
 
+# Redis
+docker run -d \
+-h fluent-redis-compute \
+-p 9379:6379 \
+--name fluent_redis_compute \
+redis
+docker run -d \
+-h fluent-redis-app \
+-p 9380:6379 \
+--name fluent_redis_app \
+redis
+docker run -d \
+-h fluent-redis-bastion \
+-p 9381:6379 \
+--name fluent_redis_bastion \
+redis
+
+
 # Simulates “the Internet”
 docker run --privileged -i -t -d \
 -h service-static-server \
@@ -53,11 +74,12 @@ docker run -d --privileged -i -t \
 --name fluent_compute \
 -v "${DIR}/../../containers/common/opt/shared":/opt/shared \
 -v "${DIR}/../../containers/common/data":/data \
--v "${DIR}/../../containers/010-cluster/compute/opt/fluent":/opt/fluent \
--v "${DIR}/../../containers/010-cluster/compute/var/log/fluent":/var/log/fluent \
+-v "${DIR}/../../containers/011-sharing-memory/compute/opt/fluent":/opt/fluent \
+-v "${DIR}/../../containers/011-sharing-memory/compute/var/log/fluent":/var/log/fluent \
 --link fluent_rabbit:rabbit \
 --link fluent_sinopia:npm \
 --link fluent_web:web \
+--link fluent_redis_compute:redis \
 fluent:service-compute /bin/bash
 
 # The API Service
@@ -67,10 +89,11 @@ docker run -d --privileged -i -t \
 -p 9005:8005 \
 -v "${DIR}/../../containers/common/opt/shared":/opt/shared \
 -v "${DIR}/../../containers/common/data":/data \
--v "${DIR}/../../containers/010-cluster/service/opt/fluent":/opt/fluent \
--v "${DIR}/../../containers/010-cluster/service/var/log/fluent":/var/log/fluent \
+-v "${DIR}/../../containers/011-sharing-memory/service/opt/fluent":/opt/fluent \
+-v "${DIR}/../../containers/011-sharing-memory/service/var/log/fluent":/var/log/fluent \
 --link fluent_rabbit:rabbit \
 --link fluent_sinopia:npm \
+--link fluent_redis_app:redis \
 fluent:service-app /bin/bash
 
 docker run -d --privileged -i -t \
@@ -86,6 +109,7 @@ docker run -d --privileged -i -t \
 --link fluent_compute:compute \
 --link fluent_app:app \
 --link fluent_sinopia:npm \
+--link fluent_redis_bastion:redis \
 -p 4322:4322 \
 fluent:bastion /bin/bash
 

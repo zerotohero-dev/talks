@@ -33,14 +33,16 @@ let getTags = ( url ) => new Promise( ( resolve, reject ) => {
 
     get( url, ( error, response, body ) => {
         if ( error ) {
-            console.log( 'error in response' );
+            log.info( 'error in response' );
+            log.info( error );
+            if ( error ) {
+                log.info( error.stack );
+            }
 
             reject( error );
 
             return;
         }
-
-        console.log( 'resolving response ' );
 
         resolve( getTagsFromData( url, body ) );
     } );
@@ -49,19 +51,21 @@ let getTags = ( url ) => new Promise( ( resolve, reject ) => {
 /**
  *
  */
-let getUrls = ( tag ) => {
+let getUrls = ( tag ) => new Promise( ( resolve, reject ) => {
     if ( isCircuitOpen() ) {
         console.log( 'Circuit is open… Exiting.' );
         log.info( 'Circuit is open… Exiting.' );
 
-        return Promise.reject( {
+        reject( {
             error: true,
             description: 'I cannot handle your request right now because the service is shutting down.'
         } );
+
+        return;
     }
 
-    return Promise.resolve( getUrlsFromData( tag ) );
-};
+    resolve( getUrlsFromData( tag ) );
+} );
 
 /**
  *

@@ -18,8 +18,8 @@
   "author": "Volkan Özçelik",
   "license": "MIT",
   "dependencies": {
-    "body-parser": "^1.14.2",
-    "express": "^4.13.3",
+    "body-parser": "1.14.2",
+    "express": "4.13.3",
     "local-fluent-bus": "*",
     "local-fluent-circuit": "*",
     "local-fluent-cluster": "*",

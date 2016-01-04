@@ -1,6 +1,6 @@
 {
   "name": "local-fluent-data",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Does word processing… I know; it needs a better name.",
   "main": "release/index.js",
   "scripts": {
@@ -17,6 +17,7 @@
   "author": "Volkan Özçelik",
   "license": "MIT",
   "dependencies": {
+    "local-fluent-cache": "^0.2.0",
     "local-fluent-transform": "*",
     "stpwrds": "*"
   }
