@@ -1,6 +1,6 @@
 {
   "name": "local-fluent-bus",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "Message bus from service to the compute",
   "main": "release/index.js",
   "scripts": {
@@ -18,6 +18,7 @@
   "dependencies": {
     "amqp": "0.2.4",
     "bluebird": "3.1.1",
+    "local-fluent-cache": "*",
     "local-fluent-logger": "*",
     "memory-cache": "0.1.4",
     "node-uuid": "1.4.7"

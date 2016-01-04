@@ -20,21 +20,35 @@ let init = () => {
         if ( info.type !== 'MarkSweepCompact' ) { return; }
 
         usages.push( process.memoryUsage().heapUsed );
-        if ( usages.length > 5 ) { usages.shift(); }
 
-        // If there a constant heap increase in the last 5 full garbage
-        // collections, then we suspect a leak.
-        // If the number are not constantly increasing, then the sorted
-        // version would be different from the unsorted one.
-        let leaking = usages.sort().toString() === usages.toString();
+        if ( usages.length < 5 ) { return; }
 
-        if ( !leaking ) { return; }
+        // Five consecutive increases after full gc’s may suggest a memory leak.
+        //
+        // Note that this not the “only” way that the memory can leak.
+        // There might be sneakier leaks that this algorithm might not catch.
+        // Those leaks can only be detected by looking at the long-term
+        // heap usage over time. — The algorithm here provides a quick and dirty
+        // check which is “good enough” most of the time.
 
-        log.warn( 'The memory appears to be leaking; taking a heap snapshot.' );
-        console.log( 'The memory appears to be leaking', usages );
+        let leaking = true;
 
-        // TODO: fixme.
-        //dumpHeap( () => {}, 'memoryLeak' );
+        usages.reduce( ( acc, curr ) => {
+            if ( acc > curr ) {
+                leaking = false;
+            }
+
+            return curr;
+        }, 0 );
+
+        usages.length = 0;
+
+        if ( leaking ) {
+            log.warn( 'The memory appears to be leaking; taking a heap snapshot.', usages );
+            console.log( 'The memory appears to be leaking; taking a heap snapshot.', usages );
+
+            dumpHeap( () => {}, 'memoryLeak' );
+        }
     } );
 };
 
