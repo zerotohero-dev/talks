@@ -1,0 +1,24 @@
+{
+  "name": "local-fluent-load-balancer",
+  "version": "0.4.0",
+  "description": "Poor man’s load balancer",
+  "main": "release/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "load",
+    "load",
+    "balancer",
+    "performance",
+    "streams",
+    "http"
+  ],
+  "author": "Volkan Özçelik",
+  "license": "MIT",
+  "dependencies": {
+    "bouncy": "3.2.2",
+    "local-fluent-cluster": "^0.1.2",
+    "local-fluent-logger": "^0.4.1"
+  }
+}

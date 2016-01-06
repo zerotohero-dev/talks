@@ -180,11 +180,12 @@ let getTags = ( url, body ) => {
         // 1) Either convert it to a native Node.JS extension.
         // 2) Or write it in a different language (such as C) and shell out to
         // call it using `child_process.fork`.
-        // 3) Or, you can even write it in JavaScript (Node.JS) if you are
-        // willing to sacrifice some performance in lieu of ease of maintenance
-        // However you should assume at least 30ms startup delay and spawn
-        // memory for each new child process. That is to say, you cannot create
-        // many thousands of them.
+        // 3) Or, you can even write it in JavaScript (Node.JS); extracting out
+        // this code piece into its own module and doing a `child_process.exec`,
+        // if you are willing to sacrifice some performance in lieu of ease of
+        // maintenance; however you should assume at least 30ms startup delay
+        // and spawn ~10mb of memory for each new child process. That is to say,
+        // you cannot create many thousands of them.
         //
         resetLocalCache( url );
         let tags = setWordCounts( url, body );
