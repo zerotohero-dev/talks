@@ -13,7 +13,7 @@ import log from 'local-fluent-logger';
 
 const MONITOR_ENDPOINT = '192.168.99.100';
 const MONITOR_PORT = 4322;
-const PORT = 8005;
+const PORT = parseInt( process.env.PORT, 10 ) || 8005;
 
 /**
  *

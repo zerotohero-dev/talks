@@ -457,3 +457,5 @@ Here, again, there are many options to choose from:
     3. It’s performance is surprisingly “good enough”.
     
 To have some fun, we’ll go ahead with option 3 for this demo **:)**.
+
+// TODO: you realize that the number and type of these (micro)services are exponentially increasing at each iteration. — Talk about ways to manage the infrastructure, like chef/puppet, ansible, saltstack etc.
