@@ -1,0 +1,8 @@
+$ttl 38400
+199.99.168.192.in-addr.arpa.	IN	SOA	ns.fluent.conf. admin.fluent.conf. (
+			1452187451
+			10800
+			3600
+			604800
+			38400 )
+199.99.168.192.in-addr.arpa.	IN	NS	ns.fluent.conf.

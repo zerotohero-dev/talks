@@ -1,0 +1,11 @@
+$ttl 38400
+fluent.conf.	IN	SOA	ns.fluent.conf. admin.fluent.conf. (
+			1452187525
+			10800
+			3600
+			604800
+			38400 )
+fluent.conf.	IN	NS	ns.fluent.conf.
+ns.fluent.conf.	IN	A	192.168.99.100
+api.fluent.conf.	IN	A	172.17.0.194
+api.fluent.conf.	IN	A	172.17.0.199

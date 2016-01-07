@@ -1,0 +1,23 @@
+{
+  "name": "synjalab-compute-service",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A Service for CPU-Intensive Work",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "compute",
+    "service",
+    "microservice",
+    "cpu",
+    "scaling"
+  ],
+  "author": "Volkan Özçelik",
+  "license": "MIT",
+  "dependencies": {
+    "local-fluent-compute": "^0.3.0"
+  }
+}
