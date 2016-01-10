@@ -459,3 +459,11 @@ Here, again, there are many options to choose from:
 To have some fun, we’ll go ahead with option 3 for this demo **:)**.
 
 // TODO: you realize that the number and type of these (micro)services are exponentially increasing at each iteration. — Talk about ways to manage the infrastructure, like chef/puppet, ansible, saltstack etc.
+
+## Round Robin DNS
+
+If you api becomes galactically popular, you might exhaust the maximum throughput the load balancer can sustain. Even that’s not the case, you might want to run an identical copy of your infrastructure in a different geographical region to satisfy your redundancy/availability needs.
+
+Now that the DNS server is up and running, the code part of the demo is done.
+
+I’ll prepare the slide decks and go through this worklog once again.

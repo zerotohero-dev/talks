@@ -1,0 +1,23 @@
+{
+  "name": "synjalab-load-balancer-service",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Poor Man’s Load Balancer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "load balancer",
+    "lb",
+    "microservice",
+    "round-robin",
+    "scaling"
+  ],
+  "author": "Volkan Özçelik",
+  "license": "MIT",
+  "dependencies": {
+    "local-fluent-load-balancer": "*"
+  }
+}

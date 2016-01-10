@@ -1,0 +1,9 @@
+/var/log/fluent/*.log {
+    monthly
+    size 100M
+    rotate 12
+    compress
+    delaycompress
+    missingok
+    notifempty
+}

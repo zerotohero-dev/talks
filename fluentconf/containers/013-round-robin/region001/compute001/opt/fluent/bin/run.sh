@@ -4,10 +4,7 @@
 # <https://github.com/v0lkan/talks/blob/master/LICENSE.md>
 # Send your comments and suggestions to <me@volkan.io>.
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+ifconfig | awk '/inet addr/{print substr($2,6)}' | grep 172 > /data/service-region-001-compute-001.dat
 
-cd "${DIR}/.."
-
-sysctl -w net.core.somaxconn=32768
-
-ifconfig | awk '/inet addr/{print substr($2,6)}' | grep 172 > /data/"${1}".dat
+echo "[${HOSTNAME}] Initialized successfully."
+cd /opt/fluent/

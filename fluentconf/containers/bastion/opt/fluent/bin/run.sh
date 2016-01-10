@@ -6,5 +6,9 @@
 
 ifconfig | awk '/inet addr/{print substr($2,6)}' | grep 172 > /data/bastion.dat
 
+cp /data/resolv.conf /etc/
+echo "set up dns!"
+
 echo "[${HOSTNAME}] Initialized bastion."
 cd /opt/fluent/
+

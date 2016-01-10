@@ -51,7 +51,7 @@ docker run -d \
 --name fluent_redis_app \
 redis
 
-# Redis (Bastion
+# Redis (Bastion)
 docker run -d \
 -h fluent-redis-bastion \
 -p 9381:6379 \
