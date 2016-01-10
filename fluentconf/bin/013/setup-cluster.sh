@@ -108,6 +108,7 @@ fluent:service-static-server /bin/bash
 # Region 1: Compute Service (1 of 2)
 docker run -d --privileged -i -t \
 -h region-1-service-compute-1 \
+--env CLUSTER_SIZE=1 \
 --name region_1_fluent_compute_1 \
 -v "${DIR}/../../containers/common/region001/opt/shared":/opt/shared \
 -v "${DIR}/../../containers/common/region001/data":/data \
@@ -121,6 +122,7 @@ fluent:service-compute /bin/bash
 
 # Region 1: Compute Service (2 of 2)
 docker run -d --privileged -i -t \
+--env CLUSTER_SIZE=1 \
 -h region-1-service-compute-2 \
 --name region_1_fluent_compute_2 \
 -v "${DIR}/../../containers/common/region001/opt/shared":/opt/shared \
@@ -135,6 +137,8 @@ fluent:service-compute /bin/bash
 
 # Region 1: API Service (1 of 2)
 docker run -d --privileged -i -t \
+--env PORT=80 \
+--env CLUSTER_SIZE=1 \
 -h region-1-service-app-1 \
 --name region_1_fluent_app_1 \
 -v "${DIR}/../../containers/common/region001/opt/shared":/opt/shared \
@@ -148,6 +152,8 @@ fluent:service-app /bin/bash
 
 # Region 1: API Service (2 of 2)
 docker run -d --privileged -i -t \
+--env PORT=80 \
+--env CLUSTER_SIZE=1 \
 -h region-1-service-app-2 \
 --name region_1_fluent_app_2 \
 -v "${DIR}/../../containers/common/region001/opt/shared":/opt/shared \
@@ -175,6 +181,7 @@ fluent:service-load-balancer /bin/bash
 # Region 2: Compute Service (1 of 2)
 docker run -d --privileged -i -t \
 -h region-2-service-compute-1 \
+--env CLUSTER_SIZE=1 \
 --name region_2_fluent_compute_1 \
 -v "${DIR}/../../containers/common/region002/opt/shared":/opt/shared \
 -v "${DIR}/../../containers/common/region002/data":/data \
@@ -189,6 +196,7 @@ fluent:service-compute /bin/bash
 # Region 2: Compute Service (2 of 2)
 docker run -d --privileged -i -t \
 -h region-2-service-compute-2 \
+--env CLUSTER_SIZE=1 \
 --name region_2_fluent_compute_2 \
 -v "${DIR}/../../containers/common/region002/opt/shared":/opt/shared \
 -v "${DIR}/../../containers/common/region002/data":/data \
@@ -202,12 +210,14 @@ fluent:service-compute /bin/bash
 
 # Region 2: API Service (1 of 2)
 docker run -d --privileged -i -t \
+--env PORT=80 \
+--env CLUSTER_SIZE=1 \
 -h region-2-service-app-1 \
 --name region_2_fluent_app_1 \
 -v "${DIR}/../../containers/common/region002/opt/shared":/opt/shared \
 -v "${DIR}/../../containers/common/region002/data":/data \
--v "${DIR}/../../containers/013-round-robin/region002/service002/opt/fluent":/opt/fluent \
--v "${DIR}/../../containers/013-round-robin/region002/service002/var/log/fluent":/var/log/fluent \
+-v "${DIR}/../../containers/013-round-robin/region002/service001/opt/fluent":/opt/fluent \
+-v "${DIR}/../../containers/013-round-robin/region002/service001/var/log/fluent":/var/log/fluent \
 --link region_2_fluent_rabbit:rabbit \
 --link region_2_fluent_redis_app:redis \
 --link fluent_sinopia:npm \
@@ -215,6 +225,8 @@ fluent:service-app /bin/bash
 
 # Region 2: API Service (2 of 2)
 docker run -d --privileged -i -t \
+--env PORT=80 \
+--env CLUSTER_SIZE=1 \
 -h region-2-service-app-2 \
 --name region_2_fluent_app_2 \
 -v "${DIR}/../../containers/common/region002/opt/shared":/opt/shared \
@@ -230,10 +242,10 @@ fluent:service-app /bin/bash
 docker run -d --privileged -i -t \
 -h region-2-service-load-balancer \
 --name region_2_fluent_load_balancer \
--v "${DIR}/../../containers/common/region001/opt/shared":/opt/shared \
--v "${DIR}/../../containers/common/region001/data":/data \
--v "${DIR}/../../containers/013-round-robin/region001/loadbalancer/opt/fluent":/opt/fluent \
--v "${DIR}/../../containers/013-round-robin/region001/loadbalancer/var/log/fluent":/var/log/fluent \
+-v "${DIR}/../../containers/common/region002/opt/shared":/opt/shared \
+-v "${DIR}/../../containers/common/region002/data":/data \
+-v "${DIR}/../../containers/013-round-robin/region002/loadbalancer/opt/fluent":/opt/fluent \
+-v "${DIR}/../../containers/013-round-robin/region002/loadbalancer/var/log/fluent":/var/log/fluent \
 --link region_2_fluent_app_1:app1 \
 --link region_2_fluent_app_2:app2 \
 --link fluent_sinopia:npm \
@@ -254,5 +266,10 @@ docker run -d --privileged -i -t \
 --link region_2_fluent_load_balancer:app2 \
 -p 4322:4322 \
 fluent:bastion /bin/bash
+
+docker inspect fluent_dns | grep "\"IPAddress" > 'dns.txt'
+
+echo "Configuring round-robin DNS…"
+./setup-dns.js
 
 echo "Set up the cluster."

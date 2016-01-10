@@ -1,6 +1,6 @@
 {
   "name": "local-fluent-cluster",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Common clustering logic between modules.",
   "main": "release/index.js",
   "scripts": {

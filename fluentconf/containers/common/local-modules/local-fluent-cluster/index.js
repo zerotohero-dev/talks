@@ -36,7 +36,7 @@ let forkWorker = () => {
 
 let init = ( preListen, listen ) => {
     if ( cluster.isMaster ) {
-        let cpuCount = cpus().length;
+        let cpuCount = parseInt( process.env.CLUSTER_SIZE, 10 ) || cpus().length;
 
         for ( let i = 0; i < cpuCount; i++ ) {
             forkWorker();

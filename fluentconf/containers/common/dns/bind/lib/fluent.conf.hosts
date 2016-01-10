@@ -7,5 +7,5 @@ fluent.conf.	IN	SOA	ns.fluent.conf. admin.fluent.conf. (
 			38400 )
 fluent.conf.	IN	NS	ns.fluent.conf.
 ns.fluent.conf.	IN	A	192.168.99.100
-api.fluent.conf.	IN	A	172.17.0.194
-api.fluent.conf.	IN	A	172.17.0.199
+api.fluent.conf.	IN	A	172.17.2.2
+api.fluent.conf.	IN	A	172.17.2.7

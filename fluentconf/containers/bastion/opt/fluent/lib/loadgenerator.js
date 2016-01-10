@@ -21,12 +21,13 @@ let getUrl = function( url ) {
 // KLUDGE: probably a transipler bug.
 // if not defined, getUrl becomes undefined in closure.
 let getUrl2 = ( url ) => getUrl( url );
+void getUrl2;
 
 // TODO: make this configurable from environment
 // TODO: pass env variables from startup script using the -e flag
 //const TAGS_URL = 'http://app:8005/benchmark/get-tags';
 
-const TAGS_URL = 'http://app:80/benchmark/get-tags';
+const TAGS_URL = 'http://api.fluent.conf:80/benchmark/get-tags';
 //const TAGS_URL = 'http://192.168.99.100:8003/benchmark/get-tags';
 getUrl( TAGS_URL );
 

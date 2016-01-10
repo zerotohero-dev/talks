@@ -464,17 +464,6 @@ To have some fun, we’ll go ahead with option 3 for this demo **:)**.
 
 If you api becomes galactically popular, you might exhaust the maximum throughput the load balancer can sustain. Even that’s not the case, you might want to run an identical copy of your infrastructure in a different geographical region to satisfy your redundancy/availability needs.
 
-at bastion:
-docker inspect 4f251a0adfca | grep '"IPAddress'
-vim /etc/resolv.conf
-nameserver 172.17.0.65
+Now that the DNS server is up and running, the code part of the demo is done.
 
-setup two identical clusters that will run side by side.
-cluster1: lb-1
-cluster2: lb-2
-
-setup bind to point to lb-1 and lb-2 in a round-robin fashion for api.fluent.conf
-
-configure bastion's /etc/resolve.conf to use the name server.
-
-modify bastion's load test to use api.fluent.conf address.
+I’ll prepare the slide decks and go through this worklog once again.

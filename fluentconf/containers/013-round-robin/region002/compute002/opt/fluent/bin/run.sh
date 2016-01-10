@@ -4,7 +4,7 @@
 # <https://github.com/v0lkan/talks/blob/master/LICENSE.md>
 # Send your comments and suggestions to <me@volkan.io>.
 
-ifconfig | awk '/inet addr/{print substr($2,6)}' | grep 172 > /data/service-compute-002.dat
+ifconfig | awk '/inet addr/{print substr($2,6)}' | grep 172 > /data/service-region-002-compute-002.dat
 
 echo "[${HOSTNAME}] Initialized successfully."
 cd /opt/fluent/
