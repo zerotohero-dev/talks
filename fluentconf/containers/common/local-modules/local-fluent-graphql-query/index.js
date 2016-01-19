@@ -9,6 +9,9 @@
 import log from 'local-fluent-logger';
 import { graphql } from 'graphql';
 
+/**
+ *
+ */
 let query = ( schema, request, response ) => graphql( schema, request.body )
     .then( ( result ) =>
         response.end( JSON.stringify( result, null, 4 ) )

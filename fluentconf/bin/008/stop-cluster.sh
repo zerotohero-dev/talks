@@ -9,5 +9,6 @@ docker stop fluent_web
 docker stop fluent_compute
 docker stop fluent_app
 docker stop fluent_bastion
+docker stop fluent_sinopia
 
 echo "Stopped the cluster."

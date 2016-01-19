@@ -1,6 +1,6 @@
 {
   "name": "local-fluent-postmortem",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Dumps heap snapshots and core files for post-mortem analysis.",
   "main": "release/index.js",
   "scripts": {

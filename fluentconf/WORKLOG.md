@@ -19,7 +19,7 @@ I’m using [apachebench][ab] for benchmarking the sample setups; and it’s a *
 Here’s roughly the steps I follow before each `ab` test:
 
 * Before each test, I restart the server(s).
-* I run something like ` ab -n 100000 -c 100 http://SERVER_IP:SERVER_PORT/SERVICE`
+* I run something like `ab -n 100000 -c 100 http://SERVER_IP:SERVER_PORT/SERVICE`
 * I don't use *connection reuse* (*i.e., `-k`*) mode because that I wanted to keep things simpler.
 * I run the tests 5 times and pick the average of the middle theree results.
 * After each test, I wait for ~10 seconds.
@@ -109,7 +109,6 @@ Here's a sample request:
 curl -X "POST" "http://192.168.99.100:8003/api/v1/graph" \
     -H "Content-Type: application/graphql" \
     -d $'{
-
     tags(url: "http://192.168.99.100:8080/10-tricks-to-appear-smart-during-meetings-27b489a39d1a.html")
 }'
 ```

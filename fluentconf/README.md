@@ -12,6 +12,15 @@ Along with the source code, you’ll also see other useful nuggets, and referenc
 
 Enjoy!
 
+rabbitMQ Management Console URL: http://192.168.99.100:15672/ user:guest pass:guest
+
+vantage app:8003
+vantage compute:8003
+vantage app:8004
+vantage compute:8004
+
+webmin: https://192.168.99.100:10000/
+
 ## Directory Structure
 
 Here’s a brief outline of how this project is organized:

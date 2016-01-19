@@ -12,7 +12,7 @@ import { createConnection as connect } from 'amqp';
 import { dumpHeap, dumpCore } from '../dump';
 import { get } from 'request';
 import { getTags, getUrls } from '../data';
-import { listen } from '../repl';
+import { listen as listenVantage } from '../repl';
 import { Promise } from 'bluebird';
 
 let circuitOpen = false;
@@ -125,7 +125,7 @@ let circuitOpen = false;
     } );
 }
 
-listen();
+listenVantage();
 
 log.info( '[fluent:compute] Started listening.' );
 console.log( '[fluent:compute] Started listening.' );

@@ -41,7 +41,7 @@ let init = () => {
 
         // No need to die on unhandled promise rejection because the promise
         // rejection may be due to some of the libraries that we are using
-        // such as vorpal or vantage.
+        // such as “vorpal” or “vantage”.
         // die();
     } );
 

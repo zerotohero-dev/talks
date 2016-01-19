@@ -6,6 +6,6 @@
 
 docker exec -d fluent_compute forever /usr/bin/node --abort_on_uncaught_exception /opt/fluent
 docker exec -d fluent_app forever /usr/bin/node --abort_on_uncaught_exception /opt/fluent
-docker exec -d fluent_web /bin/bash
+docker exec -d fluent_load_balancer forever /usr/bin/node --abort_on_uncaught_exception /opt/fluent
 
 echo "Started the cluster."

@@ -8,14 +8,12 @@
 
 import log from 'local-fluent-logger';
 import { init as initCompute } from 'local-fluent-compute';
-import { init as initLeakDetector } from 'local-fluent-leakdetector';
+import { init as initLeakDetector } from 'local-fluent-leak-detector';
 import { init as initPostMortem } from 'local-fluent-postmortem';
-import { listen as startRepl } from 'local-fluent-repl';
 
 initCompute();
 initPostMortem();
 initLeakDetector();
-startRepl();
 
 log.info( '[fluent:compute] Started listening.' );
 console.log( '[fluent:compute] Started listening.' );

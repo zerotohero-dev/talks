@@ -98,9 +98,11 @@ let setWordCounts = ( url, body ) => {
 let computeCounts = ( url ) => {
     let urlCache = cache.urls[ url ];
 
-    Object.keys( urlCache.words ).forEach( ( key ) => {
-        urlCache.counts.push( { word: key, count: urlCache.words[ key ] } );
-    } );
+    Object
+        .keys( urlCache.words )
+        .forEach( ( key ) => {
+            urlCache.counts.push( { word: key, count: urlCache.words[ key ] } );
+        } );
 
     urlCache.counts.sort( ( a, b ) => {
         if ( a.count === b.count ) { return 0; }
@@ -115,17 +117,18 @@ let computeTags = ( seed, url ) => {
     let singleWordTags = [];
     let multiWordTags = [];
 
-    urlCache.counts.forEach( ( { word, count } ) => {
-        if ( word.indexOf ( ' ' ) === -1 ) {
-            if ( singleWordTags.length < 3 ) {
-                singleWordTags.push ( word );
+    urlCache.counts
+        .forEach( ( { word, count } ) => {
+            if ( word.indexOf ( ' ' ) === -1 ) {
+                if ( singleWordTags.length < 3 ) {
+                    singleWordTags.push ( word );
+                }
+            } else {
+                if ( count > 1 || word.split ( ' ' ).length > 2 ) {
+                    multiWordTags.push ( word );
+                }
             }
-        } else {
-            if ( count > 1 || word.split ( ' ' ).length > 2 ) {
-                multiWordTags.push ( word );
-            }
-        }
-    } );
+        } );
 
     urlCache.tags = unique(
         seed
@@ -134,16 +137,17 @@ let computeTags = ( seed, url ) => {
             .map( ( tag ) => tag.toLowerCase() )
     ).sort();
 
-    urlCache.tags.forEach( ( tag ) => {
-        cache.tags[ tag ] = cache.tags[ tag ] || [];
+    urlCache.tags
+        .forEach( ( tag ) => {
+            cache.tags[ tag ] = cache.tags[ tag ] || [];
 
-        let cacheTag = cache.tags[ tag ];
+            let cacheTag = cache.tags[ tag ];
 
-        if ( cacheTag.indexOf( url ) === -1 ) {
-            cacheTag.push( url );
-            cacheTag.sort();
-        }
-    } );
+            if ( cacheTag.indexOf( url ) === -1 ) {
+                cacheTag.push( url );
+                cacheTag.sort();
+            }
+        } );
 };
 
 let pluckTags = ( url ) => cache.urls[ url ].tags;

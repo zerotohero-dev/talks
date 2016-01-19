@@ -21,19 +21,12 @@ docker run -d \
 --name fluent_sinopia \
 -v "${DIR}/../../containers/common/npm":/sinopia/storage \
 rnbwd/sinopia
-# -p 4873:4873
 
 # RabbitMQ
-docker run -d \
--h fluent-rabbit \
+docker run -d --hostname fluent-rabbit \
 --name fluent_rabbit \
--p 15671:15671 \
 -p 15672:15672 \
--p 25672:25672 \
 rabbitmq:3-management
-# -p 4369:4369 \
-# -p 5671:5671 \
-# -p 5672:5672 \
 
 # Simulates “the Internet”
 docker run --privileged -i -t -d \
@@ -50,6 +43,7 @@ fluent:service-static-server /bin/bash
 docker run -d --privileged -i -t \
 -h service-compute \
 --name fluent_compute \
+--env CLUSTER_SIZE=2 \
 -v "${DIR}/../../containers/common/opt/shared":/opt/shared \
 -v "${DIR}/../../containers/common/data":/data \
 -v "${DIR}/../../containers/009-demo-setting-up-private-npm/compute/opt/fluent":/opt/fluent \
@@ -69,6 +63,7 @@ docker run -d --privileged -i -t \
 -v "${DIR}/../../containers/009-demo-setting-up-private-npm/service/var/log/fluent":/var/log/fluent \
 --link fluent_rabbit:rabbit \
 --link fluent_sinopia:npm \
+-p 8003:8003 \
 fluent:service-app /bin/bash
 
 docker run -d --privileged -i -t --cpuset-cpus="0" \

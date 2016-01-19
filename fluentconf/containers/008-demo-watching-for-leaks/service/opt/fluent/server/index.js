@@ -13,14 +13,39 @@ import profiler from 'gc-profiler';
 import schema from '../schema';
 import { dumpHeap, dumpCore } from '../dump';
 import { graphql } from 'graphql';
-import { listen, inform } from '../repl';
+import { listen as listenVantage, inform } from '../repl';
 import { trace, start } from 'kiraz';
 
 const MONITOR_ENDPOINT = '192.168.99.100';
 const MONITOR_PORT = 4322;
-const PORT = 8005;
+const PORT = 8003;
 
-let circuitOpen = false;
+let harakiri = false;
+
+let serverBusy = false;
+let isServerBusy = () => serverBusy;
+let unsetBusy = () => serverBusy = false;
+
+let alreadyScheduledTimer = false;
+let checkLoad = ( res ) => {
+    if ( !isServerBusy() ) { return false; }
+
+    log.error( 'api/v1/graph', 'The service is overloaded!' );
+
+    res
+        .status( 503 )
+        .end( 'The server is busy. Try again later.' );
+
+    if ( !alreadyScheduledTimer ) {
+        setTimeout( () => {
+            unsetBusy();
+            alreadyScheduledTimer = false;
+        }, 30000 ).unref();
+    }
+    alreadyScheduledTimer = true;
+
+    return true;
+};
 
 start( {
     host: MONITOR_ENDPOINT,
@@ -55,9 +80,9 @@ let app = express();
     app.use( bodyParser.text( { type: 'application/graphql' } ) );
 
     app.post( '/api/v1/graph', ( req, res ) => {
-        if ( circuitOpen ) {
+        if ( harakiri ) {
             res
-                .status(500)
+                .status( 500 )
                 .send(
                     JSON.stringify( {
                         error: true,
@@ -68,11 +93,13 @@ let app = express();
             return;
         }
 
+        if ( checkLoad( res ) ) { return; }
+
         query( schema, req, res );
     } );
 
     app.get( '/benchmark/get-tags', ( req, res ) => {
-        if ( circuitOpen ) {
+        if ( harakiri ) {
             res
                 .status(500)
                 .send( JSON.stringify( {
@@ -97,9 +124,9 @@ let app = express();
     } );
 
     app.get( '/benchmark/get-urls', ( req, res ) => {
-        if ( circuitOpen ) {
+        if ( harakiri ) {
             res
-                .status(500)
+                .status( 500 )
                 .send(
                     JSON.stringify( {
                         error: true,
@@ -124,7 +151,7 @@ let app = express();
 
 {
     let die = () => {
-        circuitOpen = true;
+        harakiri = true;
         dumpCore( () => {}, 'unhandledRejection' );
         dumpHeap( () => {}, 'unhandledRejection' );
 
@@ -166,7 +193,7 @@ let app = express();
     } );
 }
 
-listen();
+listenVantage();
 app.listen( PORT );
 
 log.info( `[fluent:app] App is ready at port '${PORT}'.` );

@@ -19,6 +19,10 @@ let instrument = false;
 let stopInstrumenting = () => instrument = false;
 let startInstrumenting = () => instrument = true;
 
+let serverBusy = false;
+let isServerBusy = () => serverBusy;
+let unsetBusy = () => serverBusy = false;
+
 setInterval( () => {
     if ( !instrument ) { return; }
 
@@ -46,13 +50,17 @@ setInterval( () => {
         setImmediate( () => {
             let delta = process.hrtime( start );
 
+            let eventLoopDelayMs = (
+                ( delta[ 0 ] * 1000 + delta[ 1 ] / 1000000 )
+            );
+
+            if ( eventLoopDelayMs > 300 ) {
+                serverBusy = true;
+            }
+
             trace(
                 'eventloop:delay',
-                { delta: (
-                    ( delta[ 0 ] * 10000000000 + delta[ 1 ] )
-                    /
-                    ( 10000000 )
-                ) }
+                { delta: eventLoopDelayMs }
             );
 
             trace(
@@ -63,4 +71,4 @@ setInterval( () => {
     }
 }, INTERVAL );
 
-export { startInstrumenting, stopInstrumenting };
+export { startInstrumenting, stopInstrumenting, isServerBusy, unsetBusy };

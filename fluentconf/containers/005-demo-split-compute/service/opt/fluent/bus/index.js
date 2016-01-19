@@ -6,7 +6,7 @@ import uuid from 'node-uuid';
 
 const HOURS = 1000 * 60 * 60;
 
-let connection = connect( { host: '192.168.99.100' } );
+let connection = connect( { host: 'rabbit' } );
 
 let resolvers = {};
 
@@ -62,10 +62,12 @@ let doGet = ( key, param ) => {
 
         rejectDeferred( requestId, param, key, reject );
 
+        console.log( '[fluent:app:bus] Publishing to request queue: ', requestId, key, param );
         connection.publish(
             'fluent-request-queue',
             { param, key, requestId }
         );
+        console.log( '[fluent:app:bus] Published to request queue: ', requestId, key, param );
     } ).then(
         ( data ) => put( `${key}-${param}`, data, 3 * HOURS )
     );

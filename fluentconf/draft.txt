@@ -1,0 +1,13 @@
+vim /etc/security/limits.conf
+
+    web soft nofile 9000
+    web hard nofile 65000
+    root soft nofile 9000
+    root hard nofile 65000
+
+vim /etc/pam.d/common.session
+
+    session required pam_limits.so
+
+
+

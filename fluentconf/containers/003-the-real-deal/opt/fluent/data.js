@@ -30,7 +30,8 @@ let postProcessWord = ( words, word ) => {
 let postProcessWords = ( url ) => {
     let words = cache.urls[ url ].words;
 
-    Object.keys( words )
+    Object
+        .keys( words )
         .forEach( ( word ) => postProcessWord( words, word ) );
 };
 
@@ -51,8 +52,8 @@ let addWord = ( url, buffer, taggedWord ) => {
         .trim()
         .replace( /(’|’s|’es)$/g, '' );
     let tag = taggedWord[ 1 ];
-    let isAdjective = tag.indexOf('JJ') === 0;
-    let isNoun = tag.indexOf('NN') === 0;
+    let isAdjective = tag.indexOf( 'JJ' ) === 0;
+    let isNoun = tag.indexOf( 'NN' ) === 0;
 
     if ( /[A-Z]/.test( word[ 0 ] ) || stopWords.indexOf( word.toLowerCase() ) > -1 ) { return; }
 
@@ -92,9 +93,11 @@ let setWordCounts = ( url, body ) => {
 let computeCounts = ( url ) => {
     let urlCache = cache.urls[ url ];
 
-    Object.keys( urlCache.words ).forEach( ( key ) => {
-        urlCache.counts.push( { word: key, count: urlCache.words[ key ] } );
-    } );
+    Object
+        .keys( urlCache.words )
+        .forEach( ( key ) => {
+            urlCache.counts.push( { word: key, count: urlCache.words[ key ] } );
+        } );
 
     urlCache.counts.sort( ( a, b ) => {
         if ( a.count === b.count ) { return 0; }

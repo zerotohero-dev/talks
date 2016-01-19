@@ -7,4 +7,3 @@
 ifconfig | awk '/inet addr/{print substr($2,6)}' | grep 172 > /data/service-app-002.dat
 
 echo "[${HOSTNAME}] Initialized successfully."
-cd /opt/fluent/

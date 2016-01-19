@@ -50,4 +50,4 @@ setTimeout( function() {
     console.log( 'All done!' );
 }, 5000 );
 
-console.log('Hello world');
+console.log( 'Please wait…' );

@@ -37,10 +37,11 @@
     "local-fluent-circuit": "*",
     "local-fluent-dump": "*",
     "local-fluent-graphql-query": "*",
-    "local-fluent-leakdetector": "*",
+    "local-fluent-leak-detector": "*",
     "local-fluent-logger": "*",
     "local-fluent-postmortem": "*",
     "local-fluent-repl": "*",
+    "local-fluent-schema": "*",
     "local-fluent-tracker-middleware": "*",
     "request": "2.67.0"
   }

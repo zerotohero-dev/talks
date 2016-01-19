@@ -4,6 +4,8 @@
 # <https://github.com/v0lkan/talks/blob/master/LICENSE.md>
 # Send your comments and suggestions to <me@volkan.io>.
 
+# 003 - Demo
+
 docker rm -f fluent_web
 docker rm -f fluent_demo
 docker rm -f fluent_bastion
@@ -27,14 +29,15 @@ docker run -d --privileged --cpuset-cpus="1" -i -t \
 -v "${DIR}/../../containers/common/opt/shared":/opt/shared \
 -v "${DIR}/../../containers/common/data":/data \
 -v "${DIR}/../../containers/003-the-real-deal/opt/fluent":/opt/fluent \
--p 8081:8081 \
 -p 8003:8003 \
--p 5858:5858 \
+--link fluent_web:web \
 fluent:service-demo /bin/bash
 
 docker run -d --privileged -i -t --cpuset-cpus="0" \
 -h bastion \
 --name fluent_bastion \
+--link fluent_demo:app \
+--link fluent_web:web \
 -v "${DIR}/../../containers/common/opt/shared":/opt/shared \
 -v "${DIR}/../../containers/common/data":/data \
 -v "${DIR}/../../containers/bastion/opt/fluent":/opt/fluent \

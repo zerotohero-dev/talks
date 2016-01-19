@@ -8,7 +8,7 @@
 
 import express from 'express';
 import { init as initPostMortem } from 'local-fluent-postmortem';
-import { init as initLeakDetector } from 'local-fluent-leakdetector';
+import { init as initLeakDetector } from 'local-fluent-leak-detector';
 import { listen as attachRepl } from 'local-fluent-repl';
 import {
     initializeApp,
@@ -17,14 +17,18 @@ import {
 import {
     setup as setupRoutes
 } from './routes';
+import { init as initMessageBus } from 'local-fluent-bus';
 
+const VANTAGE_PORT = 8004;
+const CLUSTER_ID = 1;
+
+initMessageBus( CLUSTER_ID );
 initPostMortem();
 initLeakDetector();
-attachRepl();
+attachRepl( VANTAGE_PORT );
 
 let app = express();
 
 initializeApp( app );
 setupRoutes( app );
 startListening( app );
-

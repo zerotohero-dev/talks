@@ -4,6 +4,8 @@
 # <https://github.com/v0lkan/talks/blob/master/LICENSE.md>
 # Send your comments and suggestions to <me@volkan.io>.
 
+# 000 - Simple Restify App
+
 docker rm -f fluent_restify
 docker rm -f fluent_bastion
 
@@ -24,6 +26,7 @@ docker run -d --privileged -i -t --cpuset-cpus="0" \
 -v "${DIR}/../../containers/common/opt/shared":/opt/shared \
 -v "${DIR}/../../containers/common/data":/data \
 -v "${DIR}/../../containers/bastion/opt/fluent":/opt/fluent \
+--link fluent_restify:app \
 -p 4322:4322 \
 fluent:bastion /bin/bash
 

@@ -4,6 +4,8 @@
 # <https://github.com/v0lkan/talks/blob/master/LICENSE.md>
 # Send your comments and suggestions to <me@volkan.io>.
 
+# 002 - Simple TCP App
+
 docker stop fluent_tcp
 docker stop fluent_bastion
 

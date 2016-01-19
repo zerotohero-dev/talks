@@ -6,6 +6,7 @@
  * Send your comments and suggestions to <me@volkan.io>.
  */
 
+import log from 'local-fluent-logger';
 import { en_technical as stopWords } from 'stpwrds';
 import { prepareTaggedWords, singularize } from 'local-fluent-transform';
 import {
@@ -13,11 +14,11 @@ import {
     get as getFromRemoteCache
 } from 'local-fluent-cache';
 
-let cache = { tags: {}, urls: {} };
+let localCache = { tags: {}, urls: {} };
 
 // Expose state to the REPL.
 process.fluent = process.fluent || {};
-process.fluent.cache = cache;
+process.fluent.cache = localCache;
 
 let unique = ( collection ) => collection.reduce( ( acc, cur ) => {
     if ( acc.indexOf( cur ) === -1 ) { acc.push( cur ); }
@@ -35,7 +36,7 @@ let postProcessWord = ( words, word ) => {
 };
 
 let postProcessWords = ( url ) => {
-    let words = cache.urls[ url ].words;
+    let words = localCache.urls[ url ].words;
 
     Object.keys( words )
         .forEach( ( word ) => postProcessWord( words, word ) );
@@ -44,7 +45,7 @@ let postProcessWords = ( url ) => {
 let add = ( url, buffer ) => {
     if ( buffer.length === 0 ) { return; }
 
-    let urlCache = cache.urls[ url ];
+    let urlCache = localCache.urls[ url ];
     let words = urlCache.words;
 
     let word = buffer.join( ' ' ).toLowerCase();
@@ -100,7 +101,7 @@ let setWordCounts = ( url, body ) => {
 };
 
 let computeCounts = ( url ) => {
-    let urlCache = cache.urls[ url ];
+    let urlCache = localCache.urls[ url ];
 
     Object.keys( urlCache.words ).forEach( ( key ) => {
         urlCache.counts.push( { word: key, count: urlCache.words[ key ] } );
@@ -114,7 +115,7 @@ let computeCounts = ( url ) => {
 };
 
 let computeTags = ( seed, url ) => {
-    let urlCache = cache.urls[ url ];
+    let urlCache = localCache.urls[ url ];
 
     let singleWordTags = [];
     let multiWordTags = [];
@@ -139,9 +140,9 @@ let computeTags = ( seed, url ) => {
     ).sort();
 
     urlCache.tags.forEach( ( tag ) => {
-        cache.tags[ tag ] = cache.tags[ tag ] || [];
+        localCache.tags[ tag ] = localCache.tags[ tag ] || [];
 
-        let cacheTag = cache.tags[ tag ];
+        let cacheTag = localCache.tags[ tag ];
 
         if ( cacheTag.indexOf( url ) === -1 ) {
             cacheTag.push( url );
@@ -150,21 +151,29 @@ let computeTags = ( seed, url ) => {
     } );
 };
 
-let pluckTags = ( url ) => cache.urls[ url ].tags;
+let pluckTags = ( url ) => localCache.urls[ url ].tags;
 
-let resetLocalCache = ( url ) => cache.urls[ url ] = {
+let resetLocalCache = ( url ) => localCache.urls[ url ] = {
     words: {}, counts: [], tags: []
 };
 
 /**
  *
  */
-let getUrls = ( tag ) => Promise.resolve( cache.tags[ tag ] );
+let getUrls = ( tag ) => {
+    log.info( 'data:getUrls', tag );
+
+    return getFromRemoteCache( `getUrls-${tag}` )
+        .then( ( urls ) => urls || [] );
+};
+
 
 /**
  *
  */
 let getTags = ( url, body ) => {
+    log.info( 'data:getTags', url );
+
     return getFromRemoteCache( `getTags-${url}` ).then( ( data ) => {
         if ( data ) { return data; }
 
@@ -192,14 +201,31 @@ let getTags = ( url, body ) => {
         postProcessWords( url );
         computeCounts( url );
         computeTags( tags, url );
-        let result = pluckTags( url );
+        let result = pluckTags( url ) || [];
         //
         // ---------------------------------------------------------------------
 
         putToRemoteCache( `getTags-${url}`, result );
 
-        // We don’t need to wait for the above cache operation to complete,
-        // we can return the result immediately and let it process in the
+        // XXX: this is as dirty as it looks, and should probably done
+        // in a cron job not to slow things down.
+        setImmediate( () =>
+            result.forEach( ( tag ) =>
+                getFromRemoteCache( `getUrls-${tag}` )
+                    .then( ( urls ) => {
+                        let tagUrls = urls || [];
+
+                        if ( tagUrls.indexOf( url ) === -1 ) {
+                            tagUrls.push( url );
+
+                            putToRemoteCache( `getUrls-${tag}`, tagUrls, true );
+                        }
+                    } )
+            )
+        );
+
+        // We don’t need to wait for the above cache operation(s) to complete.
+        // We can return the result immediately and let it process in the
         // background.
         return result;
     } );

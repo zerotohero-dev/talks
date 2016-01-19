@@ -13,7 +13,7 @@ import log from 'local-fluent-logger';
 import { init as initCluster } from 'local-fluent-cluster';
 
 let mapping = {
-    hosts: [ 'http://app1:80', 'http://app2:80' ],
+    hosts: [ 'http://app1:8003', 'http://app2:8003' ],
     currentIndex: 0
 };
 
@@ -22,14 +22,6 @@ let init = () => {
         () => {},
         () => {
             bouncy( ( req, res, bounce ) => {
-                if ( !meta ) {
-                    res
-                        .status( 404 )
-                        .end( 'No such host.' );
-
-                    return;
-                }
-
                 bounce( mapping.hosts[ mapping.currentIndex ] );
 
                 mapping.currentIndex = (

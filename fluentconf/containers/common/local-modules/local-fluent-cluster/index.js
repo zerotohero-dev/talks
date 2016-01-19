@@ -34,7 +34,9 @@ let forkWorker = () => {
     return worker;
 };
 
-let init = ( preListen, listen ) => {
+let init = ( preListen, listen, kill ) => {
+    let suicide = kill || ( () => {} );
+
     if ( cluster.isMaster ) {
         let cpuCount = parseInt( process.env.CLUSTER_SIZE, 10 ) || cpus().length;
 
@@ -50,6 +52,11 @@ let init = ( preListen, listen ) => {
             forkWorker();
         } );
     } else {
+
+        // We tell the caller to “die”.
+        // How to kill itself is up to the caller, though.
+        process.on( 'SIGUSR2', suicide );
+
         process.on( 'message', ( message ) => {
             let { action, workerId, replPort } = message;
 

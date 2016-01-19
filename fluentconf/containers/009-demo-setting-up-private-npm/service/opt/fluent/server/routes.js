@@ -6,10 +6,35 @@
  * Send your comments and suggestions to <me@volkan.io>.
  */
 
-import { isOpen as isCircuitOpen } from 'local-fluent-circuit';
+import { isOpen as isShuttingDown } from 'local-fluent-circuit';
 import query from 'local-fluent-graphql-query';
 import schema from 'local-fluent-schema';
 import log from 'local-fluent-logger';
+
+let serverBusy = false;
+let isServerBusy = () => serverBusy;
+let unsetBusy = () => serverBusy = false;
+
+let alreadyScheduledTimer = false;
+let checkLoad = ( res ) => {
+    if ( !isServerBusy() ) { return false; }
+
+    log.error( 'api/v1/graph', 'The service is overloaded!' );
+
+    res
+        .status( 503 )
+        .end( 'The server is busy. Try again later.' );
+
+    if ( !alreadyScheduledTimer ) {
+        setTimeout( () => {
+            unsetBusy();
+            alreadyScheduledTimer = false;
+        }, 30000 ).unref();
+    }
+    alreadyScheduledTimer = true;
+
+    return true;
+};
 
 const HTTP_INTERNAL_SERVER_ERROR = 500;
 
@@ -22,24 +47,26 @@ let endResponse = ( res ) => {
         .send(
             JSON.stringify( {
                 error: true,
-                description: 'I cannot handle your request right now because the service is shutting down.'
+                description: 'I cannot handle your request right now because the service is shutting down. Please try again in a few minutes.'
             } )
         );
 };
 
 let setup = ( app ) => {
     app.post( '/api/v1/graph', ( req, res ) => {
-        if ( isCircuitOpen() ) {
+        if ( isShuttingDown() ) {
             endResponse( res );
 
             return;
         }
 
+        if ( checkLoad( res ) ) { return; }
+
         query( schema, req, res );
     } );
 
     app.get( '/benchmark/get-tags', ( req, res ) => {
-        if ( isCircuitOpen() ) {
+        if ( isShuttingDown() ) {
             endResponse( res );
 
             return;
@@ -54,15 +81,11 @@ let setup = ( app ) => {
             ) }`
         };
 
-        console.log( 'calling query' );
-
         query( schema, request, res );
-
-        console.log( 'called query' );
     } );
 
     app.get( '/benchmark/get-urls', ( req, res ) => {
-        if ( isCircuitOpen() ) {
+        if ( isShuttingDown() ) {
             endResponse( res );
 
             return;

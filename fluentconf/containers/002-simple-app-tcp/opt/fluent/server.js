@@ -14,7 +14,13 @@ let handleError = ( error ) => void error;
 let handleEnd = () => {};
 
 let serve = ( socket ) => {
-    let handleData = () => socket.end( 'Hello World!' );
+
+    // Disable Nagel’s Algorithm:
+    // socket.setNoDelay();
+
+    let handleData = () => {
+        socket.end( 'Hello World!' );
+    };
 
     socket.on( 'data', handleData );
     socket.on( 'error', handleError );

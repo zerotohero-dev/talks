@@ -8,6 +8,8 @@
 
 import Vantage from 'vantage';
 
+const VANTAGE_PORT = 8004;
+
 /**
  *
  */
@@ -23,7 +25,7 @@ let listen = () => {
             callback();
         } );
 
-    vantage.listen( 8014 );
+    vantage.listen( VANTAGE_PORT );
 };
 
 export { listen };

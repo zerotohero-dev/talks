@@ -6,7 +6,7 @@
  * Send your comments and suggestions to <me@volkan.io>.
  */
 
-import { isOpen as isCircuitOpen } from 'local-fluent-circuit';
+import { checkLoad, isOpen as isCircuitOpen } from 'local-fluent-circuit';
 import query from 'local-fluent-graphql-query';
 import schema from 'local-fluent-schema';
 import log from 'local-fluent-logger';
@@ -34,6 +34,8 @@ let setup = ( app ) => {
 
             return;
         }
+
+        if ( checkLoad( res ) ) { return; }
 
         query( schema, req, res );
     } );

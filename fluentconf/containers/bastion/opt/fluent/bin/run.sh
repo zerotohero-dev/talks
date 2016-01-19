@@ -6,6 +6,8 @@
 
 ifconfig | awk '/inet addr/{print substr($2,6)}' | grep 172 > /data/bastion.dat
 
+# TODO: try using --dns option instead.
+# maybe `resolve dns` in etc/resolve.conf will help.
 cp /data/resolv.conf /etc/
 echo "set up dns!"
 

@@ -10,7 +10,7 @@ import log from 'local-fluent-logger';
 import uuid from 'node-uuid';
 import { createConnection as connect } from 'amqp';
 import { Promise } from 'bluebird';
-import { put, get } from 'local-fluent-cache';
+import { put as putToRemoteCache, get as getFromRemoteCache } from 'local-fluent-cache';
 
 let connection = null;
 let currentClusterId = null;
@@ -64,9 +64,13 @@ let resolveSubscription = ( message ) => {
         return;
     }
 
-    let resolve = resolvers[ requestId ];
+    let { resolve, param, key } = resolver;
 
     delete resolvers[ requestId ];
+
+    log.info( 'put to remote cache', `${key}-${param}`, typeof message.data );
+
+    putToRemoteCache( `${key}-${param}`, message.data );
 
     resolve( message.data );
 };
@@ -82,14 +86,14 @@ let rejectDeferred = ( requestId, param, action, reject ) =>
         } );
     }, 5000 );
 
-let doGet = ( key, param ) => get( `${key}-${param}` )
+let doGet = ( key, param ) => getFromRemoteCache( `${key}-${param}` )
     .then( ( cached ) => {
         if ( cached ) { return cached; }
 
         return new Promise( ( resolve, reject ) => {
             let requestId = generateGuid();
 
-            resolvers[ requestId ] = resolve;
+            resolvers[ requestId ] = { resolve, key, param };
 
             rejectDeferred( requestId, param, key, reject );
 
@@ -102,16 +106,13 @@ let doGet = ( key, param ) => get( `${key}-${param}` )
                 return;
             }
 
+            console.log('bus:request', param, key );
             connection.publish( 'fluent-request-queue', {
                 param,
                 key,
                 requestId,
                 clusterId: currentClusterId
             } );
-        } ).then( ( data ) => {
-            put( `${key}-${param}`, data );
-
-            return data;
         } );
     }
 );

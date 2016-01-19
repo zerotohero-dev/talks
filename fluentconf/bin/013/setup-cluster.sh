@@ -32,13 +32,17 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "${DIR}"
 
 # DNS
-docker run -d \
--h fluent-dns \
---name fluent_dns \
--p 53:53/udp \
--p 10000:10000 \
--v "${DIR}/../../containers/common/dns":/data \
-sameersbn/bind:latest
+#docker run -d \
+#-h fluent-dns \
+#--name fluent_dns \
+#-p 53:53/udp \
+#-p 10000:10000 \
+#-v "${DIR}/../../containers/common/dns":/data \
+#sameersbn/bind:latest --rm
+
+docker run --name fluent_dns -it -d --publish 53:53/udp --publish 10000:10000 -v "${DIR}/../../containers/common/dns":/data sameersbn/bind:latest
+
+#docker run -d --name fluent_dns -it --rm --publish 53:53/udp --publish 10000:10000 sameersbn/bind:latest
 
 # Private NPM Registry & Mirror (4873)
 docker run -d \
@@ -48,21 +52,15 @@ docker run -d \
 rnbwd/sinopia
 
 # Region 1: RabbitMQ
-docker run -d \
--h region-1-fluent-rabbit \
+docker run -d --hostname fluent-rabbit \
 --name region_1_fluent_rabbit \
--p 15671:15671 \
 -p 15672:15672 \
--p 25672:25672 \
 rabbitmq:3-management
 
 # Region 2: RabbitMQ
-docker run -d \
--h region-2-fluent-rabbit \
+docker run -d --hostname fluent-rabbit \
 --name region_2_fluent_rabbit \
--p 14671:15671 \
--p 14672:15672 \
--p 24672:25672 \
+-p 15673:15672 \
 rabbitmq:3-management
 
 # Region 1: Redis (Compute)
@@ -97,7 +95,6 @@ redis
 docker run --privileged -i -t -d \
 -h service-static-server \
 --name fluent_web \
--p 9090:8080 \
 -v "${DIR}/../../containers/common/opt/shared":/opt/shared \
 -v "${DIR}/../../containers/common/data":/data \
 -v "${DIR}/../../containers/static-server/opt/fluent":/opt/fluent \
@@ -137,7 +134,6 @@ fluent:service-compute /bin/bash
 
 # Region 1: API Service (1 of 2)
 docker run -d --privileged -i -t \
---env PORT=80 \
 --env CLUSTER_SIZE=1 \
 -h region-1-service-app-1 \
 --name region_1_fluent_app_1 \
@@ -152,7 +148,6 @@ fluent:service-app /bin/bash
 
 # Region 1: API Service (2 of 2)
 docker run -d --privileged -i -t \
---env PORT=80 \
 --env CLUSTER_SIZE=1 \
 -h region-1-service-app-2 \
 --name region_1_fluent_app_2 \
@@ -210,7 +205,6 @@ fluent:service-compute /bin/bash
 
 # Region 2: API Service (1 of 2)
 docker run -d --privileged -i -t \
---env PORT=80 \
 --env CLUSTER_SIZE=1 \
 -h region-2-service-app-1 \
 --name region_2_fluent_app_1 \
@@ -225,7 +219,6 @@ fluent:service-app /bin/bash
 
 # Region 2: API Service (2 of 2)
 docker run -d --privileged -i -t \
---env PORT=80 \
 --env CLUSTER_SIZE=1 \
 -h region-2-service-app-2 \
 --name region_2_fluent_app_2 \
@@ -260,10 +253,9 @@ docker run -d --privileged -i -t \
 -v "${DIR}/../../containers/common/local-modules":/locals \
 -v "${DIR}/../../containers/bastion/opt/fluent":/opt/fluent \
 -v "${DIR}/../../containers/bastion/var/log/fluent":/var/log/fluent \
+-v "${DIR}/../../containers":/containers \
 --link fluent_sinopia:npm \
 --link fluent_dns:dns \
---link region_1_fluent_load_balancer:app1 \
---link region_2_fluent_load_balancer:app2 \
 -p 4322:4322 \
 fluent:bastion /bin/bash
 

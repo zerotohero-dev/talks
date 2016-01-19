@@ -6,9 +6,14 @@
 
 docker stop fluent_rabbit
 docker stop fluent_web
-docker stop fluent_compute
-docker stop fluent_app
+docker stop fluent_compute_1
+docker stop fluent_compute_2
+docker stop fluent_app_1
+docker stop fluent_app_2
 docker stop fluent_bastion
 docker stop fluent_sinopia
+docker stop fluent_redis_app
+docker stop fluent_redis_compute
+docker stop fluent_load_balancer
 
 echo "Stopped the cluster."

@@ -4,6 +4,8 @@
 # <https://github.com/v0lkan/talks/blob/master/LICENSE.md>
 # Send your comments and suggestions to <me@volkan.io>.
 
+# 001 - Simple HTTP App
+
 docker rm -f fluent_http
 docker rm -f fluent_bastion
 
@@ -25,6 +27,7 @@ docker run -d --privileged -i -t --cpuset-cpus="0" \
 -v "${DIR}/../../containers/common/data":/data \
 -v "${DIR}/../../containers/bastion/opt/fluent":/opt/fluent \
 -p 4322:4322 \
+--link fluent_http:app \
 fluent:bastion /bin/bash
 
 echo "Set up the cluster."

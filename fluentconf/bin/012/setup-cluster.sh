@@ -8,7 +8,6 @@ docker rm -f fluent_sinopia
 docker rm -f fluent_rabbit
 docker rm -f fluent_redis_compute
 docker rm -f fluent_redis_app
-docker rm -f fluent_redis_bastion
 docker rm -f fluent_web
 docker rm -f fluent_compute_1
 docker rm -f fluent_compute_2
@@ -29,12 +28,9 @@ docker run -d \
 rnbwd/sinopia
 
 # RabbitMQ
-docker run -d \
--h fluent-rabbit \
+docker run -d --hostname fluent-rabbit \
 --name fluent_rabbit \
--p 15671:15671 \
 -p 15672:15672 \
--p 25672:25672 \
 rabbitmq:3-management
 
 # Redis (Compute)
@@ -51,18 +47,10 @@ docker run -d \
 --name fluent_redis_app \
 redis
 
-# Redis (Bastion)
-docker run -d \
--h fluent-redis-bastion \
--p 9381:6379 \
---name fluent_redis_bastion \
-redis
-
 # Simulates “the Internet”
 docker run --privileged -i -t -d \
 -h service-static-server \
 --name fluent_web \
--p 9090:8080 \
 -v "${DIR}/../../containers/common/opt/shared":/opt/shared \
 -v "${DIR}/../../containers/common/data":/data \
 -v "${DIR}/../../containers/static-server/opt/fluent":/opt/fluent \
@@ -74,6 +62,7 @@ fluent:service-static-server /bin/bash
 docker run -d --privileged -i -t \
 -h service-compute-1 \
 --name fluent_compute_1 \
+--env CLUSTER_SIZE=2 \
 -v "${DIR}/../../containers/common/opt/shared":/opt/shared \
 -v "${DIR}/../../containers/common/data":/data \
 -v "${DIR}/../../containers/012-bounce/compute001/opt/fluent":/opt/fluent \
@@ -88,6 +77,7 @@ fluent:service-compute /bin/bash
 docker run -d --privileged -i -t \
 -h service-compute-2 \
 --name fluent_compute_2 \
+--env CLUSTER_SIZE=2 \
 -v "${DIR}/../../containers/common/opt/shared":/opt/shared \
 -v "${DIR}/../../containers/common/data":/data \
 -v "${DIR}/../../containers/012-bounce/compute002/opt/fluent":/opt/fluent \
@@ -102,6 +92,7 @@ fluent:service-compute /bin/bash
 docker run -d --privileged -i -t \
 -h service-app-1 \
 --name fluent_app_1 \
+--env CLUSTER_SIZE=2 \
 -v "${DIR}/../../containers/common/opt/shared":/opt/shared \
 -v "${DIR}/../../containers/common/data":/data \
 -v "${DIR}/../../containers/012-bounce/service001/opt/fluent":/opt/fluent \
@@ -115,6 +106,7 @@ fluent:service-app /bin/bash
 docker run -d --privileged -i -t \
 -h service-app-2 \
 --name fluent_app_2 \
+--env CLUSTER_SIZE=2 \
 -v "${DIR}/../../containers/common/opt/shared":/opt/shared \
 -v "${DIR}/../../containers/common/data":/data \
 -v "${DIR}/../../containers/012-bounce/service002/opt/fluent":/opt/fluent \
@@ -135,6 +127,7 @@ docker run -d --privileged -i -t \
 --link fluent_app_1:app1 \
 --link fluent_app_2:app2 \
 --link fluent_sinopia:npm \
+-p 8003:80 \
 fluent:service-load-balancer /bin/bash
 
 # Bastion
@@ -148,7 +141,6 @@ docker run -d --privileged -i -t \
 -v "${DIR}/../../containers/bastion/var/log/fluent":/var/log/fluent \
 --link fluent_load_balancer:app \
 --link fluent_sinopia:npm \
---link fluent_redis_bastion:redis \
 -p 4322:4322 \
 fluent:bastion /bin/bash
 

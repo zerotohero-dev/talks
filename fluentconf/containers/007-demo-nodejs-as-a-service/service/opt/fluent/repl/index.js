@@ -9,13 +9,12 @@
 import Vantage from 'vantage';
 import { startInstrumenting, stopInstrumenting } from '../monitor';
 
-let voidInformer = { inform: () => {} };
-let informer = null;
+const VANTAGE_PORT = 8004;
 
-/**
- *
- */
-let inform = ( what ) => ( informer || voidInformer ).inform( what );
+let nullInformer = { log: () => {} };
+let informer = nullInformer;
+
+let inform = ( what ) => informer.log( what );
 
 /**
  *
@@ -67,14 +66,14 @@ let listen = () => {
         .command( 'toggle-logging' )
         .description( 'Toggles request logging.' )
         .action( function( args, callback ) {
-            informer = informer ? null : this;
+            informer = informer === nullInformer ? this : nullInformer;
 
             this.log( 'Toggled logging.' );
 
             callback();
         } );
 
-    vantage.listen( 8015 );
+    vantage.listen( VANTAGE_PORT );
 };
 
 export { inform, listen };

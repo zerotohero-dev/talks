@@ -8,7 +8,7 @@
 
 import { Promise } from 'bluebird';
 import { get } from 'request';
-import { listen } from '../repl';
+import { listen as listenVantage } from '../repl';
 import log from '../logger';
 import { createConnection as connect } from 'amqp';
 import { getTags, getUrls } from '../data';
@@ -57,7 +57,7 @@ connection.on( 'ready', () => {
     log.info( `[fluent:compute] The compute node is ready.` );
 } );
 
-listen();
+listenVantage();
 
 log.info( '[fluent:compute] Started listening.' );
 console.log( '[fluent:compute] Started listening.' );

@@ -1,6 +1,6 @@
 {
   "name": "local-fluent-transform",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "transforms, lexes, and tags stuff.",
   "main": "release/index.js",
   "scripts": {

@@ -7,6 +7,3 @@
 ifconfig | awk '/inet addr/{print substr($2,6)}' | grep 172 > /data/service-region-001-app-002.dat
 
 echo "[${HOSTNAME}] Initialized successfully."
-cd /opt/fluent/
-
-export PORT=80
