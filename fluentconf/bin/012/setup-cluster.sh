@@ -4,6 +4,8 @@
 # <https://github.com/v0lkan/talks/blob/master/LICENSE.md>
 # Send your comments and suggestions to <me@volkan.io>.
 
+# 012 - Bounce
+
 docker rm -f fluent_sinopia
 docker rm -f fluent_rabbit
 docker rm -f fluent_redis_compute
@@ -139,6 +141,7 @@ docker run -d --privileged -i -t \
 -v "${DIR}/../../containers/common/local-modules":/locals \
 -v "${DIR}/../../containers/bastion/opt/fluent":/opt/fluent \
 -v "${DIR}/../../containers/bastion/var/log/fluent":/var/log/fluent \
+-v "${DIR}/../../containers":/containers \
 --link fluent_load_balancer:app \
 --link fluent_sinopia:npm \
 -p 4322:4322 \

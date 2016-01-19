@@ -1,6 +1,6 @@
 {
   "name": "local-fluent-load-balancer",
-  "version": "0.4.2",
+  "version": "0.4.4",
   "description": "Poor man’s load balancer",
   "main": "release/index.js",
   "scripts": {
@@ -18,7 +18,7 @@
   "license": "MIT",
   "dependencies": {
     "bouncy": "3.2.2",
-    "local-fluent-cluster": "^0.1.2",
-    "local-fluent-logger": "^0.4.1"
+    "local-fluent-cluster": "*",
+    "local-fluent-logger": "*"
   }
 }

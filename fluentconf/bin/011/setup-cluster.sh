@@ -4,6 +4,8 @@
 # <https://github.com/v0lkan/talks/blob/master/LICENSE.md>
 # Send your comments and suggestions to <me@volkan.io>.
 
+# 011 - Sharing Memory
+
 docker rm -f fluent_rabbit
 docker rm -f fluent_web
 docker rm -f fluent_compute
@@ -91,6 +93,7 @@ docker run -d --privileged -i -t \
 -v "${DIR}/../../containers/common/local-modules":/locals \
 -v "${DIR}/../../containers/bastion/opt/fluent":/opt/fluent \
 -v "${DIR}/../../containers/bastion/var/log/fluent":/var/log/fluent \
+-v "${DIR}/../../containers":/containers \
 --link fluent_compute:compute \
 --link fluent_app:app \
 --link fluent_sinopia:npm \

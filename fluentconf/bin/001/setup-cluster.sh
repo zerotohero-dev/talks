@@ -26,6 +26,7 @@ docker run -d --privileged -i -t --cpuset-cpus="0" \
 -v "${DIR}/../../containers/common/opt/shared":/opt/shared \
 -v "${DIR}/../../containers/common/data":/data \
 -v "${DIR}/../../containers/bastion/opt/fluent":/opt/fluent \
+-v "${DIR}/../../containers":/containers \
 -p 4322:4322 \
 --link fluent_http:app \
 fluent:bastion /bin/bash

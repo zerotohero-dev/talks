@@ -55,6 +55,7 @@ docker run -d --privileged -i -t \
 -v "${DIR}/../../containers/common/opt/shared":/opt/shared \
 -v "${DIR}/../../containers/common/data":/data \
 -v "${DIR}/../../containers/bastion/opt/fluent":/opt/fluent \
+-v "${DIR}/../../containers":/containers \
 --link fluent_app:app \
 --link fluent_compute:compute \
 fluent:bastion /bin/bash

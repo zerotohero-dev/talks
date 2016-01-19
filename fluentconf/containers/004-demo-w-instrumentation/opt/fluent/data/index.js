@@ -58,7 +58,8 @@ let addWord = ( url, buffer, taggedWord ) => {
     let isAdjective = tag.indexOf('JJ') === 0;
     let isNoun = tag.indexOf('NN') === 0;
 
-    let skip = /[A-Z]/.test( word[ 0 ] ) || stopWords.indexOf( word.toLowerCase() ) > -1;
+    let skip = /[A-Z]/.test( word[ 0 ] ) ||
+        stopWords.indexOf( word.toLowerCase() ) > -1;
 
     if ( skip ) { return; }
 
@@ -98,9 +99,11 @@ let setWordCounts = ( url, body ) => {
 let computeCounts = ( url ) => {
     let urlCache = cache.urls[ url ];
 
-    Object.keys( urlCache.words ).forEach( ( key ) => {
-        urlCache.counts.push( { word: key, count: urlCache.words[ key ] } );
-    } );
+    Object
+        .keys( urlCache.words )
+        .forEach( ( key ) =>
+            urlCache.counts.push( { word: key, count: urlCache.words[ key ] } )
+        );
 
     urlCache.counts.sort( ( a, b ) => {
         if ( a.count === b.count ) { return 0; }
@@ -116,14 +119,18 @@ let computeTags = ( seed, url ) => {
     let multiWordTags = [];
 
     urlCache.counts.forEach( ( { word, count } ) => {
-        if ( word.indexOf ( ' ' ) === -1 ) {
-            if ( singleWordTags.length < 3 ) {
-                singleWordTags.push ( word );
-            }
-        } else {
-            if ( count > 1 || word.split ( ' ' ).length > 2 ) {
-                multiWordTags.push ( word );
-            }
+        let singleWord = word.indexOf ( ' ' ) === -1;
+        let eligibleSingleWord = singleWord && singleWordTags.length < 3;
+        let eligibleMultiWord = !singleWord && (
+                count > 1 || word.split ( ' ' ).length > 2
+            );
+
+        if ( eligibleSingleWord ) {
+            singleWordTags.push ( word );
+        }
+
+        if ( eligibleMultiWord ) {
+            multiWordTags.push ( word );
         }
     } );
 

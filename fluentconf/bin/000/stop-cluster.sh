@@ -8,5 +8,6 @@
 
 docker stop fluent_restify
 docker stop fluent_bastion
+docker stop fluent_sinopia
 
 echo "Stopped the cluster."

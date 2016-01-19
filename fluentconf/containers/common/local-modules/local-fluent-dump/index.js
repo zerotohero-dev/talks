@@ -13,7 +13,7 @@ import { writeSnapshot } from 'heapdump';
  *
  */
 let dumpHeap = ( done, prefix ) =>
-    writeSnapshot( `/data/${process.env.HOSTNAME}-${prefix||''}-${(new Date()).getTime()}.snapshot`, done );
+    writeSnapshot( `/data/${process.env.HOSTNAME}-${prefix||''}-${(new Date()).getTime()}.heapsnapshot`, done );
 
 /**
  *

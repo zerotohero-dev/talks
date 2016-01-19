@@ -10,6 +10,8 @@ import log from 'local-fluent-logger';
 import profiler from 'gc-profiler';
 import { dumpHeap } from 'local-fluent-dump';
 
+const MIN_DATASET_LENGTH_BEFORE_ALERTING = 5;
+
 /**
  *
  */
@@ -21,7 +23,7 @@ let init = () => {
 
         usages.push( process.memoryUsage().heapUsed );
 
-        if ( usages.length < 5 ) { return; }
+        if ( usages.length < MIN_DATASET_LENGTH_BEFORE_ALERTING ) { return; }
 
         // Five consecutive increases after full gc’s may suggest a memory leak.
         //

@@ -101,7 +101,7 @@ let app = express();
     app.get( '/benchmark/get-tags', ( req, res ) => {
         if ( harakiri ) {
             res
-                .status(500)
+                .status( 500 )
                 .send( JSON.stringify( {
                     error: true,
                     description: 'I cannot handle your request right now because the service is shutting down.'

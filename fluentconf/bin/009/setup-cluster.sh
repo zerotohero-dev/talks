@@ -4,6 +4,8 @@
 # <https://github.com/v0lkan/talks/blob/master/LICENSE.md>
 # Send your comments and suggestions to <me@volkan.io>.
 
+# 009 - Private NPM
+
 docker rm -f fluent_rabbit
 docker rm -f fluent_web
 docker rm -f fluent_compute
@@ -73,6 +75,7 @@ docker run -d --privileged -i -t --cpuset-cpus="0" \
 -v "${DIR}/../../containers/common/data":/data \
 -v "${DIR}/../../containers/common/local-modules":/locals \
 -v "${DIR}/../../containers/bastion/opt/fluent":/opt/fluent \
+-v "${DIR}/../../containers":/containers \
 --link fluent_rabbit:rabbit \
 --link fluent_web:web \
 --link fluent_compute:compute \

@@ -121,14 +121,18 @@ let computeTags = ( seed, url ) => {
     let multiWordTags = [];
 
     urlCache.counts.forEach( ( { word, count } ) => {
-        if ( word.indexOf ( ' ' ) === -1 ) {
-            if ( singleWordTags.length < 3 ) {
-                singleWordTags.push ( word );
-            }
-        } else {
-            if ( count > 1 || word.split ( ' ' ).length > 2 ) {
-                multiWordTags.push ( word );
-            }
+        let singleWord = word.indexOf ( ' ' ) === -1;
+        let eligibleSigleWord = singleWord && singleWordTags.length < 3;
+        let eligibleMultiWord = !singleWord && (
+            count > 1 || word.split ( ' ' ).length > 2
+        );
+
+        if ( eligibleSigleWord ) {
+            singleWordTags.push ( word );
+        }
+
+        if ( eligibleMultiWord ) {
+            multiWordTags.push ( word );
         }
     } );
 
