@@ -21,6 +21,26 @@ vantage compute:8004
 
 webmin: https://192.168.99.100:10000/
 
+* <https://s3.amazonaws.com/nodejsrocks/fluent_app.tar>
+* <https://s3.amazonaws.com/nodejsrocks/fluent_app_1.tar>
+* <https://s3.amazonaws.com/nodejsrocks/fluent_app_2.tar>
+* <https://s3.amazonaws.com/nodejsrocks/fluent_bastion.tar>
+* <https://s3.amazonaws.com/nodejsrocks/fluent_compute.tar>
+* <https://s3.amazonaws.com/nodejsrocks/fluent_compute_1.tar>
+* <https://s3.amazonaws.com/nodejsrocks/fluent_compute_2.tar>
+* <https://s3.amazonaws.com/nodejsrocks/fluent_demo.tar>
+* <https://s3.amazonaws.com/nodejsrocks/fluent_dns.tar>
+* <https://s3.amazonaws.com/nodejsrocks/fluent_http.tar>
+* <https://s3.amazonaws.com/nodejsrocks/fluent_load_balancer.tar>
+* <https://s3.amazonaws.com/nodejsrocks/fluent_rabbit.tar>
+* <https://s3.amazonaws.com/nodejsrocks/fluent_redis_app.tar>
+* <https://s3.amazonaws.com/nodejsrocks/fluent_redis_compute.tar>
+* <https://s3.amazonaws.com/nodejsrocks/fluent_restify.tar>
+* <https://s3.amazonaws.com/nodejsrocks/fluent_sinopia.tar>
+* <https://s3.amazonaws.com/nodejsrocks/fluent_tcp.tar>
+* <https://s3.amazonaws.com/nodejsrocks/fluent_web.tar>
+
+
 ## Directory Structure
 
 Here’s a brief outline of how this project is organized:
