@@ -21,6 +21,10 @@ vantage compute:8004
 
 webmin: https://192.168.99.100:10000/
 
+alias dock='/usr/bin/env bash '\'/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'\''
+alias fluent='cd /Users/volkan/Desktop/talks/fluentconf/'
+
+
 * <https://s3.amazonaws.com/nodejsrocks/fluent_app.tar>
 * <https://s3.amazonaws.com/nodejsrocks/fluent_app_1.tar>
 * <https://s3.amazonaws.com/nodejsrocks/fluent_app_2.tar>
