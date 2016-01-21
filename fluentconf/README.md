@@ -1,73 +1,139 @@
 ## About
 
+This is the folder for [O’Reilly FluentConf 2016 **Scaling Your *Node.JS* API Like a Boss**][talk] talk. 
+It includes both the source code that we’ll be using, and also some supporting material and useful nuggets that are worth looking at.
+
+## Show Me The Slides
+
+// TODO: link to slide deck.
+
+## Development Setup
+
+
+If you want to run the code in your own development environment, then you’ll need some prep-work to do.
+
+Note that the development setup will take an hour or so (*at least, depending on how lucky you are with Murphy's Laws **:)** *). Thus, if you want to be ready before the talk begins, give yourself plenty of time to set up your stuff.
+
+### Installing Required Software
+
+For Windows and Mac, you’ll need to install:
+
+* [Virtualbox](https://www.virtualbox.org/wiki/Downloads)
+* [Docker Toolbox](https://www.docker.com/docker-toolbox)
+* and [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+
+For Linux, you’ll need to install **Docker** and **git**.
+
 > **Note**
 >
-> I’m constantly adding bits and pieces here, and updating the code in this folder **almost daily**.
->
-> Stay tuned.
+> I’ll be using a Macbook for the demos; however, your setup might slightly vary for **Windows** and **Linux**.
 
-This is the repository for [O’Reilly FluentConf 2016 **Scaling Your *Node.JS* API Like a Boss**][talk] talk. 
+### Getting the Environment Snapshots
 
-Along with the source code, you’ll also see other useful nuggets, and reference material. This repository also contains code and information that have not been covered in the talk (*due to scope and/or time limitations*).
+I’m storing the recent snapshots of the environment on AWS Cloud. Follow these links to fetch them first:
+
+* **Container Tarballs**: <https://s3.amazonaws.com/nodejsrocks/docker-tars.zip> 
+* **Project Source Code**: <https://s3.amazonaws.com/nodejsrocks/fluentconf.zip>
+
+Expand `fluentconf.zip` and `docker-tars.zip` inside the same folder.
+
+### Import Third-Party Images
+
+Execute this script to import the required third-party images into Docker:
+
+```bash
+echo "Importing third-party containers first."
+docker pull sameersbn/bind
+echo "Imported bind."
+docker pull redis
+echo "Imported redis."
+docker pull rnbwd/sinopia
+echo "Imported sinopia."
+docker pull rabbitmq
+docker pull rabbitmq:3-management
+echo "Imported rabbitmq."
+```
+
+### Import Project Images
+
+Then execute this script inside the `docker-tars` folder to import the project images:
+
+
+```bash
+echo "Importing demo containers…"
+cat fluent_app.tar | docker import - fluent:service-app
+echo "Imported fluent:service-app."
+cat fluent_bastion.tar | docker import - fluent:bastion
+echo "Imported fluent:bastion."
+cat fluent_compute.tar | docker import - fluent:service-compute
+echo "Imported fluent:service-compute."
+cat fluent_demo.tar | docker import - fluent:service-demo
+echo "Imported fluent:service-demo."
+cat fluent_dns.tar | docker import - sameersbn/bind:latest
+echo "Imported the DNS Server."
+cat fluent_http.tar | docker import - fluent:service-http
+echo "Imported fluent:service-http."
+cat fluent_load_balancer.tar | docker import - fluent:service-load-balancer
+echo "Imported fluent:service-load-balancer."
+cat fluent_rabbit.tar | docker import - rabbitmq:3-management
+echo "Imported RabbitMQ."
+cat fluent_redis_app.tar | docker import - redis
+echo "Imported redis."
+cat fluent_restify.tar | docker import - fluent:service-restify
+echo "Imported fluent:service-restify."
+cat fluent_sinopia.tar | docker import - rnbwd/sinopia
+echo "Imported sinopia."
+cat fluent_tcp.tar | docker import - fluent:service-tcp
+echo "Imported fluent:service-tcp."
+cat fluent_web.tar | docker import - fluent:service-static-server
+echo "Imported fluent:service-static-server."
+echo "All Done!"
+
+```
+
+### Running Sample Apps
+
+The `fluentconf` folder has a `bin` folder inside it that has useful script.
+
+To run the first app for instance:
+
+* Make sure that `docker` is up and running
+* Go to the `fluentconf` folder.
+* Execute `./bin/000/setup-cluster.sh`
+* Then execute `./bin/000/start-cluster.sh`
+
+To stop the app:
+
+* Execute `./bin/000/stop-cluster.sh`
+
+### Some Useful URLs
+
+* RabbitMQ Management Console: http://{DOCKER_IP}:15672/
+* DNS Webmin: https://{DOCKER_IP}:10000/
+
+Also I use the following `alias` to launch `docker` on Mac.
+
+```bash
+alias dock='/usr/bin/env bash '\'/Applications/Docker/\
+Docker Quickstart Terminal.app\
+/Contents/Resources/Scripts/start.sh'\''
+```
+
+…
+
+That’s all you need to run the samples.
 
 Enjoy!
 
-rabbitMQ Management Console URL: http://192.168.99.100:15672/ user:guest pass:guest
+### A Little More Details
 
-vantage app:8003
-vantage compute:8003
-vantage app:8004
-vantage compute:8004
-
-webmin: https://192.168.99.100:10000/
-
-alias dock='/usr/bin/env bash '\'/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'\''
-alias fluent='cd /Users/volkan/Desktop/talks/fluentconf/'
-
-
-* <https://s3.amazonaws.com/nodejsrocks/fluent_app.tar>
-* <https://s3.amazonaws.com/nodejsrocks/fluent_app_1.tar>
-* <https://s3.amazonaws.com/nodejsrocks/fluent_app_2.tar>
-* <https://s3.amazonaws.com/nodejsrocks/fluent_bastion.tar>
-* <https://s3.amazonaws.com/nodejsrocks/fluent_compute.tar>
-* <https://s3.amazonaws.com/nodejsrocks/fluent_compute_1.tar>
-* <https://s3.amazonaws.com/nodejsrocks/fluent_compute_2.tar>
-* <https://s3.amazonaws.com/nodejsrocks/fluent_demo.tar>
-* <https://s3.amazonaws.com/nodejsrocks/fluent_dns.tar>
-* <https://s3.amazonaws.com/nodejsrocks/fluent_http.tar>
-* <https://s3.amazonaws.com/nodejsrocks/fluent_load_balancer.tar>
-* <https://s3.amazonaws.com/nodejsrocks/fluent_rabbit.tar>
-* <https://s3.amazonaws.com/nodejsrocks/fluent_redis_app.tar>
-* <https://s3.amazonaws.com/nodejsrocks/fluent_redis_compute.tar>
-* <https://s3.amazonaws.com/nodejsrocks/fluent_restify.tar>
-* <https://s3.amazonaws.com/nodejsrocks/fluent_sinopia.tar>
-* <https://s3.amazonaws.com/nodejsrocks/fluent_tcp.tar>
-* <https://s3.amazonaws.com/nodejsrocks/fluent_web.tar>
-
-
-## Directory Structure
-
-Here’s a brief outline of how this project is organized:
-
-* **bin**: Contains runner scripts for various scenarios
-* **containers**: Contains source code for various containers. Note that these folders are **numbered**. Each number represents the next step in the application’s development. You can think of these as `git tag`s.
-* **containers/bastion**: This is the entry container that we use to access and/or benchmark other containers.
-* **meta**: Contains random data to be sorted.
-* **assets**: Mostly contains images to be used in the presentation.
-
-## Environment Setup
-
-In case you’d like to try the examples yourself, you have some prep work to do.
-
-### Host Machine
-
-The demos use **[docker][docker]** containers on a *MacBook Pro (Late 2013), 2.4 GHz Intel Core i5, 16 GB 1600 MHz DDR3 memory, solid state drive, OS X El Capitan Version 10.11.x*.
-
-If you are using a different operating system, then your setup might be different.
-
-### Container Preparation
+If you want to run the benchmarks given in the talk as accurate as possible, then you might want to tweak your system further.
 
 First let’s make sure that the host machine does not have any network or file handler limitations:
+
+> **Note**
+>
+> I am running the following commands in a Unix-like operating system; if you are using a different operating system then your commands will likely vary.
 
 ```bash
 user@Macbook:/#
@@ -89,7 +155,7 @@ These numbers are **good enough** for our demo purposes.
 
 The docker containers that I’ll be using in this demo are **Ubuntu 14.04.3 LTS**.
 
-When I do an `ulimit -a`, I get the following:
+When I do an `ulimit -a` inside those containers, I get the following:
 
 ```bash
 core file size          (blocks, -c) 0
@@ -120,12 +186,12 @@ You may also want to modify the local ephemeral port ranges on the containers:
 
 ```bash
 root@container:/#
-# The default range is "32768 61000" and it's "suficcent" for our purposes.
-# Increasing the range a bit won't hurt though:
+# The default range is "32768 61000" and it’s “sufficient” for our purposes.
+# Increasing the range a bit won’t hurt though:
 sysctl -w net.ipv4.ip_local_port_range="1024 65000"
 ```
 
-There’s only one remainingproblem to be adjusted:
+There’s only one remaining problem to be adjusted:
 
 The containers have `128` maximum socket connections by default. And this is not enough for highly-concurrent load testing. 
 
@@ -136,35 +202,39 @@ root@container:/#
 sysctl -w net.core.somaxconn=32768
 ```
 
-One dirty hack would be to put this code into `/etc/bash.bashrc`. This is suboptimal, and it saves the day nonetheless.
+One dirty hack would be to put this code into `/etc/bash.bashrc`. This is suboptimal, yet it saves the day nonetheless.
 
 > **Note**
 >
-> In a production setup the **somaxconn** you need will depend on your concurrency needs. If you have a gaming service with tens of thousands of realtime concurrent users that constantly keep an open socket connection, then a high number would be necessary. 
+> In a production setup the `somaxconn` you need will depend on your concurrency needs. If you have a gaming service with tens of thousands of realtime concurrent users that constantly keep an open socket connection, then a high number would be necessary. 
 >
 > In such a realtime app, you might go as high as a few tens of thousands; however, most probably your virtual machine will start to break somewhere around 5K to 10K concurrent connections; and you’ll need to autoscale after that point anyway.
 >
 > In a typical API service that will face highly concurrent load, this setting generally falls somewhere between **1204** and **2048**.
 
-## Running the Demos
 
-You’ll need the docker containers that I’m using to be able to use `setup-cluster` and `stop-cluster` commands that reside inside the `bin` folder. — I’ll find a way/place to distribute them. — Stay tuned.
+## Project Directory Structure
 
-TODO: publicly distribute the docker images.
+Here’s a brief outline of how this project is organized:
+
+* **bin**: Contains runner scripts for various scenarios
+* **containers**: Contains source code for various containers. Note that these folders are **numbered**. Each number represents the next step in the application’s development. You can think of these as `git tag`s.
+* **containers/bastion**: This is the entry container that we use to access and/or benchmark other containers.
+* Additionally, each container has an `opt/fluent` folder where its service’s source code resides.
 
 ## Appendix
 
-### About the `ab` Tool
+### About the `ab` Test Tool
 
-During certain parts of the demo we use the [`ab`][ab] tool to measure the application throughput.
+During initial sections of the demo we use the [`ab`][ab] tool to measure the application’s throughput.
 
-There are, however, some problems with ab to be aware of:
+There are, however, some problems with `ab` to be aware of:
 
 Firstly, `ab` will **flood** the server as fast as it can generate the requests. It has no option to delay between the requests.
 
-Given that the network layer is essentially bypassed (*i.e., because of proximity we can assume zero network delay for all practical purposes*). `ab` will create a peak level of requests that will eventually saturate the resources.
+Given that the network layer is essentially bypassed (*i.e., because of proximity we can assume zero network delay for all practical purposes*), `ab` will create a peak level of requests that will eventually saturate the resources.
 
-Moreover, expect the behavior of the `ab` tests to be increasingly non-deterministic under higher concurrent loads.
+Also, expect the behavior of the `ab` tests to be increasingly non-deterministic under higher concurrent loads.
 
 > **Aside**
 > 
@@ -177,13 +247,13 @@ Moreover, expect the behavior of the `ab` tests to be increasingly non-determini
 >
 > **Do not increment the limits too much**.
 
-Again, when opening large number of connections, `ab` test might turn out to be non-deterministic unreliable due to ephemeral port exhaustion. In that case, waiting for ~4 minutes, and restarting the containers will help stabilize things.
+Again, when opening large number of connections, `ab` test might turn out to be non-deterministic and unreliable due to ephemeral port exhaustion. In that case, waiting for ~4 minutes, and restarting the containers will help stabilize things.
 
-If you need really high concurrency, then you'd better use a distributed load testing setup (*like a cluster of AWS instance in different zones, or a distributed load teesting "as a service" solution*).
+If you need really high concurrency, then you’d be better off to use a distributed load testing setup (*like a cluster of AWS instances in different zones, or a distributed load testing "as a service" solution*).
 
 One last thing is `ab` is an **HTTP/1.0** client; i.e., it’s not an HTTP/1.1 client, therefore what you test with `ab` will **not** represent how your API behaves in the wild.
 
-### Thinks To Watch For When Running an `ab` Test
+### Thinks To Watch Out For When Running an `ab` Test
 
 Before running your `ab` tests, make sure that:
 
@@ -207,20 +277,12 @@ Nobody cares how cool your architecture is; the only thing the users care about 
 
 ### Load Testing and Benchmarking Tools and Services
 
-Here are certain tools and services that you can evaluate. This is, by no means a conclusive list.
+Here are certain tools and services that you can evaluate. This is, by no means a conclusive list:
 
 * <https://blazemeter.com>
 * <http://smartbear.com/>
 * <http://jmeter.apache.org/>
-* TODO:// add more.
 
-### Show Me The Results
-
-[The **Worklog**](WORKLOG.MD) contains a log of setups that I've created with progressively increasing complexity, and benchmark tests related to them.
-
-### Show Me The Deck
-
-// TODO: link to slide deck.
 
 ### License
 
