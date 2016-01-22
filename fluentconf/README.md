@@ -1,7 +1,8 @@
 ## About
 
 This is the folder for [O’Reilly FluentConf 2016 **Scaling Your *Node.JS* API Like a Boss**][talk] talk. 
-It includes both the source code that we’ll be using, and also some supporting material and useful nuggets that are worth looking at.
+
+This folder includes both the source code that we’ll be using, and also some supporting material and useful nuggets that are worth looking at.
 
 ## Show Me The Slides
 
@@ -22,6 +23,11 @@ For Windows and Mac, you’ll need to install:
 * [Docker Toolbox](https://www.docker.com/docker-toolbox)
 * and [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
+
+> **Note**
+>
+> We will be using [Webstorm][webstorm] for certain tasks like **remote debugging**, [you can download a free 30 day trial here][webstorm].
+
 For Linux, you’ll need to install **Docker** and **git**.
 
 > **Note**
@@ -37,7 +43,7 @@ I’m storing the recent snapshots of the environment on AWS Cloud. Follow these
 
 Expand `fluentconf.zip` and `docker-tars.zip` inside the same folder.
 
-### Import Third-Party Images
+### Pulling Third-Party Docker Images
 
 Execute this script to import the required third-party images into Docker:
 
@@ -54,7 +60,7 @@ docker pull rabbitmq:3-management
 echo "Imported rabbitmq."
 ```
 
-### Import Project Images
+### Importing Project Docker Images
 
 Then execute this script inside the `docker-tars` folder to import the project images:
 
@@ -283,6 +289,9 @@ Here are certain tools and services that you can evaluate. This is, by no means 
 * <http://smartbear.com/>
 * <http://jmeter.apache.org/>
 
+> **Note**
+> 
+> There are more tools for **CI/CD**, **Automation**, **Cloud Monitoring**, **Post-Mortem Diagnostics**, **Private Package Management**, etc. that I will be mentioning during the talk.
 
 ### License
 
@@ -295,3 +304,4 @@ Here are certain tools and services that you can evaluate. This is, by no means 
 [docker]: https://www.docker.com "Docker: Build, Ship, Run"
 [docker-run]: https://docs.docker.com/engine/reference/run/ "Docker: `run` command."
 [ab]: https://httpd.apache.org/docs/2.2/programs/ab.html
+[webstorm]: https://www.jetbrains.com/webstorm/ "Webstorm: The smartest JavaScript IDE!"
