@@ -14,8 +14,9 @@ import { init as initMessageBus } from 'local-fluent-bus';
 
 let GRACE_PERIOD = process.env.NODE === 'production' ? 600000 : 30000;
 
+let app = null;
+
 let init = () => {
-    let app = null;
     initCluster(
         ( workerId ) => {
             initMessageBus( workerId );
