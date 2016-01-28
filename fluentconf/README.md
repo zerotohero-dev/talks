@@ -47,6 +47,12 @@ Expand `fluentconf.zip` and `docker-tars.zip` inside the same folder.
 
 Execute this script to import the required third-party images into Docker:
 
+> **Note** (*for Mac and Windows*)
+> 
+> Before running the below commands, you’ll need to launch the **Docker Quickstart Terminal**.
+>
+> This will make sure that the `docker` executable is available and the docker Virtualbox virtual machine is up and running.
+ 
 ```bash
 echo "Importing third-party containers first."
 docker pull sameersbn/bind
@@ -75,26 +81,37 @@ cat fluent_compute.tar | docker import - fluent:service-compute
 echo "Imported fluent:service-compute."
 cat fluent_demo.tar | docker import - fluent:service-demo
 echo "Imported fluent:service-demo."
-cat fluent_dns.tar | docker import - sameersbn/bind:latest
-echo "Imported the DNS Server."
 cat fluent_http.tar | docker import - fluent:service-http
 echo "Imported fluent:service-http."
 cat fluent_load_balancer.tar | docker import - fluent:service-load-balancer
 echo "Imported fluent:service-load-balancer."
-cat fluent_rabbit.tar | docker import - rabbitmq:3-management
-echo "Imported RabbitMQ."
-cat fluent_redis_app.tar | docker import - redis
-echo "Imported redis."
 cat fluent_restify.tar | docker import - fluent:service-restify
 echo "Imported fluent:service-restify."
-cat fluent_sinopia.tar | docker import - rnbwd/sinopia
-echo "Imported sinopia."
 cat fluent_tcp.tar | docker import - fluent:service-tcp
 echo "Imported fluent:service-tcp."
 cat fluent_web.tar | docker import - fluent:service-static-server
 echo "Imported fluent:service-static-server."
 echo "All Done!"
+```
 
+If everything goes well, when you do a `docker images`, you should see something like this:
+
+```text
+REPOSITORY          TAG                    …
+fluent              service-static-server  …
+fluent              service-tcp            …
+fluent              service-restify        …
+fluent              service-load-balancer  …
+fluent              service-http           …
+fluent              service-demo           …
+fluent              service-compute        …
+fluent              bastion                …
+fluent              service-app            …
+rabbitmq            3-management           …
+rabbitmq            latest                 …
+sameersbn/bind      latest                 …
+redis               latest                 …
+rnbwd/sinopia       latest                 …
 ```
 
 ### Running Sample Apps

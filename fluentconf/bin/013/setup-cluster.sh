@@ -33,18 +33,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 cd "${DIR}"
 
-# DNS
-#docker run -d \
-#-h fluent-dns \
-#--name fluent_dns \
-#-p 53:53/udp \
-#-p 10000:10000 \
-#-v "${DIR}/../../containers/common/dns":/data \
-#sameersbn/bind:latest --rm
-
 docker run --name fluent_dns -it -d --publish 53:53/udp --publish 10000:10000 -v "${DIR}/../../containers/common/dns":/data sameersbn/bind:latest
-
-#docker run -d --name fluent_dns -it --rm --publish 53:53/udp --publish 10000:10000 sameersbn/bind:latest
 
 # Private NPM Registry & Mirror (4873)
 docker run -d \

@@ -30,7 +30,7 @@ function getUrl( url ) {
     } );
 }
 
-var URLS_URL = 'http://app:8003/benchmark/get-urls';
+var URLS_URL = 'http://app:8001/benchmark/get-urls';
 
 getUrl( URLS_URL );
 
