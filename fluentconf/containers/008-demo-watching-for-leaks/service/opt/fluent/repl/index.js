@@ -9,11 +9,14 @@
 import Vantage from 'vantage';
 import { dumpHeap, dumpCore } from '../dump';
 import { startInstrumenting, stopInstrumenting } from '../monitor';
+import { startProfiling, stopProfiling, deleteAllProfiles } from 'v8-profiler';
+import { createWriteStream } from 'fs';
 
 const VANTAGE_PORT = 8004;
 
 let nullInformer = { log: () => {} };
 let informer = nullInformer;
+let profilerRunning = false;
 
 let inform = ( what ) => informer.log( what );
 
@@ -106,7 +109,39 @@ let listen = () => {
             } );
         } );
 
+    vantage
+        .command( 'toggle-profiling' )
+        .description( 'Toggles CPU profiling' )
+        .action( function( args, callback ) {
+            if ( profilerRunning ) {
+                let profile = stopProfiling();
+
+                this.log( 'Stopped profiling.' );
+
+                profile
+                    .export()
+                    .pipe( createWriteStream( `/data/fluent-${Date.now()}.cpuprofile` ) )
+                    .once( 'error',  deleteAllProfiles )
+                    .once( 'finish', deleteAllProfiles );
+
+                profilerRunning = false;
+
+                callback();
+
+                return;
+            }
+
+            startProfiling();
+            profilerRunning = true;
+
+            this.log( 'Started profiling.' );
+
+            callback();
+        } );
+
     vantage.listen( VANTAGE_PORT );
+
+    console.log( `Vantage: Started listening at port "${VANTAGE_PORT}".` );
 };
 
 export { inform, listen };

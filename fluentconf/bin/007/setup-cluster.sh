@@ -55,6 +55,7 @@ docker run -d --privileged -i -t \
 -v "${DIR}/../../containers/007-demo-nodejs-as-a-service/service/var/log/fluent":/var/log/fluent \
 --link fluent_rabbit:rabbit \
 -p 8003:8003 \
+-p 5858:5858 \
 fluent:service-app /bin/bash
 
 docker run -d --privileged -i -t --cpuset-cpus="0" \

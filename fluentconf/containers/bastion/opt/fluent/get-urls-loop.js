@@ -13,6 +13,8 @@ function getUrl( url ) {
         // console.log( body );
         void body;
         console.log( '1' );
+
+        setTimeout( function() { getUrl( url ) }, 100 );
     } );
 
     get( url, function( err, response, body ) {
@@ -25,12 +27,10 @@ function getUrl( url ) {
         // console.log( body );
         void body;
         console.log( '3' );
-
-        getUrl( url );
     } );
 }
 
-var URLS_URL = 'http://app:8001/benchmark/get-urls';
+var URLS_URL = 'http://app:8003/benchmark/get-urls';
 
 getUrl( URLS_URL );
 

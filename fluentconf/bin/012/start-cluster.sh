@@ -6,8 +6,8 @@
 
 # 012 - Bounce
 
-docker exec -d fluent_compute forever /usr/bin/node --abort_on_uncaught_exception /opt/fluent
-docker exec -d fluent_app forever /usr/bin/node --abort_on_uncaught_exception /opt/fluent
-docker exec -d fluent_load_balancer forever /usr/bin/node --abort_on_uncaught_exception /opt/fluent
+docker exec -d fluent_compute forever /opt/fluent --abort_on_uncaught_exception
+docker exec -d fluent_app forever /opt/fluent --abort_on_uncaught_exception
+docker exec -d fluent_load_balancer forever /opt/fluent --abort_on_uncaught_exception
 
 echo "Started the cluster."

@@ -6,7 +6,9 @@
 
 # 007 - Node.JS as a Service
 
-docker exec -d fluent_compute forever /opt/fluent
-docker exec -d fluent_app forever /opt/fluent
+docker exec -d fluent_compute forever start /opt/fluent
+docker exec -d fluent_app forever start /opt/fluent
 
 echo "Started the cluster."
+
+

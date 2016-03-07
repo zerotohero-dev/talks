@@ -115,4 +115,7 @@ app.get( '/benchmark/get-urls', ( req, res ) => {
 
 listen( app, PORT );
 
+global.fluent = global.fluent || {};
+global.fluent.running = true;
+
 console.log( `Demo API is ready at port '${PORT}'.` );

@@ -13,6 +13,8 @@ function getUrl( url ) {
         // console.log( body );
         void body;
         console.log( '1' );
+
+        setTimeout( function() { getUrl( url ) }, 100 );
     } );
 
     get( url, function( err, response, body ) {
@@ -25,8 +27,6 @@ function getUrl( url ) {
         // console.log( body );
         void body;
         console.log( '3' );
-
-        getUrl( url );
     } );
 }
 

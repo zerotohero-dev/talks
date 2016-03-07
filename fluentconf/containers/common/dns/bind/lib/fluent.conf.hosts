@@ -9,3 +9,4 @@ fluent.conf.	IN	NS	ns.fluent.conf.
 ns.fluent.conf.	IN	A	192.168.99.100
 api.fluent.conf.	IN	A	172.17.0.15
 api.fluent.conf.	IN	A	172.17.0.20
+

@@ -1,0 +1,19 @@
+{
+  "name": "v8",
+  "version": "0.1.0",
+  "description": "v8 natives test",
+  "main": "natives.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "v8",
+    "natives",
+    "benchmark"
+  ],
+  "author": "Volkan Özçelik",
+  "license": "MIT",
+  "devDependencies": {
+    "v8-natives": "0.0.2"
+  }
+}

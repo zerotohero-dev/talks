@@ -46,6 +46,7 @@
     "pos": "0.3.0",
     "request": "2.67.0",
     "unfluff": "0.11.0",
+    "v8-profiler": "5.5.0",
     "vantage": "1.5.1"
   }
 }

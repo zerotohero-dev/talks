@@ -65,7 +65,9 @@ docker run -d --privileged -i -t \
 --link fluent_rabbit:rabbit \
 --link fluent_sinopia:npm \
 -p 8003:8003 \
+-p 5858:5858 \
 fluent:service-app /bin/bash
+# 5858 is the NodeJS remote debugging port.
 
 docker run -d --privileged -i -t --cpuset-cpus="0" \
 -h bastion \

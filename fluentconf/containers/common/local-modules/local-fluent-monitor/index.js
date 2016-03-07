@@ -42,6 +42,10 @@ setInterval( () => {
     {
         let start = process.hrtime();
 
+        // Hint: You can also use https://github.com/lloyd/node-toobusy
+        // for checking event loop delay. It is a native Node.JS extension
+        // that directly taps into the engine, so it will give more accurate
+        // results.
         setImmediate( () => {
             let delta = process.hrtime( start );
 

@@ -235,7 +235,6 @@ One dirty hack would be to put this code into `/etc/bash.bashrc`. This is subopt
 >
 > In a typical API service that will face highly concurrent load, this setting generally falls somewhere between **1204** and **2048**.
 
-
 ## Project Directory Structure
 
 Here’s a brief outline of how this project is organized:
@@ -246,6 +245,12 @@ Here’s a brief outline of how this project is organized:
 * Additionally, each container has an `opt/fluent` folder where its service’s source code resides.
 
 ## Appendix
+
+### Being on the Battery may Jinx Your System
+
+Make sure that you are not running anything else on your system while you’re running your benchmarks.
+
+Also when you are running any kind of benchmark, make sure that the system is not on battery. Laptops do lots of things that slow down the system performance, to preserve power, when on battery. — For instance Mac OS does crazy cpu deoptimizations to save battery when not connected to the power cord. And those optimizations are *non-deterministic* (to my observation), which can lead in having significantly different results when you run the same test with the same parameters repeatedly. 
 
 ### About the `ab` Test Tool
 
@@ -272,7 +277,7 @@ Also, expect the behavior of the `ab` tests to be increasingly non-deterministic
 
 Again, when opening large number of connections, `ab` test might turn out to be non-deterministic and unreliable due to ephemeral port exhaustion. In that case, waiting for ~4 minutes, and restarting the containers will help stabilize things.
 
-If you need really high concurrency, then you’d be better off to use a distributed load testing setup (*like a cluster of AWS instances in different zones, or a distributed load testing "as a service" solution*).
+If you need really high concurrency, then you’d be better off to use a distributed load testing setup (*like a cluster of AWS instances in different zones, or a distributed load testing “as a service” solution*).
 
 One last thing is `ab` is an **HTTP/1.0** client; i.e., it’s not an HTTP/1.1 client, therefore what you test with `ab` will **not** represent how your API behaves in the wild.
 
