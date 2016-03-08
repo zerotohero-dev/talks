@@ -8,7 +8,7 @@ This folder includes both the source code that we’ll be using, and also some s
 
 [You Can View the Auidience Copy of the Slides Here](https://speakerdeck.com/volkan/scaling-your-node-dot-js-api-like-a-boss). 
 
-**Audience copy** means that the slides contain **more** material than that is covered in the talk; provoding additional links to review, and introducing additional concepts. — It’s, kind of, like the **uncut version** of the talk.
+> **Audience copy** means that the slides contain **more** material than that is covered in the talk; provoding additional links to review, and introducing additional concepts. — It’s, kind of, like the **uncut version** of the talk.
 
 ## Development Setup
 
