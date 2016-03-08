@@ -6,7 +6,7 @@ This folder includes both the source code that we’ll be using, and also some s
 
 ## Show Me The Slides
 
-// TODO: link to slide deck.
+[You Can View the Auidience Copy of the Slides Here](https://speakerdeck.com/volkan/scaling-your-node-dot-js-api-like-a-boss)
 
 ## Development Setup
 
